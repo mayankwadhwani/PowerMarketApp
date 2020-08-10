@@ -85,11 +85,11 @@
                     </a>
                 </li>
                 <li class="nav-item d-none d-lg-block ml-lg-4">
-                    <a href="https://www.creative-tim.com/product/argon-dashboard-pro" target="_blank" class="btn btn-neutral btn-icon">
+                    <a href="https://www.powermarket.ai" target="_blank" class="btn btn-neutral btn-icon">
                         <span class="btn-inner--icon">
-                            <i class="fas fa-shopping-cart mr-2"></i>
+                            <!-- <i class="fas fa-shopping-cart mr-2"></i> -->
                         </span>
-                        <span class="nav-link-inner--text">Purchase now</span>
+                        <span class="nav-link-inner--text">Back to Site</span>
                     </a>
                 </li>
             </ul>

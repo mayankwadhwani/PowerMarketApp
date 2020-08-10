@@ -1,28 +1,28 @@
 <div class="header bg-gradient-primary py-7 py-lg-8 pt-lg-9">
     <div class="container">
-        <div class="header-body text-center mb-7">
+        <div class="header-body text-center mb-5">
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-md-9">
-                    <h1 class="text-white">{{ __('Welcome to PowerMarket') }}</h1>
+                    <h1 class="text-white">{{ __('Welcome to Solar Mapping') }}</h1>
                     <h2 class="text-white">
-                        {{ __('Locate Ideal Solar Sites // Forecast Generation // Calculate Potential ROI') }}
+                        {{ __('We are in Beta') }}
                     </h2>
 
                     <p class="text-lead text-light mt-3 mb-0">
-                        {{ __('We are in Beta') }}
+                        {{ __('Locate Ideal Solar Sites // Forecast Generation // Calculate Potential ROI') }}
                         @include('alerts.migrations_check')
                     </p>
                 </div>
                 @if (isset($infoLogin))
                 <div class="col-lg-5 col-md-6">
-                        <h3 class="text-lead text-white mt-5 mb-0">
+                        <!-- <h3 class="text-lead text-white mt-5 mb-0">
                             <strong>{{ __('You can log in with 3 user types:') }}</strong>
-                        </h3>
-                        <ol class="text-lead text-light mt-3 mb-0">
+                        </h3> -->
+                        <!-- <ol class="text-lead text-light mt-3 mb-0">
                             <li>{{ __('Username') }} admin@argon.com {{ __('Password') }} secret</li>
                             <li>{{ __('Username') }} creator@argon.com {{ __('Password') }} secret</li>
                             <li>{{ __('Username') }} member@argon.com {{ __('Password') }} secret</li>
-                        </ol>
+                        </ol> -->
                     </div>
                 @endif
             </div>
