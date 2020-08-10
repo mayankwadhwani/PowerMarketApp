@@ -1,4 +1,4 @@
-@extends('layouts.app', ['class' => 'bg-default']) 
+@extends('layouts.app', ['class' => 'bg-default'])
 
 @section('content')
     <div class="header bg-gradient-primary py-7 py-lg-8 pt-lg-9">
@@ -18,7 +18,7 @@
             </svg>
         </div>
     </div>
-    
+
     <!-- Page content -->
     <div class="container mt--8 pb-5">
         <div class="row justify-content-center">
@@ -33,7 +33,7 @@
                     </div>
                     <div class="card-body pt-7 px-5">
                         <div class="text-center mb-4">
-                            <h3>{{ auth()->user()->name ?? 'Jessica Jones' }}</h3>
+                            <h3>{{ auth()->user()->name ?? 'Username' }}</h3>
                         </div>
                         <form role="form">
                             <div class="form-group">
