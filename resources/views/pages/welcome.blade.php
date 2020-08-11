@@ -1,20 +1,20 @@
 @extends('layouts.app', ['class' => 'bg-default'])
 
 @section('content')
-    <div class="header bg-primary py-5 pb-7 pt-lg-9">
+    <div class="header bg-gradient-primary py-5 pb-7 pt-lg-9">
         <div class="container">
             <div class="header-body text-center mb-7">
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-md-9 pt-5">
-                        <h1 class="text-white">{{ __('Mapping') }}</h1>
-                        <h2 class="text-white">
-                            {{ __('We are in Beta') }}
-                        </h2>
+                        <h1 class="text-white">{{ __('PowerMarket Solar Mapping') }}</h1>
+                        <h3 class="text-white">
+                            {{ __('Beta') }}
+                        </h3>
 
-                        <p class="text-lead text-light mt-3 mb-0">
-                            {{ __('Locate Ideal Solar Sites // Forecast Generation // Calculate Potential ROI') }}
+                        <h2 class="text-lead text-light mt-3 mb-0">
+                            {{ __('Locate ideal solar sites, forecast their generation prospects, and calculate your potential ROI') }}
                             @include('alerts.migrations_check')
-                        </p>
+                        </h2>
                     </div>
                 </div>
             </div>

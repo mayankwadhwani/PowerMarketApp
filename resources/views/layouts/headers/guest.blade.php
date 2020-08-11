@@ -3,9 +3,9 @@
         <div class="header-body text-center mb-5">
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-md-9">
-                    <h1 class="text-white">{{ __('Welcome to Solar Mapping') }}</h1>
+                    <h1 class="text-white">{{ __('PowerMarket Solar Mapping') }}</h1>
                     <h2 class="text-white">
-                        {{ __('We are in Beta') }}
+                        {{ __('Beta') }}
                     </h2>
 
                     <p class="text-lead text-light mt-3 mb-0">

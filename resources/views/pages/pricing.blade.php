@@ -1,4 +1,4 @@
-@extends('layouts.app', ['class' => 'bg-default']) 
+@extends('layouts.app', ['class' => 'bg-default'])
 
 @section('content')
     <div class="header bg-gradient-primary py-7 py-lg-8 pt-lg-9">
@@ -6,7 +6,7 @@
             <div class="header-body text-center mb-7">
                 <div class="row justify-content-center">
                     <div class="col-xl-5 col-lg-6 col-md-8 px-5">
-                        <h1 class="text-white">{{ __('Choose the best plan for your business') }}</h1>
+                        <h1 class="text-white">{{ __('Choose your plan') }}</h1>
                     </div>
                 </div>
             </div>
@@ -24,11 +24,11 @@
                 <div class="pricing card-group flex-column flex-md-row mb-3">
                     <div class="card card-pricing border-0 text-center mb-4">
                         <div class="card-header bg-transparent">
-                            <h4 class="text-uppercase ls-1 text-primary py-3 mb-0">Bravo pack</h4>
+                            <h4 class="text-uppercase ls-1 text-primary py-3 mb-0">Consultant</h4>
                         </div>
                         <div class="card-body px-lg-7">
-                            <div class="display-2">$49</div>
-                            <span class="text-muted">per application</span>
+                            <div class="display-2">£500</div>
+                            <span class="text-muted">per seat</span>
                             <ul class="list-unstyled my-4">
                                 <li>
                                     <div class="d-flex align-items-center">
@@ -73,13 +73,13 @@
                             <a href="#!" class="text-light">Request a demo</a>
                         </div>
                     </div>
-                    <div class="card card-pricing bg-gradient-success zoom-in shadow-lg rounded border-0 text-center mb-4">
+                    <div class="card card-pricing bg-gradient-success-card zoom-in shadow-lg rounded border-0 text-center mb-4">
                         <div class="card-header bg-transparent">
-                            <h4 class="text-uppercase ls-1 text-white py-3 mb-0">Alpha pack</h4>
+                            <h4 class="text-uppercase ls-1 text-white py-3 mb-0">Enterprise</h4>
                         </div>
                         <div class="card-body px-lg-7">
-                            <div class="display-1 text-white">$199</div>
-                            <span class="text-white">per application</span>
+                            <div class="display-1 text-white">£10,000</div>
+                            <span class="text-white">per seat</span>
                             <ul class="list-unstyled my-4">
                                 <li>
                                     <div class="d-flex align-items-center">
@@ -118,10 +118,10 @@
                                     </div>
                                 </li>
                             </ul>
-                            <button type="button" class="btn btn-secondary mb-3">Start free trial</button>
+                            <button type="button" class="btn btn-secondary-orange mb-3">Contact Us</button>
                         </div>
                         <div class="card-footer bg-transparent">
-                            <a href="#!" class="text-white">Contact sales</a>
+                            <a href="#!" class="text-white">Request a demo</a>
                         </div>
                     </div>
                 </div>
@@ -130,12 +130,11 @@
         <div class="d-flex justify-content-lg-center px-3 mt-5">
             <div>
                 <div class="icon icon-shape bg-gradient-white shadow rounded-circle text-primary">
-                    <i class="ni ni-building text-primary"></i>
+                    <i class="ni ni-check-bold text-primary"></i>
                 </div>
             </div>
             <div class="col-lg-6">
-                <p class="text-white"><strong>The Arctic Ocean</strong> freezes every winter and much of the sea-ice then thaws every summer, and that
-                    process will continue whatever.</p>
+                <p class="text-white"><strong>GDPR Compliant</strong> - PowerMarket is 100% compliant with the General Data Protection Regulation.</p>
             </div>
         </div>
         <div class="row row-grid justify-content-center">

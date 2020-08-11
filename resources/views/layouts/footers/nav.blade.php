@@ -1,4 +1,4 @@
-<div class="row align-items-center justify-content-lg-between">
+<div class="row align-items-center justify-content-lg-between mt-8">
     <div class="col-xl-6">
         <div class="copyright text-center text-lg-left text-muted">
             &copy; {{ now()->year }} <a href="https://www.powermarket.ai" class="font-weight-bold ml-1" target="_blank">PowerMarketAI</a>
