@@ -6,7 +6,7 @@
             <div class="header-body text-center mb-7">
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-md-9 pt-5">
-                        <h1 class="text-white">{{ __('Welcome to Solar Mapping') }}</h1>
+                        <h1 class="text-white">{{ __('Solar Mapping') }}</h1>
                         <h2 class="text-white">
                             {{ __('We are in Beta') }}
                         </h2>
