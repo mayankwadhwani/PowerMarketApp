@@ -7,14 +7,14 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-md-9 pt-5">
                         <h1 class="text-white">{{ __('PowerMarket Solar Mapping') }}</h1>
-                        <h3 class="text-white">
+                        <!-- <h3 class="text-white">
                             {{ __('Beta') }}
-                        </h3>
+                        </h3> -->
 
-                        <h2 class="text-lead text-light mt-3 mb-0">
-                            {{ __('Locate ideal solar sites, forecast their generation prospects, and calculate your potential ROI') }}
+                        <h3 class="text-lead text-light mt-3 mb-0">
+                            {{ __('Locate solar sites, forecast their generation prospects, and calculate your potential ROI') }}
                             @include('alerts.migrations_check')
-                        </h2>
+                        </h3>
                     </div>
                 </div>
             </div>
@@ -26,5 +26,36 @@
         </div>
     </div>
 
-    <div class="container mt--10 pb-5"></div>
+    <div class="container mt--8 pb-5">
+      <div class="row justify-content-center">
+        <div class="row justify-content-center">
+          <div class="col-lg-3 order-lg-2">
+            <div class="card-profile-image-button">
+              <a href="{{ route('register') }}">
+                <img src="{{ asset('argon') }}/img/theme/team-4.jpg" class="rounded-circle border-secondary">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="container mt--8 pb-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="pricing card-group flex-column flex-md-row mb-3">
+            <div class="card card-pricing border-0 text-center mb-4">
+              <div class="card-header bg-transparent">
+                <h4 class="text-uppercase ls-1 text-primary py-3 mb-0">Consultant</h4>
+              </div>
+              <div class="card-body px-lg-7">
+                <button type="button" class="btn btn-primary mb-3">Start free trial</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="container mt--10 pb-8"></div>
 @endsection

@@ -16151,7 +16151,7 @@ a.btn-icon-only
 {
     position: relative;
 }
-.card-profile-image img
+.card-profile-image- img
 {
     position: absolute;
     left: 50%;
@@ -16164,6 +16164,29 @@ a.btn-icon-only
     border: 3px solid #fff;
     border-radius: .375rem;
 }
+
+.card-profile-image-button img
+{
+    position: absolute;
+    left: 50%;
+
+    margin-top: 100px;
+
+    max-width: 250px;
+
+    transition: all .15s ease;
+    transform: translate(-50%, -50%) scale(1);
+
+    /* border: 3px solid #fff; */
+    border-radius: .375rem;
+
+}
+
+.card-profile-image-button img:hover
+{
+    transform: translate(-50%, -50%) scale(1.03);
+}
+
 .card-profile-image img:hover
 {
     transform: translate(-50%, -50%) scale(1.03);
