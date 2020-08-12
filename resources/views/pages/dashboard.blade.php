@@ -3,17 +3,17 @@
     'elementName' => 'dashboard'
 ])
 
-@section('content') 
-    @component('layouts.headers.auth') 
+@section('content')
+    @component('layouts.headers.auth')
         @component('layouts.headers.breadcrumbs')
-            @slot('title') 
-                {{ __('Default') }} 
+            @slot('title')
+                {{ __('Default') }}
             @endslot
 
             <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Dashboards') }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ __('Default') }}</li>
         @endcomponent
-        @include('layouts.headers.cards') 
+        @include('layouts.headers.cards')
     @endcomponent
 
     <div class="container-fluid mt--6">
