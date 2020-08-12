@@ -1,6 +1,6 @@
 <nav id="navbar-main" class="navbar navbar-horizontal navbar-transparent navbar-main navbar-expand-lg navbar-light">
     <div class="container">
-        <a class="navbar-brand" href="{{ route('home') }}">
+        <a class="navbar-brand" href="{{ route('welcome') }}">
             <img src="{{ asset('argon') }}/img/brand/white.png" />
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,11 +80,17 @@
                     </a>
                 </li> -->
                 <li class="nav-item d-none d-lg-block ml-lg-4">
-                    <a href="https://www.powermarket.ai" target="_blank" class="btn btn-neutral btn-icon">
+                    <a href="{{ route('login') }}" class="mr-4">
+                      <span class="btn-inner--icon">
+                        <!-- <i class="fas fa-shopping-cart mr-2"></i> -->
+                      </span>
+                      <span class="nav-link-inner--text">Log In </span>
+                    </a>
+                    <a href="{{ route('register') }}" class="btn btn-neutral btn-icon">
                         <span class="btn-inner--icon">
                             <!-- <i class="fas fa-shopping-cart mr-2"></i> -->
                         </span>
-                        <span class="nav-link-inner--text">Back to Site</span>
+                        <span class="nav-link-inner--text">Sign Up</span>
                     </a>
                 </li>
             </ul>

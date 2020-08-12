@@ -9,7 +9,7 @@
                     </h2>
 
                     <p class="text-lead text-light mt-3 mb-0">
-                        {{ __('Locate Ideal Solar Sites // Forecast Generation // Calculate Potential ROI') }}
+                        {{ __('') }}
                         @include('alerts.migrations_check')
                     </p>
                 </div>
