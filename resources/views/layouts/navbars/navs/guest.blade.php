@@ -80,16 +80,13 @@
                     </a>
                 </li> -->
                 <li class="nav-item d-none d-lg-block ml-lg-4">
-                    <a href="{{ route('login') }}" class="mr-4">
-                      <span class="btn-inner--icon">
-                        <!-- <i class="fas fa-shopping-cart mr-2"></i> -->
-                      </span>
-                      <span class="nav-link-inner--text">Log In </span>
+                    <a href="{{ route('login') }}" class="mr-4 ml-4">
+                      <!-- <span class="btn-inner--icon">
+                        <i class="fas fa-shopping-cart mr-2"></i>
+                      </span> -->
+                      <span class="nav-link-inner--text" style="font-size: 14px;">Log In </span>
                     </a>
                     <a href="{{ route('register') }}" class="btn btn-neutral btn-icon">
-                        <span class="btn-inner--icon">
-                            <!-- <i class="fas fa-shopping-cart mr-2"></i> -->
-                        </span>
                         <span class="nav-link-inner--text">Sign Up</span>
                     </a>
                 </li>

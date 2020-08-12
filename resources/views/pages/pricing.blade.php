@@ -38,7 +38,7 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <span class="pl-2">Complete documentation</span>
+                                            <span class="pl-2">One Region</span>
                                         </div>
                                     </div>
                                 </li>
@@ -50,7 +50,7 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <span class="pl-2">Working materials in Sketch</span>
+                                            <span class="pl-2">One KPI</span>
                                         </div>
                                     </div>
                                 </li>
@@ -58,11 +58,11 @@
                                     <div class="d-flex align-items-center">
                                         <div>
                                             <div class="icon icon-xs icon-shape bg-gradient-primary shadow rounded-circle text-white">
-                                                <i class="fas fa-hdd"></i>
+                                                <i class="fas fa-pen-fancy"></i>
                                             </div>
                                         </div>
                                         <div>
-                                            <span class="pl-2">2GB cloud storage</span>
+                                            <span class="pl-2">Up to 1 km2</span>
                                         </div>
                                     </div>
                                 </li>
@@ -89,7 +89,7 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <span class="pl-2 text-white">Complete documentation</span>
+                                            <span class="pl-2 text-white">Unlimited Regions</span>
                                         </div>
                                     </div>
                                 </li>
@@ -101,7 +101,7 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <span class="pl-2 text-white">Working materials in Sketch</span>
+                                            <span class="pl-2 text-white">Unlimited KPIs</span>
                                         </div>
                                     </div>
                                 </li>
@@ -113,7 +113,7 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <span class="pl-2 text-white">2GB cloud storage</span>
+                                            <span class="pl-2 text-white">Up to 500 km2</span>
                                         </div>
                                     </div>
                                 </li>
