@@ -47,11 +47,11 @@
                         </a>
                     </li>
                 @endguest
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="{{ route('page.lock') }}" class="nav-link">
                         <span class="nav-link-inner--text">Lock</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('profile.edit') }}">
                         <span class="nav-link-inner--text">{{ __('Profile') }}</span>

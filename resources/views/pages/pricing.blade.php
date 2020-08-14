@@ -34,7 +34,8 @@
                                     <div class="d-flex align-items-center">
                                         <div>
                                             <div class="icon icon-xs icon-shape bg-gradient-primary shadow rounded-circle text-white">
-                                                <i class="fas fa-terminal"></i>
+                                                <!-- <i class="fas fa-terminal"></i> -->
+                                                <i class="ni ni-pin-3"></i>
                                             </div>
                                         </div>
                                         <div>
@@ -46,7 +47,7 @@
                                     <div class="d-flex align-items-center">
                                         <div>
                                             <div class="icon icon-xs icon-shape bg-gradient-primary shadow rounded-circle text-white">
-                                                <i class="fas fa-pen-fancy"></i>
+                                                <i class="ni ni-chart-bar-32"></i>
                                             </div>
                                         </div>
                                         <div>
@@ -58,7 +59,7 @@
                                     <div class="d-flex align-items-center">
                                         <div>
                                             <div class="icon icon-xs icon-shape bg-gradient-primary shadow rounded-circle text-white">
-                                                <i class="fas fa-pen-fancy"></i>
+                                                <i class="ni ni-compass-04"></i>
                                             </div>
                                         </div>
                                         <div>
@@ -70,7 +71,7 @@
                             <button type="button" class="btn btn-primary mb-3">Start free trial</button>
                         </div>
                         <div class="card-footer">
-                            <a href="#!" class="text-light">Request a demo</a>
+                            <a href="mailto: abhinav.jain@powermarket.net" target="_blank" class="text-light">Request a demo</a>
                         </div>
                     </div>
                     <div class="card card-pricing bg-gradient-success-card zoom-in shadow-lg rounded border-0 text-center mb-4">
@@ -85,7 +86,7 @@
                                     <div class="d-flex align-items-center">
                                         <div>
                                             <div class="icon icon-xs icon-shape bg-white shadow rounded-circle text-muted">
-                                                <i class="fas fa-terminal"></i>
+                                                <i class="ni ni-pin-3"></i>
                                             </div>
                                         </div>
                                         <div>
@@ -97,11 +98,11 @@
                                     <div class="d-flex align-items-center">
                                         <div>
                                             <div class="icon icon-xs icon-shape bg-white shadow rounded-circle text-muted">
-                                                <i class="fas fa-pen-fancy"></i>
+                                                <i class="ni ni-chart-bar-32"></i>
                                             </div>
                                         </div>
                                         <div>
-                                            <span class="pl-2 text-white">Unlimited KPIs</span>
+                                            <span class="pl-2 text-white">All KPIs</span>
                                         </div>
                                     </div>
                                 </li>
@@ -109,7 +110,8 @@
                                     <div class="d-flex align-items-center">
                                         <div>
                                             <div class="icon icon-xs icon-shape bg-white shadow rounded-circle text-muted">
-                                                <i class="fas fa-hdd"></i>
+                                                <i class="ni ni-compass-04"></i>
+                                                <!-- <i class="ni ni-map-big"></i> -->
                                             </div>
                                         </div>
                                         <div>
@@ -121,13 +123,13 @@
                             <button type="button" class="btn btn-secondary-orange mb-3">Contact Us</button>
                         </div>
                         <div class="card-footer bg-transparent">
-                            <a href="#!" class="text-white">Request a demo</a>
+                            <a href="mailto: abhinav.jain@powermarket.net" target="_blank" class="text-white">Request a demo</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-lg-center px-3 mt-5">
+        <div class="d-flex justify-content-lg-center px-3 mt-8 mb-6">
             <div>
                 <div class="icon icon-shape bg-gradient-white shadow rounded-circle text-primary">
                     <i class="ni ni-check-bold text-primary"></i>
@@ -146,64 +148,48 @@
                                 <th class="px-0 bg-transparent" scope="col">
                                     <span class="text-light font-weight-700">Features</span>
                                 </th>
-                                <th class="text-center bg-transparent" scope="col">Bravo Pack</th>
-                                <th class="text-center bg-transparent" scope="col">Alpha Pack</th>
+                                <th class="text-center bg-transparent" scope="col">Consultant</th>
+                                <th class="text-center bg-transparent" scope="col">Enterprise</th>
                             </tr>
                         </thead>
                         <tbody>
+                          <tr>
+                              <td class="px-0">Mapping Dashboard</td>
+                              <td class="text-center"><i class="fas fa-check text-success"></i>
+                              </td>
+                              <td class="text-center"><i class="fas fa-check text-success"></i>
+                              </td>
+                          </tr>
                             <tr>
-                                <td class="px-0">IMAP/POP Support</td>
-                                <td class="text-center"><i class="fas fa-check text-success"></i>
-                                </td>
-                                <td class="text-center"><i class="fas fa-check text-success"></i>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-0">Email Forwarding</td>
-                                <td class="text-center"><i class="fas fa-check text-success"></i>
-                                </td>
-                                <td class="text-center"><i class="fas fa-check text-success"></i>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-0">Active Sync</td>
-                                <td class="text-center"><i class="fas fa-check text-success"></i>
-                                </td>
-                                <td class="text-center"><i class="fas fa-check text-success"></i>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-0">Multiple domain hosting</td>
-                                <td class="text-center"><i class="fas fa-check text-success"></i>
-                                </td>
+                                <td class="px-0">Map Any Region</td>
                                 <td class="text-center">
-                                    <span class="text-sm text-light">Limited to 1 domain only</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-0">Additional storage upgrade</td>
-                                <td class="text-center"><i class="fas fa-check text-success"></i>
+                                <span class="text-sm text-light">1 Region</span>
                                 </td>
                                 <td class="text-center"><i class="fas fa-check text-success"></i>
                                 </td>
                             </tr>
+
                             <tr>
-                                <td class="px-0">30MB Attachment Limit</td>
+                                <td class="px-0">Access to all KPIs</td>
+                                <td class="text-center">
+                                    <span class="text-sm text-light">1 KPI</span>
+                                </td>
                                 <td class="text-center"><i class="fas fa-check text-success"></i>
                                 </td>
+                            </tr>
+
+                            <tr>
+                                <td class="px-0">Unlimited Seats</td>
                                 <td class="text-center">-</td>
-                            </tr>
-                            <tr>
-                                <td class="px-0">Password protected / Expiry links</td>
                                 <td class="text-center"><i class="fas fa-check text-success"></i>
                                 </td>
-                                <td class="text-center">-</td>
                             </tr>
+
                             <tr>
-                                <td class="px-0">Unlimited Custom Apps</td>
+                                <td class="px-0">Export Reports</td>
+                                <td class="text-center">-</td>
                                 <td class="text-center"><i class="fas fa-check text-success"></i>
                                 </td>
-                                <td class="text-center">-</td>
                             </tr>
                         </tbody>
                     </table>
