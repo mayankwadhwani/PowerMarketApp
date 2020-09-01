@@ -48,8 +48,7 @@ class User extends Authenticatable
         if ($this->picture) {
             return "/storage/{$this->picture}";
         }
-
-        return 'http://i.pravatar.cc/200';
+        return e(asset('argon'))."/img/theme/team-4.jpg";
     }
 
     /**
