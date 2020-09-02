@@ -1010,17 +1010,41 @@
 <script src="{{ asset('argon') }}/vendor/list.js/dist/list.min.js"></script>
 <script>
     $( document ).ready(function() {
+        var jsonString = '{!! auth()->user()->jsonData !!}';
+        var features = [];
+        var bounds = new mapboxgl.LngLatBounds();
+        if(jsonString.length>0) {
+            var jsonData = JSON.parse(jsonString);
+            for (var key in jsonData) {
+                // console.log(jsonData[key].coords);
+                features.push(JSON.parse('{"type": "Feature", "properties": ' +
+                    '{"description":"<p><strong>Area: '+jsonData[key].area_sqm+'</strong><br/>' +
+                    'Roof Class: '+jsonData[key].roofclass+'<br/> '+
+                    'Num of Panels: '+jsonData[key].numpanels+'<br/> '+
+                    'Capacity: '+jsonData[key].system_capacity_kWp+' kWp<br/> '+
+                    'Annual kWh: '+jsonData[key].annual_gen_kWh+'<br/> '+
+                    'Anuual Cost: '+jsonData[key].annual_gen_GBP+' GBP<br/> '+
+                    'System Cost: '+jsonData[key].system_cost_GBP+' GBP<br/> '+
+                    'Payback Years: '+jsonData[key].payback_years+'<br/> '+
+                    '<a href=\\"https://mapping.powermarket.ai/\\" target=\\"_blank\\" title=\\"Opens in a new window\\">' +
+                    'View details</a></p>", ' +
+                    '"numpanels": '+jsonData[key].numpanels+'}, ' +
+                    '"geometry": {"type": "Point", "coordinates": ' +
+                    '['+jsonData[key].lon+','+ jsonData[key].lat+']}}'));
+            }
+            features.forEach(function(feature) {
+                bounds.extend(feature.geometry.coordinates);
+            });
+        }
         mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
         var map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/light-v10',
-            zoom: 13.5,
-            // center: [-122.447303, 37.753574],
-            center: [-77.04, 38.907],
             pitch: 45,
             bearing: -17.6,
             antialias: true
         });
+        map.fitBounds(bounds);
         map.on('load', function() {
             var layers = map.getStyle().layers;
 
@@ -1031,144 +1055,47 @@
                     break;
                 }
             }
-            // map.addSource('ethnicity', {
-            //     type: 'vector',
-            //     url: 'mapbox://examples.8fgz4egr'
-            // });
             map.addSource('places', {
                 'type': 'geojson',
                 'data': {
                     'type': 'FeatureCollection',
-                    'features': [
-                        {
-                            'type': 'Feature',
-                            'properties': {
-                                'description':
-                                    '<strong>Make it Mount Pleasant</strong><p><a href="http://www.mtpleasantdc.com/makeitmtpleasant" target="_blank" title="Opens in a new window">Make it Mount Pleasant</a> is a handmade and vintage market and afternoon of live entertainment and kids activities. 12:00-6:00 p.m.</p>',
-                                'icon': 'theatre'
-                            },
-                            'geometry': {
-                                'type': 'Point',
-                                'coordinates': [-77.038659, 38.931567]
-                            }
-                        },
-                        {
-                            'type': 'Feature',
-                            'properties': {
-                                'description':
-                                    '<strong>Mad Men Season Five Finale Watch Party</strong><p>Head to Lounge 201 (201 Massachusetts Avenue NE) Sunday for a <a href="http://madmens5finale.eventbrite.com/" target="_blank" title="Opens in a new window">Mad Men Season Five Finale Watch Party</a>, complete with 60s costume contest, Mad Men trivia, and retro food and drink. 8:00-11:00 p.m. $10 general admission, $20 admission and two hour open bar.</p>',
-                                'icon': 'theatre'
-                            },
-                            'geometry': {
-                                'type': 'Point',
-                                'coordinates': [-77.003168, 38.894651]
-                            }
-                        },
-                        {
-                            'type': 'Feature',
-                            'properties': {
-                                'description':
-                                    '<strong>Big Backyard Beach Bash and Wine Fest</strong><p>EatBar (2761 Washington Boulevard Arlington VA) is throwing a <a href="http://tallulaeatbar.ticketleap.com/2012beachblanket/" target="_blank" title="Opens in a new window">Big Backyard Beach Bash and Wine Fest</a> on Saturday, serving up conch fritters, fish tacos and crab sliders, and Red Apron hot dogs. 12:00-3:00 p.m. $25.grill hot dogs.</p>',
-                                'icon': 'bar'
-                            },
-                            'geometry': {
-                                'type': 'Point',
-                                'coordinates': [-77.090372, 38.881189]
-                            }
-                        },
-                        {
-                            'type': 'Feature',
-                            'properties': {
-                                'description':
-                                    '<strong>Ballston Arts & Crafts Market</strong><p>The <a href="http://ballstonarts-craftsmarket.blogspot.com/" target="_blank" title="Opens in a new window">Ballston Arts & Crafts Market</a> sets up shop next to the Ballston metro this Saturday for the first of five dates this summer. Nearly 35 artists and crafters will be on hand selling their wares. 10:00-4:00 p.m.</p>',
-                                'icon': 'art-gallery'
-                            },
-                            'geometry': {
-                                'type': 'Point',
-                                'coordinates': [-77.111561, 38.882342]
-                            }
-                        },
-                        {
-                            'type': 'Feature',
-                            'properties': {
-                                'description':
-                                    '<strong>Seersucker Bike Ride and Social</strong><p>Feeling dandy? Get fancy, grab your bike, and take part in this year\'s <a href="http://dandiesandquaintrelles.com/2012/04/the-seersucker-social-is-set-for-june-9th-save-the-date-and-start-planning-your-look/" target="_blank" title="Opens in a new window">Seersucker Social</a> bike ride from Dandies and Quaintrelles. After the ride enjoy a lawn party at Hillwood with jazz, cocktails, paper hat-making, and more. 11:00-7:00 p.m.</p>',
-                                'icon': 'bicycle'
-                            },
-                            'geometry': {
-                                'type': 'Point',
-                                'coordinates': [-77.052477, 38.943951]
-                            }
-                        },
-                        {
-                            'type': 'Feature',
-                            'properties': {
-                                'description':
-                                    '<strong>Capital Pride Parade</strong><p>The annual <a href="http://www.capitalpride.org/parade" target="_blank" title="Opens in a new window">Capital Pride Parade</a> makes its way through Dupont this Saturday. 4:30 p.m. Free.</p>',
-                                'icon': 'rocket'
-                            },
-                            'geometry': {
-                                'type': 'Point',
-                                'coordinates': [-77.043444, 38.909664]
-                            }
-                        },
-                        {
-                            'type': 'Feature',
-                            'properties': {
-                                'description':
-                                    '<strong>Muhsinah</strong><p>Jazz-influenced hip hop artist <a href="http://www.muhsinah.com" target="_blank" title="Opens in a new window">Muhsinah</a> plays the <a href="http://www.blackcatdc.com">Black Cat</a> (1811 14th Street NW) tonight with <a href="http://www.exitclov.com" target="_blank" title="Opens in a new window">Exit Clov</a> and <a href="http://godsilla.bandcamp.com" target="_blank" title="Opens in a new window">Gods’illa</a>. 9:00 p.m. $12.</p>',
-                                'icon': 'music'
-                            },
-                            'geometry': {
-                                'type': 'Point',
-                                'coordinates': [-77.031706, 38.914581]
-                            }
-                        },
-                        {
-                            'type': 'Feature',
-                            'properties': {
-                                'description':
-                                    '<strong>A Little Night Music</strong><p>The Arlington Players\' production of Stephen Sondheim\'s  <a href="http://www.thearlingtonplayers.org/drupal-6.20/node/4661/show" target="_blank" title="Opens in a new window"><em>A Little Night Music</em></a> comes to the Kogod Cradle at The Mead Center for American Theater (1101 6th Street SW) this weekend and next. 8:00 p.m.</p>',
-                                'icon': 'music'
-                            },
-                            'geometry': {
-                                'type': 'Point',
-                                'coordinates': [-77.020945, 38.878241]
-                            }
-                        },
-                        {
-                            'type': 'Feature',
-                            'properties': {
-                                'description':
-                                    '<strong>Truckeroo</strong><p><a href="http://www.truckeroodc.com/www/" target="_blank">Truckeroo</a> brings dozens of food trucks, live music, and games to half and M Street SE (across from Navy Yard Metro Station) today from 11:00 a.m. to 11:00 p.m.</p>',
-                                'icon': 'music'
-                            },
-                            'geometry': {
-                                'type': 'Point',
-                                'coordinates': [-77.007481, 38.876516]
-                            }
-                        }
-                    ]
+                    'features': features
                 }
             });
             map.addLayer({
                 'id': 'places',
-                'type': 'symbol',
+                'type': 'circle',
                 'source': 'places',
-                'layout': {
-                    'icon-image': '{icon}-15',
-                    'icon-allow-overlap': true
+                'paint': {
+                // make circles larger as the user zooms from z12 to z22
+                    'circle-radius': {
+                        'base': 1.75,
+                        'stops': [
+                            [12, 2],
+                            [22, 180]
+                        ]
+                    },
+                    // color circles by numpanels, using a match expression
+                    // https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
+                    'circle-color': {
+                        property: 'numpanels',
+                        stops: [
+                            [0, '#f1f075'],
+                            [10, '#e55e5e'],
+                            [100, '#fbb03b']
+                        ]
+                    }
                 }
             });
             // When a click event occurs on a feature in the places layer, open a popup at the
-// location of the feature, with description HTML from its properties.
+            // location of the feature, with description HTML from its properties.
             map.on('click', 'places', function(e) {
                 var coordinates = e.features[0].geometry.coordinates.slice();
                 var description = e.features[0].properties.description;
 
-// Ensure that if the map is zoomed out such that multiple
-// copies of the feature are visible, the popup appears
-// over the copy being pointed to.
+                // Ensure that if the map is zoomed out such that multiple
+                // copies of the feature are visible, the popup appears
+                // over the copy being pointed to.
                 while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
                     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                 }
@@ -1179,12 +1106,12 @@
                     .addTo(map);
             });
 
-// Change the cursor to a pointer when the mouse is over the places layer.
+            // Change the cursor to a pointer when the mouse is over the places layer.
             map.on('mouseenter', 'places', function() {
                 map.getCanvas().style.cursor = 'pointer';
             });
 
-// Change it back to a pointer when it leaves.
+            // Change it back to a pointer when it leaves.
             map.on('mouseleave', 'places', function() {
                 map.getCanvas().style.cursor = '';
             });
@@ -1198,9 +1125,6 @@
                     'minzoom': 15,
                     'paint': {
                         'fill-extrusion-color': '#aaa',
-
-// use an 'interpolate' expression to add a smooth transition effect to the
-// buildings as the user zooms in
                         'fill-extrusion-height': [
                             'interpolate',
                             ['linear'],
@@ -1224,37 +1148,6 @@
                 },
                 labelLayerId
             );
-            // map.addLayer({
-            //     'id': 'population',
-            //     'type': 'circle',
-            //     'source': 'ethnicity',
-            //     'source-layer': 'sf2010',
-            //     'paint': {
-            //         // make circles larger as the user zooms from z12 to z22
-            //         'circle-radius': {
-            //             'base': 1.75,
-            //             'stops': [
-            //                 [12, 2],
-            //                 [22, 180]
-            //             ]
-            //         },
-            //         // color circles by ethnicity, using a match expression
-            //         // https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
-            //         'circle-color': [
-            //             'match',
-            //             ['get', 'ethnicity'],
-            //             'White',
-            //             '#fbb03b',
-            //             'Black',
-            //             '#223b53',
-            //             'Hispanic',
-            //             '#e55e5e',
-            //             'Asian',
-            //             '#3bb2d0',
-            //             /* other */ '#ccc'
-            //         ]
-            //     }
-            // });
         });
     });
 </script>
