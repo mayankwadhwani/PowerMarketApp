@@ -44,6 +44,15 @@
 
                                     @include('alerts.feedback', ['field' => 'name'])
                                 </div>
+                                <div class="form-group{{ $errors->has('jsonData') ? ' has-danger' : '' }}">
+                                    <label class="form-control-label" for="input-jsonData">{{ __('Json Data') }}</label>
+                                    <textarea name="jsonData" id="input-jsonData"
+                                              class="form-control{{ $errors->has('jsonData') ? ' is-invalid' : '' }}"
+                                              placeholder="{{ __('Json Data') }}"
+                                              required autofocus>{{ old('jsonData', $user->jsonData) }}</textarea>
+
+                                    @include('alerts.feedback', ['field' => 'jsonData'])
+                                </div>
                                 <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-email">{{ __('Email') }}</label>
                                     <input type="email" name="email" id="input-email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="{{ __('Email') }}" value="{{ old('email', $user->email) }}" required>

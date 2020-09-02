@@ -36,7 +36,7 @@
                             </ul>
                         </div>
                     </li>
-{{--                    <li class="nav-item active">--}}
+                    <li class="nav-item active">
 {{--                        <a class="nav-link active" href="#navbar-examples" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-examples">--}}
 {{--                            <i class="fab fa-laravel" style="color: #f4645f;"></i>--}}
 {{--                            <span class="nav-link-text" style="color: #f4645f;">{{ __('Laravel Examples') }}</span>--}}
@@ -51,11 +51,11 @@
 {{--                                        <a href="{{ route('role.index') }}" class="nav-link">{{ __('Role Management') }}</a>--}}
 {{--                                    </li>--}}
 {{--                                @endcan--}}
-{{--                                @can('manage-users', App\User::class)--}}
-{{--                                    <li class="nav-item {{ $elementName == 'user-management' ? 'active' : '' }}">--}}
-{{--                                        <a href="{{ route('user.index') }}" class="nav-link">{{ __('User Management') }}</a>--}}
-{{--                                    </li>--}}
-{{--                                @endcan--}}
+                                @can('manage-users', App\User::class)
+                                    <li class="nav-item {{ $elementName == 'user-management' ? 'active' : '' }}">
+                                        <a href="{{ route('user.index') }}" class="nav-link">{{ __('User Management') }}</a>
+                                    </li>
+                                @endcan
 {{--                                @can('manage-items', App\User::class)--}}
 {{--                                    <li class="nav-item {{ $elementName == 'category-management' ? 'active' : '' }}">--}}
 {{--                                        <a href="{{ route('category.index') }}" class="nav-link">{{ __('Category Management') }}</a>--}}
@@ -77,7 +77,7 @@
 {{--                                @endcan--}}
 {{--                            </ul>--}}
 {{--                        </div>--}}
-{{--                    </li>--}}
+                    </li>
 {{--                    <li class="nav-item {{ $parentSection == 'pages' ? 'active' : '' }}">--}}
 {{--                        <a class="nav-link" href="#navbar-pages" data-toggle="collapse" role="button" aria-expanded="{{ $parentSection == 'pages' ? 'true' : '' }}" aria-controls="navbar-pages">--}}
 {{--                            <i class="ni ni-collection text-yellow"></i>--}}
