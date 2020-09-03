@@ -78,6 +78,23 @@
                                     </span>
                                 @endif
                             </div>
+                            <div class="form-group{{ $errors->has('user_category') ? ' has-danger' : '' }}">
+                                <div class="input-group input-group-alternative">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-badge"></i></span>
+                                    </div>
+                                    <select class="form-control{{ $errors->has('user_category') ? ' is-invalid' : '' }}" id="user_category" name="user_category">
+                                        <option value="" selected hidden>{{ __('User Category') }}</option>
+                                        <option value="Organisation" @if (old('user_category') == 'Organisation') selected @endif>{{ __('Organisation') }}</option>
+                                        <option value="Consultant" @if (old('user_category') == 'Consultant') selected @endif>{{ __('Consultant') }}</option>
+                                    </select>
+                                </div>
+                                @if ($errors->has('user_category'))
+                                    <span class="invalid-feedback" style="display: block;" role="alert">
+                                        <strong>{{ $errors->first('user_category') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                             <div class="form-group{{ $errors->has('password') ? ' has-danger' : '' }}">
                                 <div class="input-group input-group-alternative">
                                     <div class="input-group-prepend">
