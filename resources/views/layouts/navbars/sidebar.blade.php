@@ -51,11 +51,6 @@
 {{--                                        <a href="{{ route('role.index') }}" class="nav-link">{{ __('Role Management') }}</a>--}}
 {{--                                    </li>--}}
 {{--                                @endcan--}}
-                                @can('manage-users', App\User::class)
-                                    <li class="nav-item {{ $elementName == 'user-management' ? 'active' : '' }}">
-                                        <a href="{{ route('user.index') }}" class="nav-link">{{ __('User Management') }}</a>
-                                    </li>
-                                @endcan
 {{--                                @can('manage-items', App\User::class)--}}
 {{--                                    <li class="nav-item {{ $elementName == 'category-management' ? 'active' : '' }}">--}}
 {{--                                        <a href="{{ route('category.index') }}" class="nav-link">{{ __('Category Management') }}</a>--}}
@@ -91,13 +86,17 @@
 {{--                            </ul>--}}
 {{--                        </div>--}}
 {{--                    </li>--}}
-{{--                    <li class="nav-item {{ $parentSection == 'components' ? 'active' : '' }}">--}}
-{{--                        <a class="nav-link" href="#navbar-components" data-toggle="collapse" role="button" aria-expanded="{{ $parentSection == 'components' ? 'true' : '' }}" aria-controls="navbar-components">--}}
-{{--                            <i class="ni ni-ui-04 text-info"></i>--}}
-{{--                            <span class="nav-link-text">{{ __('Components') }}</span>--}}
-{{--                        </a>--}}
-{{--                        <div class="collapse {{ $parentSection == 'components' ? 'show' : '' }}" id="navbar-components">--}}
-{{--                            <ul class="nav nav-sm flex-column">--}}
+                    @can('manage-users', App\User::class)
+                    <li class="nav-item {{ $parentSection == 'components' ? 'active' : '' }}">
+                        <a class="nav-link" href="#navbar-components" data-toggle="collapse" role="button" aria-expanded="{{ $parentSection == 'components' ? 'true' : '' }}" aria-controls="navbar-components">
+                            <i class="ni ni-ui-04 text-info"></i>
+                            <span class="nav-link-text">{{ __('Control Panel') }}</span>
+                        </a>
+                        <div class="collapse {{ $parentSection == 'components' ? 'show' : '' }}" id="navbar-components">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item {{ $elementName == 'user-management' ? 'active' : '' }}">
+                                    <a href="{{ route('user.index') }}" class="nav-link">{{ __('User Management') }}</a>
+                                </li>
 {{--                                <li class="nav-item {{ $elementName == 'buttons' ? 'active' : '' }}">--}}
 {{--                                    <a href="{{ route('page.index','buttons') }}" class="nav-link">{{ __('Buttons') }}</a>--}}
 {{--                                </li>--}}
@@ -132,9 +131,10 @@
 {{--                                        </ul>--}}
 {{--                                    </div>--}}
 {{--                                </li>--}}
-{{--                            </ul>--}}
-{{--                        </div>--}}
-{{--                    </li>--}}
+                            </ul>
+                        </div>
+                    </li>
+                    @endcan
 {{--                    <li class="nav-item {{ $parentSection == 'forms' ? 'active' : '' }}">--}}
 {{--                        <a class="nav-link" href="#navbar-forms" data-toggle="collapse" role="button" aria-expanded="{{ $parentSection == 'forms' ? 'true' : '' }}" aria-controls="navbar-forms">--}}
 {{--                            <i class="ni ni-single-copy-04 text-pink"></i>--}}
