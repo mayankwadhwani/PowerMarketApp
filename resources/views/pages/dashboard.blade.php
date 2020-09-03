@@ -155,6 +155,8 @@
                         <table class="table table-flush" id="datatable-basic">
                             <thead class="thead-light">
                             <tr>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
                                 <th>Roof Class</th>
                                 <th>Area Sq.Mts</th>
                                 <th>Panels</th>
@@ -167,6 +169,8 @@
                             </thead>
                             <tfoot>
                             <tr>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
                                 <th>Roof Class</th>
                                 <th>Area Sq.Mts</th>
                                 <th>Panels</th>
@@ -179,6 +183,8 @@
                             </tfoot>
                             <tbody>
                             <tr>
+                                <td>Latitude</td>
+                                <td>Longitude</td>
                                 <td>Roof Class</td>
                                 <td>Area Sq.Mts</td>
                                 <td>Panels</td>
@@ -241,6 +247,8 @@
                     '"geometry": {"type": "Point", "coordinates": ' +
                     '['+jsonData[key].lon+','+ jsonData[key].lat+']}}'));
                 $('#datatable-basic').dataTable().fnAddData( [
+                    jsonData[key].lat,
+                    jsonData[key].lon,
                     jsonData[key].roofclass,
                     jsonData[key].area_sqm,
                     jsonData[key].numpanels,
