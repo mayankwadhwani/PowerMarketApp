@@ -25,11 +25,13 @@
             </div>
             <!-- Navbar items -->
             <ul class="navbar-nav mr-auto">
+                @auth()
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('home') }}">
                         <span class="nav-link-inner--text">{{ __('Dashboard') }}</span>
                     </a>
                 </li>
+                @endauth
                 <li class="nav-item">
                     <a href="{{ route('page.pricing') }}" class="nav-link">
                         <span class="nav-link-inner--text">Pricing</span>
@@ -52,11 +54,13 @@
                         <span class="nav-link-inner--text">Lock</span>
                     </a>
                 </li> -->
+                @auth()
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('profile.edit') }}">
                         <span class="nav-link-inner--text">{{ __('Profile') }}</span>
                     </a>
                 </li>
+                @endauth
             </ul>
             <hr class="d-lg-none" />
             <ul class="navbar-nav align-items-lg-center ml-lg-auto">
@@ -79,7 +83,9 @@
                         <span class="nav-link-inner--text d-lg-none">Github</span>
                     </a>
                 </li> -->
+
                 <li class="nav-item d-none d-lg-block ml-lg-4">
+                    @guest
                     <a href="{{ route('login') }}" class="mr-4 ml-4">
                       <!-- <span class="btn-inner--icon">
                         <i class="fas fa-shopping-cart mr-2"></i>
@@ -89,6 +95,16 @@
                     <a href="{{ route('register') }}" class="btn btn-neutral btn-icon">
                         <span class="nav-link-inner--text">Sign Up</span>
                     </a>
+                    @endguest
+                    @auth()
+                        <form id="logout-form-guest" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                        <a href="{{ route('logout') }}" class="btn btn-neutral btn-icon" onclick="event.preventDefault();
+                                document.getElementById('logout-form-guest').submit();">
+                            <span class="nav-link-inner--text">{{ __('Logout') }}</span>
+                        </a>
+                    @endauth
                 </li>
             </ul>
         </div>
