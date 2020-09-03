@@ -233,16 +233,25 @@
             $("#datatable-basic").DataTable().clear();
             for (var key in jsonData) {
                 features.push(JSON.parse('{"type": "Feature", "properties": ' +
-                    '{"description":"<p><strong>Area: '+jsonData[key].area_sqm+'</strong><br/>' +
-                    'Roof Class: '+jsonData[key].roofclass+'<br/> '+
-                    'Num of Panels: '+jsonData[key].numpanels+'<br/> '+
-                    'Capacity: '+jsonData[key].system_capacity_kWp+' kWp<br/> '+
-                    'Annual kWh: '+jsonData[key].annual_gen_kWh+'<br/> '+
-                    'Anuual Cost: '+jsonData[key].annual_gen_GBP+' GBP<br/> '+
-                    'System Cost: '+jsonData[key].system_cost_GBP+' GBP<br/> '+
-                    'Payback Years: '+jsonData[key].payback_years+'<br/> '+
-                    '<a href=\\"https://mapping.powermarket.ai/\\" target=\\"_blank\\" title=\\"Opens in a new window\\">' +
-                    'View details</a></p>", ' +
+                    '{"description":"' +
+                    '<div class=\\"card\\" style=\\"margin-bottom:5px;margin-top:5px;margin-right:5px;margin-left:5px;\\">' +
+                    '   <div class=\\"card-header\\">' +
+                    '       <h5 class=\\"h3 mb-0 \\">Area: '+jsonData[key].area_sqm+'</h5>' +
+                    '   </div>' +
+                    '   <div class=\\"card-body\\">' +
+                    '       <p class=\\"card-text mb-4 \\">' +
+                    '       Roof Class: '+jsonData[key].roofclass+'<br/> '+
+                    '       Num of Panels: '+jsonData[key].numpanels+'<br/> '+
+                    '       Capacity: '+jsonData[key].system_capacity_kWp+' kWp<br/> '+
+                    '       Annual kWh: '+jsonData[key].annual_gen_kWh+'<br/> '+
+                    '       Annual Cost: '+jsonData[key].annual_gen_GBP+' GBP<br/> '+
+                    '       System Cost: '+jsonData[key].system_cost_GBP+' GBP<br/> '+
+                    '       Payback Years: '+jsonData[key].payback_years+'<br/> '+
+                    '       </p>' +
+                    '       <a href=\\"https://mapping.powermarket.ai\\" class=\\"btn btn-primary \\" ' +
+                    '       target=\\"_blank\\" title=\\"Opens in a new window\\">View Details</a>' +
+                    '   </div>' +
+                    '</div>", ' +
                     '"numpanels": '+jsonData[key].numpanels+'}, ' +
                     '"geometry": {"type": "Point", "coordinates": ' +
                     '['+jsonData[key].lon+','+ jsonData[key].lat+']}}'));
@@ -330,6 +339,7 @@
                 new mapboxgl.Popup()
                     .setLngLat(coordinates)
                     .setHTML(description)
+                    .setMaxWidth("500px")
                     .addTo(map);
             });
 
