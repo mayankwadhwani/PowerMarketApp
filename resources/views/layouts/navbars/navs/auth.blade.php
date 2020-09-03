@@ -44,7 +44,7 @@
                         </div>
                         <!-- List group -->
                         <div class="list-group list-group-flush">
-                            <a href="#!" class="list-group-item list-group-item-action">
+                            <a href="{{ route('page.pricing') }}" class="list-group-item list-group-item-action">
                                 <div class="row align-items-center">
                                     <div class="col-auto">
                                     <!-- Avatar -->
@@ -60,6 +60,7 @@
                                             </div>
                                         </div>
                                         <p class="text-sm mb-0">You are on trial. Upgrade Now.</p>
+{{--                                        <p class="text-sm mb-0">You are on trial.<a href="{{ route('page.pricing') }}">Upgrade Now.</a></p>--}}
                                     </div>
                                 </div>
                             </a>
