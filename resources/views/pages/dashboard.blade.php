@@ -158,15 +158,15 @@
                                 <th>Id</th>
                                 <th>Latitude</th>
                                 <th>Longitude</th>
-                                <th>Roof Class</th>
-                                <th>Area Sq.Mts</th>
-                                <th>Panels</th>
-                                <th>Capacity</th>
-                                <th>Annual Gen</th>
-                                <th>Annual GBP</th>
-                                <th>System Cost</th>
-                                <th>Breakeven Years</th>
-                                <th>Lifetime ROI</th>
+                                <th>System Capacity (kWp)</th>
+                                <th>Annual Generation (kWh)</th>
+                                <th>Annual Generation (£)</th>
+                                <th>Lifetime Generation (£) </th>
+                                <th>System Cost (£)</th>
+                                <th>Breakeven Time</th>
+                                <th>Annual CO2 Savings (kg)</th>
+                                <th>Lifetime CO2 Savings (kg) </th>
+                                <th>ROI (%)</th>
                             </tr>
                             </thead>
                             <tfoot>
@@ -174,15 +174,15 @@
                                 <th>Id</th>
                                 <th>Latitude</th>
                                 <th>Longitude</th>
-                                <th>Roof Class</th>
-                                <th>Area Sq.Mts</th>
-                                <th>Panels</th>
-                                <th>Capacity</th>
-                                <th>Annual Gen</th>
-                                <th>Annual GBP</th>
-                                <th>System Cost</th>
-                                <th>Breakeven Years</th>
-                                <th>Lifetime ROI</th>
+                                <th>System Capacity (kWp)</th>
+                                <th>Annual Generation (kWh)</th>
+                                <th>Annual Generation (£)</th>
+                                <th>Lifetime Generation (£) </th>
+                                <th>System Cost (£)</th>
+                                <th>Breakeven Time</th>
+                                <th>Annual CO2 Savings (kg)</th>
+                                <th>Lifetime CO2 Savings (kg) </th>
+                                <th>ROI (%)</th>
                             </tr>
                             </tfoot>
                             <tbody>
@@ -190,15 +190,15 @@
                                 <td>Id</td>
                                 <td>Latitude</td>
                                 <td>Longitude</td>
-                                <td>Roof Class</td>
-                                <td>Area Sq.Mts</td>
-                                <td>Panels</td>
-                                <td>Capacity</td>
-                                <td>Annual Gen</td>
-                                <td>Annual GBP</td>
-                                <td>System Cost</td>
-                                <td>Breakeven Years</td>
-                                <td>Lifetime ROI</td>
+                                <td>System Capacity (kWp)</td>
+                                <td>Annual Generation (kWh)</td>
+                                <td>Annual Generation (£)</td>
+                                <td>Lifetime Generation (£) </td>
+                                <td>System Cost (£)</td>
+                                <td>Breakeven Time</td>
+                                <td>Annual CO2 Savings (kg)</td>
+                                <td>Lifetime CO2 Savings (kg) </td>
+                                <td>ROI (%)</td>
                             </tr>
 
                             </tbody>
@@ -230,21 +230,20 @@
 <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
 <script src="{{ asset('argon') }}/vendor/list.js/dist/list.min.js"></script>
 <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/light-v10',
+        pitch: 45,
+        bearing: -17.6,
+        antialias: true
+    });
     function renderMap(){
-        mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
-        var map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/light-v10',
-            pitch: 45,
-            bearing: -17.6,
-            antialias: true
-        });
         var jsonString = '{!! auth()->user()->jsonData !!}';
         var features = [];
         var bounds = new mapboxgl.LngLatBounds();
         if(jsonString.length>0) {
             var jsonData = JSON.parse(jsonString);
-            $("#datatable-basic").DataTable().clear();
             var dataArray = jsonData['regions'];
             // for (var key in jsonData) {
             for (key=0; key<dataArray.length; key++) {
@@ -272,7 +271,11 @@
                     '       target=\\"_blank\\" title=\\"Opens in a new window\\">View Details</a>' +
                     '   </div>' +
                     '</div>", ' +
-                    '"breakeven_years": '+dataArray[key].breakeven_years+'}, ' +
+                    '"years": '+dataArray[key].breakeven_years+', ' +
+                    '"id": "'+dataArray[key].id+'", ' +
+                    '"area": '+dataArray[key].area_sqm+', ' +
+                    '"panels": '+dataArray[key].numpanels+', ' +
+                    '"roi": '+dataArray[key].lifetime_return_on_investment_percent+'}, ' +
                     '"geometry": {"type": "Point", "coordinates": ' +
                     '['+dataArray[key].centre_lon+','+ dataArray[key].centre_lat+']}}'
                 features.push(JSON.parse(featureString));
@@ -280,15 +283,15 @@
                     dataArray[key].id,
                     dataArray[key].centre_lat,
                     dataArray[key].centre_lon,
-                    dataArray[key].roofclass,
-                    dataArray[key].area_sqm,
-                    dataArray[key].numpanels,
                     dataArray[key].system_capacity_kWp,
                     dataArray[key].annual_gen_kWh,
                     dataArray[key].annual_gen_GBP,
+                    dataArray[key].annual_gen_GBP,
                     dataArray[key].system_cost_GBP,
                     dataArray[key].breakeven_years,
-                    dataArray[key].lifetime_return_on_investment_percent,
+                    dataArray[key].annual_co2_saved_kg,
+                    dataArray[key].lifetime_co2_saved_kg,
+                    dataArray[key].lifetime_return_on_investment_percent
                 ]);
             }
             features.forEach(function(feature) {
@@ -329,7 +332,7 @@
                     // color circles by breakeven_years, using a match expression
                     // https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
                     'circle-color': {
-                        property: 'breakeven_years',
+                        property: 'years',
                         stops: [
                             [7, '#63c54f'],
                             [8, '#e0b542'],
@@ -407,7 +410,25 @@
         });
     }
     $( document ).ready(function() {
+        var table = $('#datatable-basic').DataTable();
+        table.clear();
+        table.select.info( false);
+        table.select.style('single');
         renderMap();
+
+        table.on( 'select', function ( e, dt, type, indexes ) {
+            if ( type === 'row' ) {
+                var data = table.rows( indexes ).data()[0][0];
+                map.setFilter('places', ['==', 'id', data]);
+            }
+        } );
+        table.on( 'deselect', function ( e, dt, type, indexes ) {
+            if ( type === 'row' ) {
+                var data = table.rows( indexes ).data()[0][0];
+                map.setFilter('places', null);
+            }
+        } );
+
     });
 </script>
 @endpush
