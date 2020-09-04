@@ -155,6 +155,7 @@
                         <table class="table table-flush" id="datatable-basic">
                             <thead class="thead-light">
                             <tr>
+                                <th>Id</th>
                                 <th>Latitude</th>
                                 <th>Longitude</th>
                                 <th>Roof Class</th>
@@ -164,11 +165,13 @@
                                 <th>Annual Gen</th>
                                 <th>Annual GBP</th>
                                 <th>System Cost</th>
-                                <th>Payback Years</th>
+                                <th>Breakeven Years</th>
+                                <th>Lifetime ROI</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
+                                <th>Id</th>
                                 <th>Latitude</th>
                                 <th>Longitude</th>
                                 <th>Roof Class</th>
@@ -178,11 +181,13 @@
                                 <th>Annual Gen</th>
                                 <th>Annual GBP</th>
                                 <th>System Cost</th>
-                                <th>Payback Years</th>
+                                <th>Breakeven Years</th>
+                                <th>Lifetime ROI</th>
                             </tr>
                             </tfoot>
                             <tbody>
                             <tr>
+                                <td>Id</td>
                                 <td>Latitude</td>
                                 <td>Longitude</td>
                                 <td>Roof Class</td>
@@ -192,7 +197,8 @@
                                 <td>Annual Gen</td>
                                 <td>Annual GBP</td>
                                 <td>System Cost</td>
-                                <td>Payback Years</td>
+                                <td>Breakeven Years</td>
+                                <td>Lifetime ROI</td>
                             </tr>
 
                             </tbody>
@@ -224,54 +230,7 @@
 <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
 <script src="{{ asset('argon') }}/vendor/list.js/dist/list.min.js"></script>
 <script>
-    $( document ).ready(function() {
-        var jsonString = '{!! auth()->user()->jsonData !!}';
-        var features = [];
-        var bounds = new mapboxgl.LngLatBounds();
-        if(jsonString.length>0) {
-            var jsonData = JSON.parse(jsonString);
-            $("#datatable-basic").DataTable().clear();
-            for (var key in jsonData) {
-                features.push(JSON.parse('{"type": "Feature", "properties": ' +
-                    '{"description":"' +
-                    '<div class=\\"card\\" style=\\"margin-bottom:5px;margin-top:5px;margin-right:5px;margin-left:5px;\\">' +
-                    '   <div class=\\"card-header\\">' +
-                    '       <h5 class=\\"h3 mb-0 \\">Area: '+jsonData[key].area_sqm+'</h5>' +
-                    '   </div>' +
-                    '   <div class=\\"card-body\\">' +
-                    '       <p class=\\"card-text mb-4 \\">' +
-                    '       Roof Class: '+jsonData[key].roofclass+'<br/> '+
-                    '       Num of Panels: '+jsonData[key].numpanels+'<br/> '+
-                    '       Capacity: '+jsonData[key].system_capacity_kWp+' kWp<br/> '+
-                    '       Annual kWh: '+jsonData[key].annual_gen_kWh+'<br/> '+
-                    '       Annual Cost: '+jsonData[key].annual_gen_GBP+' GBP<br/> '+
-                    '       System Cost: '+jsonData[key].system_cost_GBP+' GBP<br/> '+
-                    '       Payback Years: '+jsonData[key].payback_years+'<br/> '+
-                    '       </p>' +
-                    '       <a href=\\"https://mapping.powermarket.ai\\" class=\\"btn btn-primary \\" ' +
-                    '       target=\\"_blank\\" title=\\"Opens in a new window\\">View Details</a>' +
-                    '   </div>' +
-                    '</div>", ' +
-                    '"numpanels": '+jsonData[key].numpanels+'}, ' +
-                    '"geometry": {"type": "Point", "coordinates": ' +
-                    '['+jsonData[key].lon+','+ jsonData[key].lat+']}}'));
-                $('#datatable-basic').dataTable().fnAddData( [
-                    jsonData[key].lat,
-                    jsonData[key].lon,
-                    jsonData[key].roofclass,
-                    jsonData[key].area_sqm,
-                    jsonData[key].numpanels,
-                    jsonData[key].system_capacity_kWp,
-                    jsonData[key].annual_gen_kWh,
-                    jsonData[key].annual_gen_GBP,
-                    jsonData[key].system_cost_GBP,
-                    jsonData[key].payback_years,
-                ]);
-            }
-            features.forEach(function(feature) {
-                bounds.extend(feature.geometry.coordinates);
-            });
-        }
+    function renderMap(){
         mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
         var map = new mapboxgl.Map({
             container: 'map',
@@ -280,6 +239,62 @@
             bearing: -17.6,
             antialias: true
         });
+        var jsonString = '{!! auth()->user()->jsonData !!}';
+        var features = [];
+        var bounds = new mapboxgl.LngLatBounds();
+        if(jsonString.length>0) {
+            var jsonData = JSON.parse(jsonString);
+            $("#datatable-basic").DataTable().clear();
+            var dataArray = jsonData['regions'];
+            // for (var key in jsonData) {
+            for (key=0; key<dataArray.length; key++) {
+                var featureString = '{"type": "Feature", "properties": ' +
+                    '{"description":"' +
+                    '<div class=\\"card\\" style=\\"margin-bottom:5px;margin-top:5px;margin-right:5px;margin-left:5px;\\">' +
+                    '   <div class=\\"card-header\\">' +
+                    '       <h5 class=\\"h3 mb-0 \\">Area: '+dataArray[key].area_sqm+'</h5>' +
+                    '   </div>' +
+                    '   <div class=\\"card-body\\">' +
+                    '       <p class=\\"card-text mb-4 \\">' +
+                    '       Id: '+dataArray[key].id+'<br/> '+
+                    '       Roof Class: '+dataArray[key].roofclass+'<br/> '+
+                    '       Num of Panels: '+dataArray[key].numpanels+'<br/> '+
+                    '       Capacity: '+dataArray[key].system_capacity_kWp+' kWp<br/> '+
+                    '       Annual kWh: '+dataArray[key].annual_gen_kWh+'<br/> '+
+                    '       Annual Cost: '+dataArray[key].annual_gen_GBP+' GBP<br/> '+
+                    '       System Cost: '+dataArray[key].system_cost_GBP+' GBP<br/> '+
+                    '       Breakeven Years: '+dataArray[key].breakeven_years+'<br/> '+
+                    '       Annual CO2 Saved: '+dataArray[key].annual_co2_saved_kg+'<br/> '+
+                    '       Lifetime CO2 Saved: '+dataArray[key].lifetime_co2_saved_kg+'<br/> '+
+                    '       Lifetime ROI: '+dataArray[key].lifetime_return_on_investment_percent+'<br/> '+
+                    '       </p>' +
+                    '       <a href=\\"https://mapping.powermarket.ai\\" class=\\"btn btn-primary \\" ' +
+                    '       target=\\"_blank\\" title=\\"Opens in a new window\\">View Details</a>' +
+                    '   </div>' +
+                    '</div>", ' +
+                    '"breakeven_years": '+dataArray[key].breakeven_years+'}, ' +
+                    '"geometry": {"type": "Point", "coordinates": ' +
+                    '['+dataArray[key].centre_lon+','+ dataArray[key].centre_lat+']}}'
+                features.push(JSON.parse(featureString));
+                $('#datatable-basic').dataTable().fnAddData( [
+                    dataArray[key].id,
+                    dataArray[key].centre_lat,
+                    dataArray[key].centre_lon,
+                    dataArray[key].roofclass,
+                    dataArray[key].area_sqm,
+                    dataArray[key].numpanels,
+                    dataArray[key].system_capacity_kWp,
+                    dataArray[key].annual_gen_kWh,
+                    dataArray[key].annual_gen_GBP,
+                    dataArray[key].system_cost_GBP,
+                    dataArray[key].breakeven_years,
+                    dataArray[key].lifetime_return_on_investment_percent,
+                ]);
+            }
+            features.forEach(function(feature) {
+                bounds.extend(feature.geometry.coordinates);
+            });
+        }
         map.fitBounds(bounds);
         map.on('load', function() {
             var layers = map.getStyle().layers;
@@ -303,7 +318,7 @@
                 'type': 'circle',
                 'source': 'places',
                 'paint': {
-                // make circles larger as the user zooms from z12 to z22
+                    // make circles larger as the user zooms from z12 to z22
                     'circle-radius': {
                         'base': 1.75,
                         'stops': [
@@ -311,14 +326,18 @@
                             [22, 180]
                         ]
                     },
-                    // color circles by numpanels, using a match expression
+                    // color circles by breakeven_years, using a match expression
                     // https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
                     'circle-color': {
-                        property: 'numpanels',
+                        property: 'breakeven_years',
                         stops: [
-                            [0, '#f1f075'],
-                            [10, '#e55e5e'],
-                            [100, '#fbb03b']
+                            [7, '#63c54f'],
+                            [8, '#e0b542'],
+                            [9, '#e0b542'],
+                            [10, '#cf7f3e'],
+                            [11, '#cf7f3e'],
+                            [12, '#bd403a'],
+                            [100, '#bd403a'],
                         ]
                     }
                 }
@@ -386,6 +405,9 @@
                 labelLayerId
             );
         });
+    }
+    $( document ).ready(function() {
+        renderMap();
     });
 </script>
 @endpush
