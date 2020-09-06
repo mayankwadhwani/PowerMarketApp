@@ -256,6 +256,7 @@
 <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
 <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
 <script src="{{ asset('argon') }}/vendor/list.js/dist/list.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
     var map = new mapboxgl.Map({
@@ -352,9 +353,9 @@
             features.forEach(function(feature) {
                 bounds.extend(feature.geometry.coordinates);
             });
-            $('#potential-card').text(potential+" kWp");
-            $('#savings-card').text(savings+" £");
-            $('#co2-card').text(co2+" kgs");
+            $('#potential-card').text(numeral(potential).format('0,0.0a')+" kWp");
+            $('#savings-card').text(numeral(savings).format('(0.00a)')+' £');
+            $('#co2-card').text(numeral(co2).format('0,0.0a')+" kgs");
         }
         map.on('load', function() {
             map.addSource('places', {
