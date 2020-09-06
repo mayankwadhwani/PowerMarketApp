@@ -8,33 +8,33 @@
 @section('content')
     @include('forms.header', [
         'title' => __('Hello') . ' '. auth()->user()->name,
-        'description' => __('This is your profile page. You can see the progress you\'ve made with your work and manage your projects or assigned tasks'),
+        'description' => __('This is your profile page. You can see the progress you\'ve made with your work and manage your projects'),
         'class' => 'col-lg-7'
     ])
 
     <div class="container-fluid mt--6">
         <div class="row">
-            <div class="col-xl-4 order-xl-2">
-                <div class="card card-profile">
-                    <img src="{{ asset('argon') }}/img/theme/img-1-1000x600.jpg" alt="Image placeholder" class="card-img-top">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-3 order-lg-2">
-                            <div class="card-profile-image">
-                                <a href="#">
-                                    <img src="{{ auth()->user()->profilePicture() }}" class="rounded-circle" style="max-width: 100px; border-radius: 25px">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+{{--            <div class="col-xl-4 order-xl-2">--}}
+{{--                <div class="card card-profile">--}}
+{{--                    <img src="{{ asset('argon') }}/img/theme/img-1-1000x600.jpg" alt="Image placeholder" class="card-img-top">--}}
+{{--                    <div class="row justify-content-center">--}}
+{{--                        <div class="col-lg-3 order-lg-2">--}}
+{{--                            <div class="card-profile-image">--}}
+{{--                                <a href="#">--}}
+{{--                                    <img src="{{ auth()->user()->profilePicture() }}" class="rounded-circle" style="max-width: 100px; border-radius: 25px">--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 {{--                    <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">--}}
 {{--                        <div class="d-flex justify-content-between">--}}
 {{--                            <a href="#" class="btn btn-sm btn-info mr-4">Connect</a>--}}
 {{--                            <a href="#" class="btn btn-sm btn-default float-right">Message</a>--}}
 {{--                        </div>--}}
 {{--                    </div>--}}
-                    <div class="card-body pt-0">
-                        <div class="row">
-                            <div class="col">
+{{--                    <div class="card-body pt-0">--}}
+{{--                        <div class="row">--}}
+{{--                            <div class="col">--}}
 {{--                                <div class="card-profile-stats d-flex justify-content-center">--}}
 {{--                                    <div>--}}
 {{--                                        <span class="heading">22</span>--}}
@@ -49,10 +49,10 @@
 {{--                                        <span class="description">Comments</span>--}}
 {{--                                    </div>--}}
 {{--                                </div>--}}
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <h5 class="h3">{{ auth()->user()->name }}</h5>
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="text-center">--}}
+{{--                            <h5 class="h3">{{ auth()->user()->name }}</h5>--}}
 {{--                            <div class="h5 font-weight-300">--}}
 {{--                                <i class="ni location_pin mr-2"></i>Bucharest, Romania--}}
 {{--                            </div>--}}
@@ -62,10 +62,10 @@
 {{--                            <div>--}}
 {{--                                <i class="ni education_hat mr-2"></i>University of Computer Science--}}
 {{--                            </div>--}}
-                        </div>
-                    </div>
-                </div>
-                <!-- Progress track -->
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <!-- Progress track -->--}}
 {{--                <div class="card">--}}
 {{--                    <!-- Card header -->--}}
 {{--                    <div class="card-header">--}}
@@ -159,8 +159,8 @@
 {{--                        </ul>--}}
 {{--                    </div>--}}
 {{--                </div>--}}
-            </div>
-            <div class="col-xl-8 order-xl-1">
+{{--            </div>--}}
+            <div class="col-xl-12 order-xl-1">
 {{--                <div class="row">--}}
 {{--                    <div class="col-lg-6">--}}
 {{--                        <div class="card bg-gradient-info border-0">--}}
