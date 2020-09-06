@@ -190,6 +190,7 @@
                                 <th>Break-even Time</th>
                                 <th>Annual CO<sub>2</sub> Savings (kg)</th>
                                 <th>Lifetime CO<sub>2</sub> Savings (kg) </th>
+                                <th>Lifetime CO<sub>2</sub> Emissions (kg) </th>
                                 <th>ROI (%)</th>
                             </tr>
                             </thead>
@@ -206,6 +207,7 @@
                                 <th>Break-even Time</th>
                                 <th>Annual CO<sub>2</sub> Savings (kg)</th>
                                 <th>Lifetime CO<sub>2</sub> Savings (kg) </th>
+                                <th>Lifetime CO<sub>2</sub> Emissions (kg) </th>
                                 <th>ROI (%)</th>
                             </tr>
                             </tfoot>
@@ -222,6 +224,7 @@
                                 <td>Break-even Time</td>
                                 <td>Annual CO<sub>2</sub> Savings (kg)</td>
                                 <td>Lifetime CO<sub></sub>2 Savings (kg) </td>
+                                <td>Lifetime CO<sub></sub>2 Emissions (kg) </td>
                                 <td>ROI (%)</td>
                             </tr>
 
@@ -307,10 +310,12 @@
                     '       <strong>Capacity:</strong> '+dataArray[key].system_capacity_kWp+' kWp<br/> '+
                     '       <strong>Annual Gen:</strong> '+dataArray[key].annual_gen_kWh+' kWh<br/> '+
                     '       <strong>Annual Gen:</strong> '+dataArray[key].annual_gen_GBP+' £<br/> '+
+                    '       <strong>Lifetime Gen:</strong> '+dataArray[key].lifetime_gen_GBP+' £<br/> '+
                     '       <strong>System Cost:</strong> '+dataArray[key].system_cost_GBP+' £<br/> '+
                     // '       Break-even Years: '+dataArray[key].breakeven_years+'<br/> '+
                     '       <strong>Annual CO<sub>2</sub> saving:</strong> '+dataArray[key].annual_co2_saved_kg+' kgs<br/> '+
                     '       <strong>Lifetime CO<sub>2</sub> saving:</strong> '+dataArray[key].lifetime_co2_saved_kg+' kgs<br/> '+
+                    '       <strong>Lifetime CO<sub>2</sub> emissions:</strong> '+dataArray[key].lifecycle_co2_emissions_kg+' kgs<br/> '+
                     '       <strong>Lifetime RoI:</strong> '+dataArray[key].lifetime_return_on_investment_percent+'%<br/> '+
                     '       </p>' +
                     '       <a href=\\"https://mapping.powermarket.ai\\" class=\\"btn btn-primary \\" ' +
@@ -332,15 +337,16 @@
                     dataArray[key].system_capacity_kWp,
                     dataArray[key].annual_gen_kWh,
                     dataArray[key].annual_gen_GBP,
-                    dataArray[key].annual_gen_GBP,
+                    dataArray[key].lifetime_gen_GBP,
                     dataArray[key].system_cost_GBP,
                     dataArray[key].breakeven_years,
                     dataArray[key].annual_co2_saved_kg,
                     dataArray[key].lifetime_co2_saved_kg,
+                    dataArray[key].lifecycle_co2_emissions_kg,
                     dataArray[key].lifetime_return_on_investment_percent
                 ]);
                 potential = potential+dataArray[key].system_capacity_kWp;
-                savings = savings+dataArray[key].annual_gen_GBP;
+                savings = savings+dataArray[key].lifetime_gen_GBP;
                 co2 = co2+dataArray[key].lifetime_co2_saved_kg;
             }
             features.forEach(function(feature) {
