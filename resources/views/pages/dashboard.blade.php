@@ -144,7 +144,7 @@
             <div class="col text-right" style="margin-bottom: 10px;">
                 <span class="text-nowrap" style="font-size: .75rem">You are browsing by &nbsp;</span>
                 <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Break Even Time
+                    Break-even Time
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="{{ route('page.pricing') }}">Upgrade to enable more filters</a>
@@ -160,7 +160,7 @@
                     <div id='map' class="map-canvas" style='height: 600px;'></div>
                     <nav id="filter-group" class="filter-group">
                         <span style="background-color: #4ea0da;margin-bottom: 0px;display: block;border-bottom: 1px solid rgba(0, 0, 0, 0.25);padding: 10px;">
-                            Breakeven Years</span>
+                            Break-even</span>
                     </nav>
                 </div>
             </div>
@@ -187,7 +187,7 @@
                                 <th>Annual Generation (£)</th>
                                 <th>Lifetime Generation (£) </th>
                                 <th>System Cost (£)</th>
-                                <th>Breakeven Time</th>
+                                <th>Break-even Time</th>
                                 <th>Annual CO<sub>2</sub> Savings (kg)</th>
                                 <th>Lifetime CO<sub>2</sub> Savings (kg) </th>
                                 <th>ROI (%)</th>
@@ -203,7 +203,7 @@
                                 <th>Annual Generation (£)</th>
                                 <th>Lifetime Generation (£) </th>
                                 <th>System Cost (£)</th>
-                                <th>Breakeven Time</th>
+                                <th>Break-even Time</th>
                                 <th>Annual CO<sub>2</sub> Savings (kg)</th>
                                 <th>Lifetime CO<sub>2</sub> Savings (kg) </th>
                                 <th>ROI (%)</th>
@@ -219,7 +219,7 @@
                                 <td>Annual Generation (£)</td>
                                 <td>Lifetime Generation (£) </td>
                                 <td>System Cost (£)</td>
-                                <td>Breakeven Time</td>
+                                <td>Break-even Time</td>
                                 <td>Annual CO<sub>2</sub> Savings (kg)</td>
                                 <td>Lifetime CO<sub></sub>2 Savings (kg) </td>
                                 <td>ROI (%)</td>
@@ -297,7 +297,7 @@
                     '<div class=\\"card\\" style=\\"margin-bottom:5px;margin-top:5px;margin-right:5px;margin-left:5px;\\">' +
                     '   <div class=\\"card-header\\" style=\\"padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem; padding-right:1rem;\\">' +
                     // '       <h5 class=\\"h3 mb-0 \\">Area: '+dataArray[key].area_sqm+'</h5>' +
-                    '       <h5 class=\\"h3 mb-0 \\">Break Even: '+dataArray[key].breakeven_years+' years</h5>' +
+                    '       <h5 class=\\"h3 mb-0 \\">Break-even: '+dataArray[key].breakeven_years+' years</h5>' +
                     '   </div>' +
                     '   <div class=\\"card-body\\" style=\\"padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;\\">' +
                     '       <p class=\\"card-text\\">' +
@@ -308,7 +308,7 @@
                     '       <strong>Annual Gen:</strong> '+dataArray[key].annual_gen_kWh+' kWh<br/> '+
                     '       <strong>Annual Gen:</strong> '+dataArray[key].annual_gen_GBP+' £<br/> '+
                     '       <strong>System Cost:</strong> '+dataArray[key].system_cost_GBP+' £<br/> '+
-                    // '       Breakeven Years: '+dataArray[key].breakeven_years+'<br/> '+
+                    // '       Break-even Years: '+dataArray[key].breakeven_years+'<br/> '+
                     '       <strong>Annual CO<sub>2</sub> saving:</strong> '+dataArray[key].annual_co2_saved_kg+' kgs<br/> '+
                     '       <strong>Lifetime CO<sub>2</sub> saving:</strong> '+dataArray[key].lifetime_co2_saved_kg+' kgs<br/> '+
                     '       <strong>Lifetime RoI:</strong> '+dataArray[key].lifetime_return_on_investment_percent+'%<br/> '+
@@ -397,7 +397,7 @@
                     var label = document.createElement('label');
                     label.setAttribute('for', layerID);
                     label.setAttribute('style', 'margin-bottom:0px;background-color:'+yearColorMap.get(symbol));
-                    label.textContent = symbol;
+                    label.textContent = symbol + ' Years';
                     filterGroup.appendChild(label);
 
                     // When the checkbox changes, update the visibility of the layer.
