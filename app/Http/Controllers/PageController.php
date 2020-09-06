@@ -20,6 +20,16 @@ class PageController extends Controller
     }
 
     /**
+     * Display the reporting page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function reporting()
+    {
+        return view('pages.reporting');
+    }
+
+    /**
      * Display the pricing page
      *
      * @return \Illuminate\View\View

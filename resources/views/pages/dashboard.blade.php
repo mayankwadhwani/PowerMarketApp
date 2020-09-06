@@ -313,8 +313,10 @@
                     '       <strong>Lifetime CO<sub>2</sub> emissions:</strong> '+dataArray[key].lifecycle_co2_emissions_kg+' kgs<br/> '+
                     '       <strong>Lifetime RoI:</strong> '+dataArray[key].lifetime_return_on_investment_percent+'%<br/> '+
                     '       </p>' +
-                    '       <a href=\\"https://mapping.powermarket.ai\\" class=\\"btn btn-primary \\" ' +
-                    '       target=\\"_blank\\" title=\\"Opens in a new window\\">View Details</a>' +
+                    '       <a href=\\"{{ route('page.reporting') }}\\" class=\\"btn btn-primary \\" ' +
+                    '       target=\\"_blank\\" title=\\"Upgrade to view detailed building information\\">Generate Report</a>' +
+                    '       <button type=\\"button\\" class=\\"btn btn-primary disabled \\" data-toggle=\\"tooltip\\" data-placement=\\"top\\" ' +
+                    '       title=\\"Upgrade to view detailed building information\\">Building Info</button>' +
                     '   </div>' +
                     '</div>", ' +
                     '"years": '+dataArray[key].breakeven_years+', ' +

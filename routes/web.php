@@ -19,6 +19,7 @@ Auth::routes();
 
 Route::get('dashboard', 'HomeController@index')->name('home');
 Route::get('pricing', 'PageController@pricing')->name('page.pricing');
+Route::get('reporting', 'PageController@reporting')->name('page.reporting');
 Route::get('lock', 'PageController@lock')->name('page.lock');
 
 Route::group(['middleware' => 'auth'], function () {
@@ -31,7 +32,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
-	
+
 	Route::get('{page}', ['as' => 'page.index', 'uses' => 'PageController@index']);
 });
 
