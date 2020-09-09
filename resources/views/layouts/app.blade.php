@@ -26,7 +26,7 @@
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
-            @if (!in_array(request()->route()->getName(), ['welcome', 'page.pricing','page.reporting', 'page.lock']))
+            @if (!in_array(request()->route()->getName(), ['welcome', 'page.pricing','page.reporting', 'page.privacy', 'page.lock']))
                 @include('layouts.navbars.sidebar')
             @endif
         @endauth
@@ -36,7 +36,7 @@
             @yield('content')
         </div>
 
-        @if(!auth()->check() || in_array(request()->route()->getName(), ['welcome', 'page.pricing','page.reporting', 'page.lock']))
+        @if(!auth()->check() || in_array(request()->route()->getName(), ['welcome', 'page.pricing','page.reporting', 'page.privacy', 'page.lock']))
             @include('layouts.footers.guest')
         @endif
 

@@ -30,6 +30,16 @@ class PageController extends Controller
     }
 
     /**
+     * Display the privacy page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function privacy()
+    {
+        return view('pages.privacy');
+    }
+
+    /**
      * Display the pricing page
      *
      * @return \Illuminate\View\View

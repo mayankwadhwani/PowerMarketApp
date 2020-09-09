@@ -255,7 +255,7 @@
     mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
     var map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/light-v10',
+        style: 'mapbox://styles/mapbox/satellite-v9',
         pitch: 45,
         bearing: -17.6,
         antialias: true
@@ -469,7 +469,15 @@
             //     }
             // });
 
+            var layers = map.getStyle().layers;
 
+            var labelLayerId;
+            for (var i = 0; i < layers.length; i++) {
+                if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+                    labelLayerId = layers[i].id;
+                    break;
+                }
+            }
             map.addLayer(
                 {
                     'id': '3d-buildings',
@@ -503,15 +511,7 @@
                 },
                 labelLayerId
             );
-            var layers = map.getStyle().layers;
 
-            var labelLayerId;
-            for (var i = 0; i < layers.length; i++) {
-                if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
-                    labelLayerId = layers[i].id;
-                    break;
-                }
-            }
             map.fitBounds(bounds);
         });
     }

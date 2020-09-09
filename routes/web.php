@@ -19,6 +19,7 @@ Auth::routes();
 
 Route::get('dashboard', 'HomeController@index')->name('home');
 Route::get('pricing', 'PageController@pricing')->name('page.pricing');
+Route::get('privacy', 'PageController@privacy')->name('page.privacy');
 Route::get('reporting', 'PageController@reporting')->name('page.reporting');
 Route::get('lock', 'PageController@lock')->name('page.lock');
 
