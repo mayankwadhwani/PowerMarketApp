@@ -302,16 +302,16 @@
                     // '       Id: '+dataArray[key].id+'<br/> '+
                     // '       Roof Class: '+dataArray[key].roofclass+'<br/> '+
                     // '       Num of Panels: '+dataArray[key].numpanels+'<br/> '+
-                    '       <strong>Capacity:</strong> '+dataArray[key].system_capacity_kWp+' kWp<br/> '+
-                    '       <strong>Annual Gen:</strong> '+dataArray[key].annual_gen_kWh+' kWh<br/> '+
-                    '       <strong>Annual Gen:</strong> '+dataArray[key].annual_gen_GBP+' £<br/> '+
-                    '       <strong>Lifetime Gen:</strong> '+dataArray[key].lifetime_gen_GBP+' £<br/> '+
-                    '       <strong>System Cost:</strong> '+dataArray[key].system_cost_GBP+' £<br/> '+
+                    '       <strong>Capacity:</strong> '+numeral(dataArray[key].system_capacity_kWp).format('0,0.0a')+' kWp<br/> '+
+                    '       <strong>Annual Gen:</strong> '+numeral(dataArray[key].annual_gen_kWh).format('0,0.0a')+' kWh<br/> '+
+                    '       <strong>Annual Savings:</strong> £ '+numeral(dataArray[key].annual_gen_GBP).format('0,0.0a')+'<br/> '+
+                    '       <strong>Lifetime Savings:</strong> £ '+numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')+'<br/> '+
+                    '       <strong>System Cost:</strong> £ '+numeral(dataArray[key].system_cost_GBP).format('0,0.0a')+'<br/> '+
                     // '       Break-even Years: '+dataArray[key].breakeven_years+'<br/> '+
-                    '       <strong>Annual CO<sub>2</sub> saving:</strong> '+dataArray[key].annual_co2_saved_kg+' kgs<br/> '+
-                    '       <strong>Lifetime CO<sub>2</sub> saving:</strong> '+dataArray[key].lifetime_co2_saved_kg+' kgs<br/> '+
-                    '       <strong>Lifetime CO<sub>2</sub> emissions:</strong> '+dataArray[key].lifecycle_co2_emissions_kg+' kgs<br/> '+
-                    '       <strong>Lifetime RoI:</strong> '+dataArray[key].lifetime_return_on_investment_percent+'%<br/> '+
+                    '       <strong>Annual CO<sub>2</sub> saving:</strong> '+numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a')+' kgs<br/> '+
+                    '       <strong>Lifetime CO<sub>2</sub> saving:</strong> '+numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a')+' kgs<br/> '+
+                    // '       <strong>Lifetime CO<sub>2</sub> emissions:</strong> '+numeral(dataArray[key].lifecycle_co2_emissions_kg).format('0,0.0a')+' kgs<br/> '+
+                    '       <strong>Lifetime RoI:</strong> '+numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a')+'%<br/> '+
                     '       </p>' +
                     '       <a href=\\"{{ route('page.reporting') }}\\" class=\\"btn btn-primary \\" ' +
                     '       target=\\"_blank\\" title=\\"Upgrade to view detailed building information\\">Generate Report</a>' +
@@ -331,16 +331,16 @@
                     dataArray[key].id,
                     dataArray[key].centre_lat,
                     dataArray[key].centre_lon,
-                    dataArray[key].system_capacity_kWp,
-                    dataArray[key].annual_gen_kWh,
-                    dataArray[key].annual_gen_GBP,
-                    dataArray[key].lifetime_gen_GBP,
-                    dataArray[key].system_cost_GBP,
-                    dataArray[key].breakeven_years,
-                    dataArray[key].annual_co2_saved_kg,
-                    dataArray[key].lifetime_co2_saved_kg,
-                    dataArray[key].lifecycle_co2_emissions_kg,
-                    dataArray[key].lifetime_return_on_investment_percent
+                    numeral(dataArray[key].system_capacity_kWp).format('0,0.0a'),
+                    numeral(dataArray[key].annual_gen_kWh).format('0,0.0a'),
+                    numeral(dataArray[key].annual_gen_GBP).format('0,0.0a'),
+                    numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a'),
+                    numeral(dataArray[key].system_cost_GBP).format('0,0.0a'),
+                    numeral(dataArray[key].breakeven_years).format('0,0.0a'),
+                    numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a'),
+                    numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a'),
+                    numeral(dataArray[key].lifecycle_co2_emissions_kg).format('0,0.0a'),
+                    numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a')
                 ]);
                 potential = potential+dataArray[key].system_capacity_kWp;
                 savings = savings+dataArray[key].lifetime_gen_GBP;
@@ -350,7 +350,7 @@
                 bounds.extend(feature.geometry.coordinates);
             });
             $('#potential-card').text(numeral(potential).format('0,0.0a')+" kWp");
-            $('#savings-card').text(numeral(savings).format('(0.00a)')+' £');
+            $('#savings-card').text('£ ' + numeral(savings).format('(0.00a)'));
             $('#co2-card').text(numeral(co2).format('0,0.0a')+" kgs");
         }
         map.on('load', function() {
