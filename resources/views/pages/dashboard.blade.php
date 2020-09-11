@@ -336,7 +336,7 @@
                     numeral(dataArray[key].annual_gen_GBP).format('0,0.0a'),
                     numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a'),
                     numeral(dataArray[key].system_cost_GBP).format('0,0.0a'),
-                    numeral(dataArray[key].breakeven_years).format('0,0.0a'),
+                    dataArray[key].breakeven_years,
                     numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a'),
                     numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a'),
                     numeral(dataArray[key].lifecycle_co2_emissions_kg).format('0,0.0a'),
@@ -477,6 +477,9 @@
                     labelLayerId = layers[i].id;
                     break;
                 }
+            }
+            if (! map.getSource('composite')) {
+                map.addSource('composite', { type: 'vector', url: 'mapbox://mapbox.mapbox-streets-v7'});
             }
             map.addLayer(
                 {
