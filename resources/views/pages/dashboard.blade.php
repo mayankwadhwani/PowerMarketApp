@@ -302,13 +302,13 @@
                     // '       Id: '+dataArray[key].id+'<br/> '+
                     // '       Roof Class: '+dataArray[key].roofclass+'<br/> '+
                     // '       Num of Panels: '+dataArray[key].numpanels+'<br/> '+
-                    '       <strong>Capacity:</strong> '+numeral(dataArray[key].system_capacity_kWp).format('0,0.0a')+' kWp<br/> '+
-                    '       <strong>Annual Gen:</strong> '+numeral(dataArray[key].annual_gen_kWh).format('0,0.0a')+' kWh<br/> '+
-                    '       <strong>Annual Savings:</strong> £ '+numeral(dataArray[key].annual_gen_GBP).format('0,0.0a')+'<br/> '+
-                    '       <strong>Lifetime Savings:</strong> £ '+numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')+'<br/> '+
+                    '       <strong>System Size:</strong> '+numeral(dataArray[key].system_capacity_kWp).format('0,0.0a')+' kWp<br/> '+
+                    // '       <strong>Annual Gen:</strong> '+numeral(dataArray[key].annual_gen_kWh).format('0,0.0a')+' kWh<br/> '+
+                    // '       <strong>Annual Savings:</strong> £ '+numeral(dataArray[key].annual_gen_GBP).format('0,0.0a')+'<br/> '+
                     '       <strong>System Cost:</strong> £ '+numeral(dataArray[key].system_cost_GBP).format('0,0.0a')+'<br/> '+
+                    '       <strong>Lifetime Savings:</strong> £ '+numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')+'<br/> '+
                     // '       Break-even Years: '+dataArray[key].breakeven_years+'<br/> '+
-                    '       <strong>Annual CO<sub>2</sub> saving:</strong> '+numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a')+' kgs<br/> '+
+                    // '       <strong>Annual CO<sub>2</sub> saving:</strong> '+numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a')+' kgs<br/> '+
                     '       <strong>Lifetime CO<sub>2</sub> saving:</strong> '+numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a')+' kgs<br/> '+
                     // '       <strong>Lifetime CO<sub>2</sub> emissions:</strong> '+numeral(dataArray[key].lifecycle_co2_emissions_kg).format('0,0.0a')+' kgs<br/> '+
                     '       <strong>Lifetime RoI:</strong> '+numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a')+'%<br/> '+
@@ -619,5 +619,15 @@
         content: '✔';
         margin-right: 5px;
     }
+
+    .mapboxgl-popup-close-button {
+        font-size: 20px;
+    }
+
+    .mapboxgl-popup-content {
+        background-color: #ffffff;
+    }
+
+
 </style>
 @endpush
