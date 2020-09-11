@@ -621,7 +621,7 @@
     }
 
     .mapboxgl-popup-close-button {
-        font-size: 20px;
+        font-size: 22px;
     }
 
     .mapboxgl-popup-content {
