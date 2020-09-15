@@ -274,7 +274,7 @@
         [14, '#bd403a']];
     var yearColorMap = new Map(yearColors);
     function renderMap(){
-        var jsonString = '{!! auth()->user()->jsonData !!}';
+        var jsonString = '{!! auth()->user()->jsonData() !!}';
         var features = [];
         var bounds = new mapboxgl.LngLatBounds();
         var filterGroup = document.getElementById('filter-group');
