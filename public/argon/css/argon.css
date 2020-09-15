@@ -8051,7 +8051,13 @@ button.close
 
 .bg-primary
 {
-    background-color: #5e72e4 !important;
+    /* background-color: #2c2c2c !important; */
+
+    background-color: hsla(220, 47%, 20%, 1) !important;
+    background-color: radial-gradient(circle, hsla(220, 47%, 20%, 1) 0%, hsla(232, 37%, 12%, 1) 100%) !important;
+    background-color: -moz-radial-gradient(circle, hsla(220, 47%, 20%, 1) 0%, hsla(232, 37%, 12%, 1) 100%) !important;
+    background-color: -webkit-radial-gradient(circle, hsla(220, 47%, 20%, 1) 0%, hsla(232, 37%, 12%, 1) 100%) !important;
+    /* filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#1b2b4b", endColorstr="#131629", GradientType=1 ); */
 }
 
 a.bg-primary:hover,
