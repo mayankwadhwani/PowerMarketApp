@@ -229,7 +229,10 @@
             </div>
         </div>
 
+        <!-- Disclaimer -->
+        <h4>Disclaimer</h4>
         <h5>The data presented are estimations based on standard, industry-wide assumption; but can differ from actual solar array for the rooftops displayed. Please consult a professional solar installations company for a cutomised proposal.</h5>
+
         <!-- Footer -->
         @include('layouts.footers.auth')
     </div>
