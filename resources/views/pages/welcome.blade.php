@@ -1,6 +1,21 @@
 @extends('layouts.app', ['class' => 'bg-default'])
 
 @section('content')
+
+<head>
+
+<!-- Hotjar Tracking Code for https://mapping.powermarket.ai -->
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:1996002,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+</head>
     <div class="header bg-gradient-primary py-5 pb-7 pt-lg-9">
         <div class="container">
             <div class="header-body text-center mb-7">
