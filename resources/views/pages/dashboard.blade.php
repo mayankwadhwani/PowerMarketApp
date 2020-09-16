@@ -15,20 +15,6 @@
         @endcomponent
     @endcomponent
 
-<head>
-  <!-- Hotjar Tracking Code for https://mapping.powermarket.ai -->
-<script>
-    (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:1996002,hjsv:6};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-</script>
-</head>
-
     <div class="container-fluid mt--6">
         <div class="row">
             <div class="col-xl-3 col-md-6">
