@@ -83,7 +83,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-badge"></i></span>
                                     </div>
-                                    <select class="form-control{{ $errors->has('user_category') ? ' is-invalid' : '' }}" id="user_category" name="user_category">
+                                    <select class="form-control{{ $errors->has('user_category') ? ' is-invalid' : '' }}" id="user_category" name="user_category" required>
                                         <option value="" selected hidden>{{ __('User Category') }}</option>
                                         <option value="Organisation" @if (old('user_category') == 'Organisation') selected @endif>{{ __('Organisation') }}</option>
                                         <option value="Consultant" @if (old('user_category') == 'Consultant') selected @endif>{{ __('Consultant') }}</option>
@@ -122,7 +122,7 @@
                             <div class="row my-4">
                                 <div class="col-12">
                                     <div class="custom-control custom-control-alternative custom-checkbox">
-                                        <input class="custom-control-input" id="customCheckRegister" type="checkbox">
+                                        <input class="custom-control-input" id="customCheckRegister" type="checkbox" required>
                                         <label class="custom-control-label" for="customCheckRegister">
                                             <span class="text-muted">{{ __('I agree with the') }} <a href="{{ route('page.privacy') }}" target=\\"_blank\\">{{ __('Privacy Policy') }}</a></span>
                                         </label>
