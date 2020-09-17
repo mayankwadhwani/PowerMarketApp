@@ -69,9 +69,11 @@
         <script>
             window.intercomSettings = {
                 app_id: "z30flz8e",
-                name: "{{ auth()->user()->name }}", //  name
-                email: "{{ auth()->user()->email }}", // Email address
-                created_at: {{ auth()->user()->created_at->timestamp }} // Signup date as a Unix timestamp
+                @auth()
+                    name: "{{ auth()->user()->name }}", //  name
+                    email: "{{ auth()->user()->email }}", // Email address
+                    created_at: {{ auth()->user()->created_at->timestamp }} // Signup date as a Unix timestamp
+                @endauth
             };
         </script>
         <script>
