@@ -176,12 +176,12 @@
                                 <th>Id</th>
                                 <th>Latitude</th>
                                 <th>Longitude</th>
-                                <th>System Capacity (kWp)</th>
+                                <th>System Size (kWp)</th>
                                 <th>Annual Generation (kWh)</th>
-                                <th>Annual Generation (£)</th>
-                                <th>Lifetime Generation (£) </th>
+                                <th>Annual Savings (£)</th>
+                                <th>Lifetime Savings (£) </th>
                                 <th>System Cost (£)</th>
-                                <th>Break-even Time</th>
+                                <th>Break-even Time (years)</th>
                                 <th>Annual CO<sub>2</sub> Savings (kg)</th>
                                 <th>Lifetime CO<sub>2</sub> Savings (kg) </th>
                                 <th>Lifetime CO<sub>2</sub> Emissions (kg) </th>
@@ -193,12 +193,12 @@
                                 <th>Id</th>
                                 <th>Latitude</th>
                                 <th>Longitude</th>
-                                <th>System Capacity (kWp)</th>
+                                <th>System Size (kWp)</th>
                                 <th>Annual Generation (kWh)</th>
-                                <th>Annual Generation (£)</th>
-                                <th>Lifetime Generation (£) </th>
+                                <th>Annual Savings (£)</th>
+                                <th>Lifetime Savings (£) </th>
                                 <th>System Cost (£)</th>
-                                <th>Break-even Time</th>
+                                <th>Break-even Time (years)</th>
                                 <th>Annual CO<sub>2</sub> Savings (kg)</th>
                                 <th>Lifetime CO<sub>2</sub> Savings (kg) </th>
                                 <th>Lifetime CO<sub>2</sub> Emissions (kg) </th>
@@ -210,12 +210,12 @@
                                 <td>Id</td>
                                 <td>Latitude</td>
                                 <td>Longitude</td>
-                                <td>System Capacity (kWp)</td>
+                                <td>System Size (kWp)</td>
                                 <td>Annual Generation (kWh)</td>
-                                <td>Annual Generation (£)</td>
-                                <td>Lifetime Generation (£) </td>
+                                <td>Annual Savings (£)</td>
+                                <td>Lifetime Savings (£) </td>
                                 <td>System Cost (£)</td>
-                                <td>Break-even Time</td>
+                                <td>Break-even Time (years)</td>
                                 <td>Annual CO<sub>2</sub> Savings (kg)</td>
                                 <td>Lifetime CO<sub></sub>2 Savings (kg) </td>
                                 <td>Lifetime CO<sub></sub>2 Emissions (kg) </td>
