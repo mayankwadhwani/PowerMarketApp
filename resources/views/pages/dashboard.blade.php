@@ -583,6 +583,9 @@
     });
 </script>
 <style>
+    .dataTable tr {
+        cursor: pointer;
+    }
     .filter-group {
         font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
         font-weight: 600;
