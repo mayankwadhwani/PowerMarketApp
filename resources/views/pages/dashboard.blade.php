@@ -173,54 +173,56 @@
                         <table class="table table-flush" id="datatable-basic">
                             <thead class="thead-light">
                             <tr>
-                                <th>Id</th>
-                                <th>Latitude</th>
-                                <th>Longitude</th>
                                 <th>System Size (kWp)</th>
+                                <th>System Cost (£)</th>
                                 <th>Annual Generation (kWh)</th>
+{{--                                <th>Lifetime Generation (kWh)</th>--}}
                                 <th>Annual Savings (£)</th>
                                 <th>Lifetime Savings (£) </th>
-                                <th>System Cost (£)</th>
-                                <th>Break-even Time (years)</th>
-                                <th>Annual CO<sub>2</sub> Savings (kg)</th>
-                                <th>Lifetime CO<sub>2</sub> Savings (kg) </th>
-                                <th>Lifetime CO<sub>2</sub> Emissions (kg) </th>
+                                <th>Breakeven (Years)</th>
                                 <th>ROI (%)</th>
+                                <th>Annual CO<sub>2</sub> Savings (kgs)</th>
+                                <th>Lifetime CO<sub>2</sub> Savings (kgs) </th>
+{{--                                <th>Lifetime CO<sub>2</sub> Emissions (kgs) </th>--}}
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                                <th>Id</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>Id</th>
-                                <th>Latitude</th>
-                                <th>Longitude</th>
                                 <th>System Size (kWp)</th>
+                                <th>System Cost (£)</th>
                                 <th>Annual Generation (kWh)</th>
+                                {{--                                <th>Lifetime Generation (kWh)</th>--}}
                                 <th>Annual Savings (£)</th>
                                 <th>Lifetime Savings (£) </th>
-                                <th>System Cost (£)</th>
-                                <th>Break-even Time (years)</th>
-                                <th>Annual CO<sub>2</sub> Savings (kg)</th>
-                                <th>Lifetime CO<sub>2</sub> Savings (kg) </th>
-                                <th>Lifetime CO<sub>2</sub> Emissions (kg) </th>
+                                <th>Breakeven (Years)</th>
                                 <th>ROI (%)</th>
+                                <th>Annual CO<sub>2</sub> Savings (kgs)</th>
+                                <th>Lifetime CO<sub>2</sub> Savings (kgs) </th>
+                                {{--                                <th>Lifetime CO<sub>2</sub> Emissions (kgs) </th>--}}
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                                <th>Id</th>
                             </tr>
                             </tfoot>
                             <tbody>
-                            <tr>
-                                <td>Id</td>
-                                <td>Latitude</td>
-                                <td>Longitude</td>
-                                <td>System Size (kWp)</td>
-                                <td>Annual Generation (kWh)</td>
-                                <td>Annual Savings (£)</td>
-                                <td>Lifetime Savings (£) </td>
-                                <td>System Cost (£)</td>
-                                <td>Break-even Time (years)</td>
-                                <td>Annual CO<sub>2</sub> Savings (kg)</td>
-                                <td>Lifetime CO<sub></sub>2 Savings (kg) </td>
-                                <td>Lifetime CO<sub></sub>2 Emissions (kg) </td>
-                                <td>ROI (%)</td>
-                            </tr>
+{{--                            <tr>--}}
+{{--                                <td>System Size (kWp)</td>--}}
+{{--                                <td>Annual Generation (kWh)</td>--}}
+{{--                                <td>Annual Savings (£)</td>--}}
+{{--                                <td>Lifetime Savings (£) </td>--}}
+{{--                                <td>System Cost (£)</td>--}}
+{{--                                <td>Break-even Time (years)</td>--}}
+{{--                                <td>Annual CO<sub>2</sub> Savings (kg)</td>--}}
+{{--                                <td>Lifetime CO<sub></sub>2 Savings (kg) </td>--}}
+{{--                                <td>Lifetime CO<sub></sub>2 Emissions (kg) </td>--}}
+{{--                                <td>ROI (%)</td>--}}
+{{--                                <td>Latitude</td>--}}
+{{--                                <td>Longitude</td>--}}
+{{--                                <td>Id</td>--}}
+{{--                            </tr>--}}
 
                             </tbody>
                         </table>
@@ -333,19 +335,20 @@
                     '['+dataArray[key].centre_lon+','+ dataArray[key].centre_lat+']}}'
                 features.push(JSON.parse(featureString));
                 $('#datatable-basic').dataTable().fnAddData( [
-                    dataArray[key].id,
-                    dataArray[key].centre_lat,
-                    dataArray[key].centre_lon,
                     numeral(dataArray[key].system_capacity_kWp).format('0,0.0a'),
+                    numeral(dataArray[key].system_cost_GBP).format('0,0.0a'),
                     numeral(dataArray[key].annual_gen_kWh).format('0,0.0a'),
+                    // numeral(dataArray[key].lifetime_gen_kWh).format('0,0.0a'),
                     numeral(dataArray[key].annual_gen_GBP).format('0,0.0a'),
                     numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a'),
-                    numeral(dataArray[key].system_cost_GBP).format('0,0.0a'),
                     dataArray[key].breakeven_years,
+                    numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a'),
                     numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a'),
                     numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a'),
-                    numeral(dataArray[key].lifecycle_co2_emissions_kg).format('0,0.0a'),
-                    numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a')
+                    // numeral(dataArray[key].lifecycle_co2_emissions_kg).format('0,0.0a'),
+                    dataArray[key].centre_lat,
+                    dataArray[key].centre_lon,
+                    dataArray[key].id
                 ]);
                 potential = potential+dataArray[key].system_capacity_kWp;
                 savings = savings+dataArray[key].lifetime_gen_GBP;
@@ -544,8 +547,8 @@
         table.on( 'select', function ( e, dt, type, indexes ) {
             if ( type === 'row' ) {
                 var data = table.rows( indexes ).data();
-                var id = data[0][0];
-                var years = data[0][8];
+                var id = data[0][data[0].length-1];
+                var years = data[0][5];
                 var layerId = layerPrefix + years;
                 var layers = map.getStyle().layers;
                 layers.forEach(function(layer) {
@@ -562,8 +565,8 @@
         table.on( 'deselect', function ( e, dt, type, indexes ) {
             if ( type === 'row' ) {
                 var data = table.rows( indexes ).data();
-                var id = data[0][0];
-                var years = data[0][8];
+                var id = data[0][data[0].length-1];
+                var years = data[0][5];
                 var layerId = layerPrefix + years;
                 var layers = map.getStyle().layers;
                 layers.forEach(function(layer) {
