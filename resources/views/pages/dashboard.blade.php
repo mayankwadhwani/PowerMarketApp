@@ -321,9 +321,9 @@
                     '       <strong>Lifetime RoI:</strong> '+numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a')+'%<br/> '+
                     '       </p>' +
                     '       <a href=\\"{{ route('page.reporting') }}\\" class=\\"btn btn-primary \\" ' +
-                    '       target=\\"_blank\\" title=\\"Upgrade to view detailed building information\\">Generate Report</a>' +
+                    '       target=\\"_blank\\" title=\\"Upgrade to download full building report.\\">Generate Report</a>' +
                     '       <button type=\\"button\\" class=\\"btn btn-primary disabled \\" data-toggle=\\"tooltip\\" data-placement=\\"top\\" ' +
-                    '       title=\\"Upgrade to view detailed building information\\">Building Info</button>' +
+                    '       title=\\"Upgrade to view detailed building ownership information, and tenancy details for commercial and industrial buildings.\\">Building Info</button>' +
                     '   </div>' +
                     '</div>", ' +
                     '"years": '+dataArray[key].breakeven_years+', ' +
