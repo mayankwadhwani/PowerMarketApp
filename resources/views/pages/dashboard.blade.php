@@ -372,13 +372,16 @@
             $('#co2-card').text(numeral(co2).format('0,0.0a')+" kgs");
         }
         map.on('load', function() {
-            map.addSource('places', {
-                'type': 'geojson',
-                'data': {
-                    'type': 'FeatureCollection',
-                    'features': features
-                }
-            });
+            map.loadImage('./svg/map-marker-alt-solid.png', function(error, image) {
+                if (error) throw error;
+                map.addImage('marker-icon', image, { 'sdf': true });
+                map.addSource('places', {
+                    'type': 'geojson',
+                    'data': {
+                        'type': 'FeatureCollection',
+                        'features': features
+                    }
+                });
             features.forEach(function(feature) {
                 var symbol = feature.properties['years'];
                 var layerID = layerPrefix + symbol;
@@ -387,25 +390,37 @@
                 if (!map.getLayer(layerID)) {
                     map.addLayer({
                         'id': layerID,
-                        'type': 'circle',
+                        'type': 'symbol',
+                        // 'type': 'circle',
                         'source': 'places',
+                        'layout': {
+                            // 'icon-image':  'marker-stroked-15',
+                            // 'icon-image':  'triangle-stroked-15',
+                            'icon-image':  'marker-icon',
+                            'icon-allow-overlap': true,
+                            'icon-size': 0.20,
+                            // 'icon-color': yearColorMap.get(symbol)
+                        },
                         'filter': ['==', 'years', symbol],
                         'paint': {
-                            // make circles larger as the user zooms from z12 to z22
-                            'circle-radius': {
-                                'base': 1.75,
-                                'stops': [
-                                    [12, 2],
-                                    [22, 180]
-                                ]
-                            },
-                            // color circles by breakeven_years, using a match expression
-                            // https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
-                            'circle-color': {
-                                property: 'years',
-                                stops: yearColors
-                            }
+                            'icon-color': yearColorMap.get(symbol)
                         }
+                        // 'paint': {
+                        //     // make circles larger as the user zooms from z12 to z22
+                        //     'circle-radius': {
+                        //         'base': 1.75,
+                        //         'stops': [
+                        //             [12, 2],
+                        //             [22, 180]
+                        //         ]
+                        //     },
+                        //     // color circles by breakeven_years, using a match expression
+                        //     // https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
+                        //     'circle-color': {
+                        //         property: 'years',
+                        //         stops: yearColors
+                        //     }
+                        // }
                     });
 
                     // Add checkbox and label elements for the layer.
@@ -534,6 +549,7 @@
             );
 
             map.fitBounds(bounds);
+            });
         });
     }
     $( document ).ready(function() {
