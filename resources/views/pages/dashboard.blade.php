@@ -357,7 +357,17 @@
             features.forEach(function(feature) {
                 bounds.extend(feature.geometry.coordinates);
             });
-            $('#potential-card').text(numeral(potential).format('0,0.0a')+" kWp");
+            if (potential/1000000>=1)
+            {
+                potential = potential/1000000;
+                $('#potential-card').text(numeral(potential).format('0,0.0a')+" GWp");
+            }
+            else if (potential/1000>=1){
+                potential = potential/1000;
+                $('#potential-card').text(numeral(potential).format('0,0.0a')+" MWp");
+            }
+            else
+                $('#potential-card').text(numeral(potential).format('0,0.0a')+" kWp");
             $('#savings-card').text('£ ' + numeral(savings).format('(0.00a)'));
             $('#co2-card').text(numeral(co2).format('0,0.0a')+" kgs");
         }
