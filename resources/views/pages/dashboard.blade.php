@@ -135,6 +135,12 @@
             </div>
         </div>
         <div class="row">
+            <div class="col text-left" style="margin-bottom: 10px;">
+                <span class="text-nowrap" style="font-size: .75rem">
+                    Showing
+                    <span id="selected-count">1</span>
+                    of <span id="total-count">1</span> entries</span>
+            </div>
             <div class="col text-right" style="margin-bottom: 10px;">
                 <span class="text-nowrap" style="font-size: .75rem">You are browsing by &nbsp;</span>
                 <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -280,6 +286,9 @@
         [13, '#bd403a'],
         [14, '#bd403a']];
     var yearColorMap = new Map(yearColors);
+    var symbolCountMap = new Map();
+    var totalCount = 0;
+    var selectedCount = 0;
     function renderMap(){
         var jsonString = '{!! auth()->user()->jsonData() !!}';
         var features = [];
@@ -353,6 +362,9 @@
                 potential = potential+dataArray[key].system_capacity_kWp;
                 savings = savings+dataArray[key].lifetime_gen_GBP;
                 co2 = co2+dataArray[key].lifetime_co2_saved_kg;
+                if(symbolCountMap[dataArray[key].breakeven_years]==undefined)
+                    symbolCountMap[dataArray[key].breakeven_years] = 0;
+                symbolCountMap[dataArray[key].breakeven_years] += 1;
             }
             features.forEach(function(feature) {
                 bounds.extend(feature.geometry.coordinates);
@@ -370,6 +382,10 @@
                 $('#potential-card').text(numeral(potential).format('0,0.0a')+" kWp");
             $('#savings-card').text('£ ' + numeral(savings).format('(0.00a)'));
             $('#co2-card').text(numeral(co2).format('0,0.0a')+" kgs");
+            totalCount = dataArray.length;
+            selectedCount = totalCount;
+            $('#total-count').text(numeral(dataArray.length).format('0,0'));
+            $('#selected-count').text(numeral(dataArray.length).format('0,0'));
         }
         map.on('load', function() {
             map.loadImage('./svg/map-marker-alt-solid.png', function(error, image) {
@@ -443,6 +459,11 @@
                             'visibility',
                             e.target.checked ? 'visible' : 'none'
                         );
+                        if(e.target.checked)
+                            selectedCount = selectedCount + symbolCountMap[symbol];
+                        else
+                            selectedCount = selectedCount - symbolCountMap[symbol];
+                        $('#selected-count').text(numeral(selectedCount).format('0,0'));
                     });
                     map.on('click', layerID, function(e) {
                         var coordinates = e.features[0].geometry.coordinates.slice();
