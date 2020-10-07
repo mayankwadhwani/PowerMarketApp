@@ -129,15 +129,15 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-lg-center px-3 mt-8 mb-6">
-            <div>
+        <div class="d-flex justify-content-lg-center px-3 mt-6 mb-4">
+            <!-- <div>
                 <div class="icon icon-shape bg-gradient-white shadow rounded-circle text-primary">
                     <i class="ni ni-check-bold text-primary"></i>
                 </div>
             </div>
             <div class="col-lg-6">
                 <p class="text-white"><strong>GDPR Compliant</strong> - PowerMarket is 100% compliant with the General Data Protection Regulation.</p>
-            </div>
+            </div> -->
         </div>
         <div class="row row-grid justify-content-center">
             <div class="col-lg-10">
