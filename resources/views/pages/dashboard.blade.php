@@ -414,7 +414,8 @@
                             // 'icon-image':  'triangle-stroked-15',
                             'icon-image':  'marker-icon',
                             'icon-allow-overlap': true,
-                            'icon-size': 0.20,
+                            // 'icon-size': 0.20,
+                            "icon-size": ['interpolate', ['linear'], ['zoom'], 10, 0.1, 15, 1]
                             // 'icon-color': yearColorMap.get(symbol)
                         },
                         'filter': ['==', 'years', symbol],
