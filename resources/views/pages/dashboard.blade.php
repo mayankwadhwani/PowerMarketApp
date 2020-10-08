@@ -190,8 +190,8 @@
                                 <th>Annual CO<sub>2</sub> Savings (kgs)</th>
                                 <th>Lifetime CO<sub>2</sub> Savings (kgs) </th>
 {{--                                <th>Lifetime CO<sub>2</sub> Emissions (kgs) </th>--}}
-                                <th>Latitude</th>
-                                <th>Longitude</th>
+{{--                                <th>Latitude</th>--}}
+{{--                                <th>Longitude</th>--}}
                                 <th>Id</th>
                             </tr>
                             </thead>
@@ -208,8 +208,8 @@
                                 <th>Annual CO<sub>2</sub> Savings (kgs)</th>
                                 <th>Lifetime CO<sub>2</sub> Savings (kgs) </th>
                                 {{--                                <th>Lifetime CO<sub>2</sub> Emissions (kgs) </th>--}}
-                                <th>Latitude</th>
-                                <th>Longitude</th>
+{{--                                <th>Latitude</th>--}}
+{{--                                <th>Longitude</th>--}}
                                 <th>Id</th>
                             </tr>
                             </tfoot>
@@ -355,8 +355,8 @@
                     numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a'),
                     numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a'),
                     // numeral(dataArray[key].lifecycle_co2_emissions_kg).format('0,0.0a'),
-                    dataArray[key].centre_lat,
-                    dataArray[key].centre_lon,
+                    // dataArray[key].centre_lat,
+                    // dataArray[key].centre_lon,
                     dataArray[key].id
                 ]);
                 potential = potential+dataArray[key].system_capacity_kWp;
