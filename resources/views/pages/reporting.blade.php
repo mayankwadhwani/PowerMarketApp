@@ -34,21 +34,13 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col">
-                                                    <h5 class="card-title text-uppercase text-muted mb-0">Total Projects</h5>
+                                                    <h5 class="card-title text-muted mb-0">Lifetime Savings</h5>
                                                     <span class="h2 font-weight-bold mb-0">1</span>
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="row">
                                                         <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
-                                                            <i class="ni ni-chart-pie-35"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mt-3">
-                                                        <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-right: 1.0rem;padding-left: 1.0rem;">
-                                                            <i class="fas fa-ellipsis-h"></i>
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item" href="{{ route('page.pricing') }}">Upgrade to add more projects</a>
+                                                            <i class="fas fa-piggy-bank"></i>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -61,21 +53,13 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col">
-                                                    <h5 class="card-title text-uppercase text-muted mb-0">Solar Potential</h5>
+                                                    <h5 class="card-title text-muted mb-0">Breakeven Time</h5>
                                                     <span class="h2 font-weight-bold mb-0" id="potential-card">1</span>
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="row">
                                                         <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
-                                                            <i class="ni ni-atom"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mt-3">
-                                                        <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-right: 1.0rem;padding-left: 1.0rem;">
-                                                            <i class="fas fa-ellipsis-h"></i>
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item" href="{{ route('page.pricing') }}">Upgrade to view by Weekly, Monthly, Annually</a>
+                                                            <i class="far fa-calendar-check"></i>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -88,7 +72,7 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col">
-                                                    <h5 class="card-title text-uppercase text-muted mb-0">Lifetime savings</h5>
+                                                    <h5 class="card-title text-muted mb-0">System Cost</h5>
                                                     <span class="h2 font-weight-bold mb-0" id="savings-card">1</span>
                                                 </div>
                                                 <div class="col-auto">
@@ -97,14 +81,6 @@
                                                             <i class="fas fa-pound-sign"></i>
                                                         </div>
                                                     </div>
-                                                    <div class="row mt-3">
-                                                        <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-right: 1.0rem;padding-left: 1.0rem;">
-                                                            <i class="fas fa-ellipsis-h"></i>
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item" href="{{ route('page.pricing') }}">Upgrade to view by Weekly, Monthly, Annually</a>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -115,21 +91,13 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col">
-                                                    <h5 class="card-title text-uppercase text-muted mb-0">Lifetime CO<sub>2</sub> savings</h5>
+                                                    <h5 class="card-title text-muted mb-0">Electricity Annually</h5>
                                                     <span class="h2 font-weight-bold mb-0" id="co2-card">1</span>
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="row">
                                                         <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
-                                                            <i class="fas fa-smog"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mt-3">
-                                                        <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-right: 1.0rem;padding-left: 1.0rem;">
-                                                            <i class="fas fa-ellipsis-h"></i>
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item" href="{{ route('page.pricing') }}">Upgrade to view by Weekly, Monthly, Annually</a>
+                                                            <i class="fas fa-bolt"></i>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -226,6 +194,79 @@
                                             <div class="chart">
                                                 <!-- Chart wrapper -->
                                                 <canvas id="chart-line" class="chart-canvas"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="card">
+                                        <!-- Card header -->
+                                        <div class="card-header">
+                                            <!-- Title -->
+                                            <h5 class="h3 mb-0">Location Details</h5>
+                                        </div>
+                                        <!-- Card body -->
+                                        <div class="card-body">
+                                            <div class="chart">
+                                                <!-- Chart wrapper -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card">
+                                        <!-- Card header -->
+                                        <div class="card-header">
+                                            <!-- Title -->
+                                            <h5 class="h3 mb-0">Environmental Impact</h5>
+                                        </div>
+                                        <!-- Card body -->
+                                        <div class="card-body" style="height:400px;">
+                                            <div class="row h-25 align-items-center">
+                                                <div class="col-md-2 col-sm-12">
+                                                    <i class="fas fa-piggy-bank fa-2x"></i>
+                                                </div>
+                                                <div class="col-md-8 col-sm-12 pl-0">
+                                                    <b class="h5">Tons of carbon eliminated per year</b>
+                                                </div>
+                                                <div class="col-md-2 col-sm-12">
+                                                    <strong>324</strong>
+                                                </div>
+                                            </div>
+                                            <div class="row h-25 align-items-center">
+                                                <div class="col-md-2 col-sm-12">
+                                                    <i class="fas fa-piggy-bank fa-2x"></i>
+                                                </div>
+                                                <div class="col-md-8 col-sm-12 pl-0">
+                                                    <b class="h5">Tons of carbon eliminated per year</b>
+                                                </div>
+                                                <div class="col-md-2 col-sm-12">
+                                                    <strong>324</strong>
+                                                </div>
+                                            </div>
+                                            <div class="row h-25 align-items-center">
+                                                <div class="col-md-2 col-sm-12">
+                                                    <i class="fas fa-piggy-bank fa-2x"></i>
+                                                </div>
+                                                <div class="col-md-8 col-sm-12 pl-0">
+                                                    <b class="h5">Tons of carbon eliminated per year</b>
+                                                </div>
+                                                <div class="col-md-2 col-sm-12">
+                                                    <strong>324</strong>
+                                                </div>
+                                            </div>
+                                            <div class="row h-25 align-items-center">
+                                                <div class="col-md-2 col-sm-12">
+                                                    <i class="fas fa-piggy-bank fa-2x"></i>
+                                                </div>
+                                                <div class="col-md-8 col-sm-12 pl-0">
+                                                    <b class="h5">Tons of carbon eliminated per year</b>
+                                                </div>
+                                                <div class="col-md-2 col-sm-12">
+                                                    <strong>324</strong>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
