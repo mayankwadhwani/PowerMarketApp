@@ -109,6 +109,95 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="card">
+                                        <!-- Card header -->
+                                        <div class="card-header">
+                                            <!-- Title -->
+                                            <h5 class="h3 mb-0">Monthly Savings</h5>
+                                        </div>
+                                        <!-- Card body -->
+                                        <div class="card-body">
+                                            <div class="chart">
+                                                <!-- Chart wrapper -->
+                                                <canvas id="chart-line" class="chart-canvas"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="card">
+                                        <!-- Card header -->
+                                        <div class="card-header">
+                                            <!-- Title -->
+                                            <h5 class="h3 mb-0">Location Details</h5>
+                                        </div>
+                                        <!-- Card body -->
+                                        <div class="card-body">
+                                            <div id="map" style="width: 100%; height: 300px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card">
+                                        <!-- Card header -->
+                                        <div class="card-header">
+                                            <!-- Title -->
+                                            <h5 class="h3 mb-0">Environmental Impact</h5>
+                                        </div>
+                                        <!-- Card body -->
+                                        <div class="card-body" style="height:400px;">
+                                            <div class="row h-25 align-items-center">
+                                                <div class="col-md-2 col-sm-12">
+                                                    <i class="fas fa-piggy-bank fa-2x"></i>
+                                                </div>
+                                                <div class="col-md-8 col-sm-12 pl-0">
+                                                    <b class="h5">Tons of carbon eliminated per year</b>
+                                                </div>
+                                                <div class="col-md-2 col-sm-12">
+                                                    <strong>324</strong>
+                                                </div>
+                                            </div>
+                                            <div class="row h-25 align-items-center">
+                                                <div class="col-md-2 col-sm-12">
+                                                    <i class="fas fa-piggy-bank fa-2x"></i>
+                                                </div>
+                                                <div class="col-md-8 col-sm-12 pl-0">
+                                                    <b class="h5">Tons of carbon eliminated per year</b>
+                                                </div>
+                                                <div class="col-md-2 col-sm-12">
+                                                    <strong>324</strong>
+                                                </div>
+                                            </div>
+                                            <div class="row h-25 align-items-center">
+                                                <div class="col-md-2 col-sm-12">
+                                                    <i class="fas fa-piggy-bank fa-2x"></i>
+                                                </div>
+                                                <div class="col-md-8 col-sm-12 pl-0">
+                                                    <b class="h5">Tons of carbon eliminated per year</b>
+                                                </div>
+                                                <div class="col-md-2 col-sm-12">
+                                                    <strong>324</strong>
+                                                </div>
+                                            </div>
+                                            <div class="row h-25 align-items-center">
+                                                <div class="col-md-2 col-sm-12">
+                                                    <i class="fas fa-piggy-bank fa-2x"></i>
+                                                </div>
+                                                <div class="col-md-8 col-sm-12 pl-0">
+                                                    <b class="h5">Tons of carbon eliminated per year</b>
+                                                </div>
+                                                <div class="col-md-2 col-sm-12">
+                                                    <strong>324</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card">
                                         <div class="card-header">
                                             <h3 class="mb-0">Location Data</h3>
                                             <p class="text-sm mb-0">
@@ -181,97 +270,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="card">
-                                        <!-- Card header -->
-                                        <div class="card-header">
-                                            <!-- Title -->
-                                            <h5 class="h3 mb-0">Monthly Savings</h5>
-                                        </div>
-                                        <!-- Card body -->
-                                        <div class="card-body">
-                                            <div class="chart">
-                                                <!-- Chart wrapper -->
-                                                <canvas id="chart-line" class="chart-canvas"></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="card">
-                                        <!-- Card header -->
-                                        <div class="card-header">
-                                            <!-- Title -->
-                                            <h5 class="h3 mb-0">Location Details</h5>
-                                        </div>
-                                        <!-- Card body -->
-                                        <div class="card-body">
-                                            <div class="chart">
-                                                <!-- Chart wrapper -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="card">
-                                        <!-- Card header -->
-                                        <div class="card-header">
-                                            <!-- Title -->
-                                            <h5 class="h3 mb-0">Environmental Impact</h5>
-                                        </div>
-                                        <!-- Card body -->
-                                        <div class="card-body" style="height:400px;">
-                                            <div class="row h-25 align-items-center">
-                                                <div class="col-md-2 col-sm-12">
-                                                    <i class="fas fa-piggy-bank fa-2x"></i>
-                                                </div>
-                                                <div class="col-md-8 col-sm-12 pl-0">
-                                                    <b class="h5">Tons of carbon eliminated per year</b>
-                                                </div>
-                                                <div class="col-md-2 col-sm-12">
-                                                    <strong>324</strong>
-                                                </div>
-                                            </div>
-                                            <div class="row h-25 align-items-center">
-                                                <div class="col-md-2 col-sm-12">
-                                                    <i class="fas fa-piggy-bank fa-2x"></i>
-                                                </div>
-                                                <div class="col-md-8 col-sm-12 pl-0">
-                                                    <b class="h5">Tons of carbon eliminated per year</b>
-                                                </div>
-                                                <div class="col-md-2 col-sm-12">
-                                                    <strong>324</strong>
-                                                </div>
-                                            </div>
-                                            <div class="row h-25 align-items-center">
-                                                <div class="col-md-2 col-sm-12">
-                                                    <i class="fas fa-piggy-bank fa-2x"></i>
-                                                </div>
-                                                <div class="col-md-8 col-sm-12 pl-0">
-                                                    <b class="h5">Tons of carbon eliminated per year</b>
-                                                </div>
-                                                <div class="col-md-2 col-sm-12">
-                                                    <strong>324</strong>
-                                                </div>
-                                            </div>
-                                            <div class="row h-25 align-items-center">
-                                                <div class="col-md-2 col-sm-12">
-                                                    <i class="fas fa-piggy-bank fa-2x"></i>
-                                                </div>
-                                                <div class="col-md-8 col-sm-12 pl-0">
-                                                    <b class="h5">Tons of carbon eliminated per year</b>
-                                                </div>
-                                                <div class="col-md-2 col-sm-12">
-                                                    <strong>324</strong>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="text-center">
                                 <a href="{{ route('page.pricing') }}"><button type="button" class="btn btn-primary mb-3">Download Report</button></a>
                             </div>
@@ -294,8 +292,11 @@
 <link rel="stylesheet" href="{{ asset('argon') }}/vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="{{ asset('argon') }}/vendor/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css">
 <link rel="stylesheet" href="{{ asset('argon') }}/vendor/datatables.net-select-bs4/css/select.bootstrap4.min.css">
+
+<link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
 @endpush
 @push('js')
+<script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
 
 <script src="{{ asset('argon') }}/vendor/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('argon') }}/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -308,6 +309,7 @@
 <script src="{{ asset('argon') }}/vendor/list.js/dist/list.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 <script>
+    var [lon, lat] = [51.857452, -2.2437904];
     function renderTable() {
         var jsonString = '{!! auth()->user()->sampleJson() !!}';
         if (jsonString.length > 0) {
@@ -346,6 +348,17 @@
         table.buttons().container().appendTo($('.dataTables_length:eq(0)', table.table().container()));
         $('.dt-buttons .btn').removeClass('btn-secondary').addClass('btn-sm btn-default');
         renderTable();
+    });
+
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/light-v10',
+        bearing: -17.6,
+        antialias: true,
+        zoom: 11,
+        center: [lat, lon]
     });
 </script>
 <style>
