@@ -107,7 +107,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col">
+                                <div class="col-6">
                                     <div class="card">
                                         <!-- Card header -->
                                         <div class="card-header">
@@ -119,6 +119,22 @@
                                             <div class="chart">
                                                 <!-- Chart wrapper -->
                                                 <canvas id="chart-line" class="chart-canvas"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card">
+                                        <!-- Card header -->
+                                        <div class="card-header">
+                                            <!-- Title -->
+                                            <h5 class="h3 mb-0">Monthly Savings</h5>
+                                        </div>
+                                        <!-- Card body -->
+                                        <div class="card-body">
+                                            <div class="chart">
+                                                <!-- Chart wrapper -->
+                                                <canvas id="chart-naz" class="chart-canvas"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -309,7 +325,9 @@
 <script src="{{ asset('argon') }}/vendor/list.js/dist/list.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 <script>
+
     var [lon, lat] = [51.857452, -2.2437904];
+
     function renderTable() {
         var jsonString = '{!! auth()->user()->sampleJson() !!}';
         if (jsonString.length > 0) {
