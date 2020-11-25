@@ -28,7 +28,48 @@
                             <h4 class="text-uppercase ls-1 text-primary text-center py-3 mb-0">Sample Report</h4>
                         </div>
                         <div class="card-body px-lg-10">
+                            <div class="row justify-content-center">
+                                <img class="col-2 pb-6 pt-4" src="{{ asset('argon') }}/img/icons/common/powermarket.png" width="100%" class="" alt="...">
+                            </div>
                             <div class="row">
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="card card-stats">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5 class="card-title text-muted mb-0">Size of System</h5>
+                                                    <span class="h2 font-weight-bold mb-0" id="co2-card">1</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="row">
+                                                        <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
+                                                            <i class="fas fa-bolt"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="card card-stats">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5 class="card-title text-muted mb-0">System Cost</h5>
+                                                    <span class="h2 font-weight-bold mb-0" id="savings-card">1</span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="row">
+                                                        <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
+                                                            <i class="fas fa-pound-sign"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-xl-3 col-md-6">
                                     <div class="card card-stats">
                                         <div class="card-body">
@@ -67,44 +108,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-3 col-md-6">
-                                    <div class="card card-stats">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <h5 class="card-title text-muted mb-0">System Cost</h5>
-                                                    <span class="h2 font-weight-bold mb-0" id="savings-card">1</span>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <div class="row">
-                                                        <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
-                                                            <i class="fas fa-pound-sign"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-3 col-md-6">
-                                    <div class="card card-stats">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <h5 class="card-title text-muted mb-0">Electricity Annually</h5>
-                                                    <span class="h2 font-weight-bold mb-0" id="co2-card">1</span>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <div class="row">
-                                                        <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
-                                                            <i class="fas fa-bolt"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-6">
@@ -113,6 +116,22 @@
                                         <div class="card-header">
                                             <!-- Title -->
                                             <h5 class="h3 mb-0">Monthly Savings</h5>
+                                        </div>
+                                        <!-- Card body -->
+                                        <div class="card-body">
+                                            <div class="chart">
+                                                <!-- Chart wrapper -->
+                                                <canvas id="chart-bar-stacked" class="chart-canvas"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card">
+                                        <!-- Card header -->
+                                        <div class="card-header">
+                                            <!-- Title -->
+                                            <h5 class="h3 mb-0">Net Annual CO<sub>2</sub> Savings</h5>
                                         </div>
                                         <!-- Card body -->
                                         <div class="card-body">
@@ -123,37 +142,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="card">
-                                        <!-- Card header -->
-                                        <div class="card-header">
-                                            <!-- Title -->
-                                            <h5 class="h3 mb-0">Monthly Savings</h5>
-                                        </div>
-                                        <!-- Card body -->
-                                        <div class="card-body">
-                                            <div class="chart">
-                                                <!-- Chart wrapper -->
-                                                <canvas id="chart-naz" class="chart-canvas"></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <div class="row">
-                                <div class="col-6">
-                                    <div class="card">
-                                        <!-- Card header -->
-                                        <div class="card-header">
-                                            <!-- Title -->
-                                            <h5 class="h3 mb-0">Location Details</h5>
-                                        </div>
-                                        <!-- Card body -->
-                                        <div class="card-body">
-                                            <div id="map" style="width: 100%; height: 300px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="col-6">
                                     <div class="card">
                                         <!-- Card header -->
@@ -207,6 +197,19 @@
                                                     <strong>324</strong>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card">
+                                        <!-- Card header -->
+                                        <div class="card-header">
+                                            <!-- Title -->
+                                            <h5 class="h3 mb-0">Location Details</h5>
+                                        </div>
+                                        <!-- Card body -->
+                                        <div class="card-body">
+                                            <div id="map" style="width: 100%; height: 300px;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -325,7 +328,6 @@
 <script src="{{ asset('argon') }}/vendor/list.js/dist/list.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 <script>
-
     var [lon, lat] = [51.857452, -2.2437904];
 
     function renderTable() {
