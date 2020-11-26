@@ -29,7 +29,7 @@
                         </div>
                         <div class="card-body px-lg-10">
                             <div class="row justify-content-center">
-                                <img class="col-sm-2 col-6 pb-6 pt-4" src="{{ asset('argon') }}/img/icons/common/powermarket.png" width="100%" class="" alt="...">
+                                <img class="col-lg-3 col-md-4 col-6 pb-6 pt-4" src="{{ asset('argon') }}/img/icons/common/powermarket.png" width="100%" class="" alt="...">
                             </div>
                             <div class="row">
                                 <div class="col-xl-3 col-md-6">
@@ -144,7 +144,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-md-6 col-12">
                                     <div class="card">
                                         <!-- Card header -->
                                         <div class="card-header">
@@ -200,7 +200,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-md-6 col-12">
                                     <div class="card">
                                         <!-- Card header -->
                                         <div class="card-header">
@@ -209,11 +209,20 @@
                                         </div>
                                         <!-- Card body -->
                                         <div class="card-body">
-                                            <div id="map" style="width: 100%; height: 300px;"></div>
-                                            <div class="row">
-                                                <div class="col-4"></div>
-                                                <div class="col-4"></div>
-                                                <div class="col-4"></div>
+                                            <div id="map" style="width: 100%; height: 250px;"></div>
+                                            <div class="row p-3">
+                                                <div class="col-4">
+                                                    <h5 class="h3 text-muted">Lat:</h5>
+                                                    <h5 class="h3">51</h5>
+                                                </div>
+                                                <div class="col-4">
+                                                    <h5 class="h3">Long:</h5>
+                                                    <h5 class="h3">-2</h5>
+                                                </div>
+                                                <div class="col-4">
+                                                    <h5 class="h3">Address:</h5>
+                                                    <h5 class="h3">51</h5>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
