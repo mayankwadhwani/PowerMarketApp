@@ -22,7 +22,7 @@
     <div class="container mt--8 pb-5">
         <div class="row justify-content-center">
             <div class="col-12">
-                <div class="pricing card-group flex-column flex-md-row mb-3">
+                <div class="pricing card-group mb-3">
                     <div class="card card-pricing border-0 mb-4">
                         <div class="card-header bg-transparent">
                             <h4 class="text-uppercase ls-1 text-primary text-center py-3 mb-0">Sample Report</h4>
@@ -32,7 +32,7 @@
                                 <img class="col-sm-2 col-6 pb-6 pt-4" src="{{ asset('argon') }}/img/icons/common/powermarket.png" width="100%" class="" alt="...">
                             </div>
                             <div class="row">
-                                <div class="col-xl-3 col-sm-6 col-12">
+                                <div class="col-xl-3 col-md-6">
                                     <div class="card card-stats">
                                         <div class="card-body">
                                             <div class="row">
