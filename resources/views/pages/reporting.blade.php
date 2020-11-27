@@ -121,7 +121,7 @@
                                         <div class="card-body">
                                             <div class="chart">
                                                 <!-- Chart wrapper -->
-                                                <canvas id="chart-bar-stacked" class="chart-canvas"></canvas>
+                                                <canvas id="chart-bar-savings"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -216,12 +216,12 @@
                                                     <h5 class="h3">51</h5>
                                                 </div>
                                                 <div class="col-4">
-                                                    <h5 class="h3">Long:</h5>
+                                                    <h5 class="h3 text-muted">Long:</h5>
                                                     <h5 class="h3">-2</h5>
                                                 </div>
                                                 <div class="col-4">
-                                                    <h5 class="h3">Address:</h5>
-                                                    <h5 class="h3">51</h5>
+                                                    <h5 class="h3 text-muted">Address:</h5>
+                                                    <h5 class="h3" id="google-address"></h5>
                                                 </div>
                                             </div>
                                         </div>
@@ -236,9 +236,11 @@
                                             <p class="text-sm mb-0">
                                             </p>
                                         </div>
-
-                                        <div class="table-responsive py-4">
-                                            <table class="table table-flush" id="datatable-basic">
+                                        <div class="showing">
+                                            <h5>Showing selected rooftop</h5>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table" id="datatable-report">
                                                 <thead class="thead-light">
                                                     <tr>
                                                         <th>System Size (kWp)</th>
@@ -254,27 +256,8 @@
                                                         {{-- <th>Lifetime CO<sub>2</sub> Emissions (kgs) </th>--}}
                                                         {{-- <th>Latitude</th>--}}
                                                         {{-- <th>Longitude</th>--}}
-                                                        <th>Id</th>
                                                     </tr>
                                                 </thead>
-                                                <tfoot>
-                                                    <tr>
-                                                        <th>System Size (kWp)</th>
-                                                        <th>System Cost (£)</th>
-                                                        <th>Annual Generation (kWh)</th>
-                                                        {{-- <th>Lifetime Generation (kWh)</th>--}}
-                                                        <th>Annual Savings (£)</th>
-                                                        <th>Lifetime Savings (£) </th>
-                                                        <th>Breakeven (Years)</th>
-                                                        <th>ROI (%)</th>
-                                                        <th>Annual CO<sub>2</sub> Savings (kgs)</th>
-                                                        <th>Lifetime CO<sub>2</sub> Savings (kgs) </th>
-                                                        {{-- <th>Lifetime CO<sub>2</sub> Emissions (kgs) </th>--}}
-                                                        {{-- <th>Latitude</th>--}}
-                                                        {{-- <th>Longitude</th>--}}
-                                                        <th>Id</th>
-                                                    </tr>
-                                                </tfoot>
                                                 <tbody>
                                                     {{-- <tr>--}}
                                                     {{-- <td>System Size (kWp)</td>--}}
@@ -289,11 +272,12 @@
                                                     {{-- <td>ROI (%)</td>--}}
                                                     {{-- <td>Latitude</td>--}}
                                                     {{-- <td>Longitude</td>--}}
-                                                    {{-- <td>Id</td>--}}
                                                     {{-- </tr>--}}
-
                                                 </tbody>
                                             </table>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5>Disclaimer: The data presented are estimations based on standard, industry-wide assumption; but can differ from actual solar array for the rooftops displayed. Please consult a professional solar installations company for a cutomised proposal.</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -320,12 +304,11 @@
 <link rel="stylesheet" href="{{ asset('argon') }}/vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="{{ asset('argon') }}/vendor/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css">
 <link rel="stylesheet" href="{{ asset('argon') }}/vendor/datatables.net-select-bs4/css/select.bootstrap4.min.css">
-
 <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+<link rel="stylesheet" href="{{ asset('css') }}/report.css" />
 @endpush
 @push('js')
 <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
-
 <script src="{{ asset('argon') }}/vendor/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('argon') }}/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="{{ asset('argon') }}/vendor/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
@@ -337,7 +320,7 @@
 <script src="{{ asset('argon') }}/vendor/list.js/dist/list.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 <script>
-    var [lon, lat] = [51.857452, -2.2437904];
+    var [lat, lon] = [51.857452, -2.2437904];
 
     function renderTable() {
         var jsonString = '{!! auth()->user()->sampleJson() !!}';
@@ -350,44 +333,113 @@
             });
             // for (var key in jsonData) {
             for (key = 0; key < dataArray.length; key++) {
-                $('#datatable-basic').dataTable().fnAddData([
+                $('#datatable-report').dataTable().fnAddData([
                     numeral(dataArray[key].system_capacity_kWp).format('0,0.0a'),
                     numeral(dataArray[key].system_cost_GBP).format('0,0.0a'),
                     numeral(dataArray[key].annual_gen_kWh).format('0,0.0a'),
-                    // numeral(dataArray[key].lifetime_gen_kWh).format('0,0.0a'),
                     numeral(dataArray[key].annual_gen_GBP).format('0,0.0a'),
                     numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a'),
                     dataArray[key].breakeven_years,
                     numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a'),
                     numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a'),
                     numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a'),
-                    // numeral(dataArray[key].lifecycle_co2_emissions_kg).format('0,0.0a'),
-                    // dataArray[key].centre_lat,
-                    // dataArray[key].centre_lon,
-                    dataArray[key].id
                 ]);
             }
         }
     }
+
+    function renderBarChart() {
+        // Variables
+        var $chart = $('#chart-bar-savings');
+        // Methods
+        function init($this) {
+            // Chart data
+            var data = {
+                labels: ['January', 'February', 'March', 'April',
+                    'May', 'June', 'July', 'August',
+                    'September', 'October', 'November', 'December'
+                ],
+                datasets: [{
+                    label: 'Savings',
+                    backgroundColor: '#177269',
+                    data: [
+                        10,23,20,22,25,22,21,42,32,13,23,4
+                    ]
+                }, {
+                    label: 'Export',
+                    backgroundColor: '#F2A94A',
+                    data: [
+                        12,23,24,2,22,32,12,42,32,23,13,44
+                    ]
+                }]
+            };
+            // Options
+            var options = {
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                        ticks: {
+                            autoSkip: false
+                        }
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                },
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        boxWidth: 50,
+                    },
+                },
+            }
+            // Init chart
+            var barStackedChart = new Chart($this, {
+                type: 'bar',
+                data: data,
+                options: options
+            });
+            // Save to jQuery object
+            $this.data('chart', barStackedChart);
+        };
+        // Events
+        if ($chart.length) {
+            init($chart);
+        }
+    };
+    mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
+    var googleApi = 'your_key_here';
     $(document).ready(function() {
-        var table = $('#datatable-basic').DataTable();
+        var table = $('#datatable-report').DataTable({
+            paging: false,
+            searching: false,
+            ordering: false,
+            info: false
+        });
         table.clear();
         table.select.info(false);
         table.select.style('single');
         table.buttons().container().appendTo($('.dataTables_length:eq(0)', table.table().container()));
         $('.dt-buttons .btn').removeClass('btn-secondary').addClass('btn-sm btn-default');
+
+        renderBarChart();
         renderTable();
+
+        var reverseGeoUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${googleApi}&result_type=street_address`;
+        $.get(reverseGeoUrl, function(data) {
+            var address = data.results[0].formatted_address;
+            $('#google-address').append(address);
+        });
+
     });
-
-
-    mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/light-v10',
         bearing: -17.6,
         antialias: true,
         zoom: 11,
-        center: [lat, lon]
+        center: [lon, lat]
     });
 </script>
 <style>

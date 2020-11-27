@@ -1,0 +1,11 @@
+.card .table thead th{
+   white-space: normal;
+   padding-left: 1rem;
+   padding-right: 1rem;
+   vertical-align: top;
+}
+
+.showing {
+   padding-left: 1.5rem;
+   padding-top: 1.5rem;
+}
