@@ -137,7 +137,7 @@
                                         <div class="card-body">
                                             <div class="chart">
                                                 <!-- Chart wrapper -->
-                                                <canvas id="chart-line" class="chart-canvas"></canvas>
+                                                <canvas id="chart-report" class="chart-canvas"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -363,13 +363,13 @@
                     label: 'Savings',
                     backgroundColor: '#177269',
                     data: [
-                        10,23,20,22,25,22,21,42,32,13,23,4
+                        10, 23, 20, 22, 25, 22, 21, 42, 32, 13, 23, 4
                     ]
                 }, {
                     label: 'Export',
                     backgroundColor: '#F2A94A',
                     data: [
-                        12,23,24,2,22,32,12,42,32,23,13,44
+                        12, 23, 24, 2, 22, 32, 12, 42, 32, 23, 13, 44
                     ]
                 }]
             };
@@ -408,6 +408,72 @@
             init($chart);
         }
     };
+
+    function renderLineChart() {
+
+        // Variables
+
+        var $chart = $('#chart-report');
+        var numOfYears = 25;
+        var years = [];
+        for (var i = 1; i <= numOfYears; i++) {
+            years.push(i);
+        }
+
+        // Methods
+
+        function init($this) {
+            var salesChart = new Chart($this, {
+                type: 'line',
+                options: {
+                    scales: {
+                        yAxes: [{
+                            gridLines: {
+                                color: '#e9ecef',
+                                zeroLineColor: '#e9ecef'
+                            },
+                            ticks: {}
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                autoskip: true,
+                            }
+                        }]
+                    }
+                },
+                data: {
+                    labels: years,
+                    datasets: [{
+                            label: 'Negative',
+                            data: [-50, -20, -10],
+                            borderColor: '#FF0000'
+                        },
+                        {
+                            label: 'Positive',
+                            data: [-50, -20, -10, 1, 4, 8,
+                                10, 15, 19, 22, 26, 27, 29, 30,
+                                35, 39, 42, 48, 50, 52, 55, 56,
+                                59, 60, 61
+                            ]
+                        }
+                    ],
+                }
+            });
+
+            // Save to jQuery object
+
+            $this.data('chart', salesChart);
+
+        };
+
+
+        // Events
+
+        if ($chart.length) {
+            init($chart);
+        }
+
+    };
     mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
     var googleApi = 'your_key_here';
     $(document).ready(function() {
@@ -424,6 +490,7 @@
         $('.dt-buttons .btn').removeClass('btn-secondary').addClass('btn-sm btn-default');
 
         renderBarChart();
+        renderLineChart();
         renderTable();
 
         var reverseGeoUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${googleApi}&result_type=street_address`;
@@ -435,7 +502,7 @@
     });
     var map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/light-v10',
+        style: 'mapbox://styles/mapbox/satellite-streets-v11',
         bearing: -17.6,
         antialias: true,
         zoom: 11,
