@@ -39,5 +39,8 @@ return [
             'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
         ],
     ],
+    'google_maps' => [
+        'key' => env('GOOGLE_API_KEY')
+    ]
 
 ];

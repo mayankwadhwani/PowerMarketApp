@@ -25,7 +25,7 @@
                 <div class="pricing card-group mb-3">
                     <div class="card card-pricing border-0 mb-4">
                         <div class="card-header bg-transparent">
-                            <h4 class="text-uppercase ls-1 text-primary text-center py-3 mb-0">Sample Report</h4>
+                            <h4 class="text-uppercase ls-1 text-primary text-center py-3 mb-0">Report for: {{ $address ?? ''}}</h4>
                         </div>
                         <div class="card-body px-lg-10">
                             <div class="row justify-content-center">
@@ -38,7 +38,7 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <h5 class="card-title text-muted mb-0">Size of System</h5>
-                                                    <span class="h2 font-weight-bold mb-0" id="co2-card">1</span>
+                                                    <span class="h2 font-weight-bold mb-0" id="co2-card">{{ $size ?? '' }} kWp</span>
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="row">
@@ -57,7 +57,7 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <h5 class="card-title text-muted mb-0">System Cost</h5>
-                                                    <span class="h2 font-weight-bold mb-0" id="savings-card">1</span>
+                                                    <span class="h2 font-weight-bold mb-0" id="savings-card">&#163;{{ $cost ?? ''}}</span>
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="row">
@@ -76,7 +76,7 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <h5 class="card-title text-muted mb-0">Lifetime Savings</h5>
-                                                    <span class="h2 font-weight-bold mb-0">1</span>
+                                                    <span class="h2 font-weight-bold mb-0">&#163;{{ $savings ?? ''}}</span>
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="row">
@@ -95,7 +95,7 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <h5 class="card-title text-muted mb-0">Breakeven Time</h5>
-                                                    <span class="h2 font-weight-bold mb-0" id="potential-card">1</span>
+                                                    <span class="h2 font-weight-bold mb-0" id="potential-card">{{ $breakeven ?? ''}} years</span>
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="row">
@@ -213,15 +213,15 @@
                                             <div class="row p-3">
                                                 <div class="col-4">
                                                     <h5 class="h3 text-muted">Lat:</h5>
-                                                    <h5 class="h3">51</h5>
+                                                    <h5 class="h3">{{ $lat ?? ''}}</h5>
                                                 </div>
                                                 <div class="col-4">
                                                     <h5 class="h3 text-muted">Long:</h5>
-                                                    <h5 class="h3">-2</h5>
+                                                    <h5 class="h3">{{ $lon ?? ''}}</h5>
                                                 </div>
                                                 <div class="col-4">
                                                     <h5 class="h3 text-muted">Address:</h5>
-                                                    <h5 class="h3" id="google-address"></h5>
+                                                    <h5 class="h3" id="google-address">{{ $address ?? '' }}</h5>
                                                 </div>
                                             </div>
                                         </div>
@@ -237,7 +237,7 @@
                                             </p>
                                         </div>
                                         <div class="showing">
-                                            <h5>Showing selected rooftop</h5>
+                                            <h5>Showing <b id="count"></b> selected rooftops</h5>
                                         </div>
                                         <div class="table-responsive">
                                             <table class="table" id="datatable-report">
@@ -320,18 +320,18 @@
 <script src="{{ asset('argon') }}/vendor/list.js/dist/list.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 <script>
-    var [lat, lon] = [51.857452, -2.2437904];
-
+    var lat = '{!! $lat !!}';
+    var lon= '{!! $lon !!}';
     function renderTable() {
-        var jsonString = '{!! auth()->user()->sampleJson() !!}';
+        var jsonString = '{!! $geodata !!}';
         if (jsonString.length > 0) {
             //var jsonData = JSON.parse(jsonString);
-            var jsonData = JSON.parse(jsonString);
-            var dataArray = jsonData['regions'];
-            dataArray.sort(function(a, b) {
-                return a['breakeven_years'] - b['breakeven_years'];
-            });
+            var dataArray = JSON.parse(jsonString);
+            // dataArray.sort(function(a, b) {
+            //     return a['breakeven_years'] - b['breakeven_years'];
+            // });
             // for (var key in jsonData) {
+            $('#count').append(dataArray.length);
             for (key = 0; key < dataArray.length; key++) {
                 $('#datatable-report').dataTable().fnAddData([
                     numeral(dataArray[key].system_capacity_kWp).format('0,0.0a'),
@@ -475,7 +475,6 @@
 
     };
     mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
-    var googleApi = 'your_key_here';
     $(document).ready(function() {
         var table = $('#datatable-report').DataTable({
             paging: false,
@@ -492,13 +491,6 @@
         renderBarChart();
         renderLineChart();
         renderTable();
-
-        var reverseGeoUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${googleApi}&result_type=street_address`;
-        $.get(reverseGeoUrl, function(data) {
-            var address = data.results[0].formatted_address;
-            $('#google-address').append(address);
-        });
-
     });
     var map = new mapboxgl.Map({
         container: 'map',

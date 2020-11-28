@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Geopoint;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+
 class PageController extends Controller
 {
     /**
@@ -24,9 +29,31 @@ class PageController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function reporting()
+    public function reporting(Request $request)
     {
-        return view('pages.reporting');
+        $geopoint = Geopoint::find($request->geopoint_id);
+        if (is_null($geopoint)) {
+            return view('pages.reporting');
+        }
+        $lat = $geopoint->latLon->getLat();
+        $lon = $geopoint->latLon->getLng();
+        $key = config('services.google_maps.key');
+        try {
+            $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' . $lat . ',' . $lon . '&key=' . $key . '&result_type=street_address');
+            $address = $response['results'][0]['formatted_address'];
+        } catch (\Exception $e) {
+            $address = null;
+        }
+        return view('pages.reporting', [
+            'size' => $geopoint->system_capacity_kWp,
+            'cost' => $geopoint->system_cost_GBP,
+            'savings' => $geopoint->lifetime_gen_GBP,
+            'breakeven' => $geopoint->breakeven_years,
+            'lat' => $lat,
+            'lon' => $lon,
+            'address' => $address,
+            'geodata' => json_encode([$geopoint])
+        ]);
     }
 
     /**

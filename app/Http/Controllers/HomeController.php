@@ -24,6 +24,6 @@ class HomeController extends Controller
     public function index()
     {
         $gloucester = Region::where('name', 'Gloucester')->first();
-        return view('pages.dashboard', ['geodata' => $gloucester->geopoints]);
+        return view('pages.dashboard', ['geodata' => optional($gloucester)->geopoints]);
     }
 }
