@@ -58,4 +58,10 @@ class PageController extends Controller
     {
         return view('pages.lock');
     }
+
+
+    public function admin()
+    {
+        return view('pages.admin_dashboard');
+    }
 }

@@ -23,7 +23,13 @@ Route::get('privacy', 'PageController@privacy')->name('page.privacy');
 Route::get('reporting', 'PageController@reporting')->middleware('auth')->name('page.reporting');
 Route::get('lock', 'PageController@lock')->name('page.lock');
 
-Route::get('admin', 'AdminController@test')->middleware(['auth', 'admin']);
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+	Route::get('/', 'PageController@admin');
+	Route::prefix('region')->group(function () {
+		Route::post('create', 'RegionController@create');
+	});
+});
+
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('category', 'CategoryController', ['except' => ['show']]);
 	Route::resource('tag', 'TagController', ['except' => ['show']]);
@@ -37,4 +43,3 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('{page}', ['as' => 'page.index', 'uses' => 'PageController@index']);
 });
-

@@ -15,21 +15,21 @@ class CreateGeopointsTable extends Migration
     {
         Schema::create('geopoints', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('region_id')->constrained('regions')->onDelete('cascade');
             $table->point('latLon');
             $table->double('area_sqm')->default(0);
             $table->integer('numpanels')->default(0);
             $table->string('roofclass')->default(0);
             $table->double('annual_gen_GBP')->default(0);
-            $table->double('annual_gen_KWh')->default(0);
+            $table->double('annual_gen_kWh')->default(0);
             $table->integer('breakeven_years')->default(0);
             $table->double('system_cost_GBP')->default(0);
             $table->double('lifetime_gen_GBP')->default(0);
             $table->double('annual_co2_saved_kg')->default(0);
-            $table->double('system_capacity_KWp')->default(0);
+            $table->double('system_capacity_kWp')->default(0);
             $table->double('lifetime_co2_saved_kg')->default(0);
             $table->double('lifecycle_co2_emissions_kg')->default(0);
-            $table->double('lifetime_roi_percent')->default(0);
-            $table->timestamps();
+            $table->double('lifetime_return_on_investment_percent')->default(0);
             $table->spatialIndex('latLon');
         });
     }
