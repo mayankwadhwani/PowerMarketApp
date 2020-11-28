@@ -165,6 +165,78 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header">
+                        <h3 class="mb-0">Location Data</h3>
+                        <p class="text-sm mb-0">
+                        </p>
+                    </div>
+                    <div class="table-responsive py-4">
+                        <table class="table table-flush" id="datatable-basic">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>System Size (kWp)</th>
+                                <th>System Cost (£)</th>
+                                <th>Annual Generation (kWh)</th>
+{{--                                <th>Lifetime Generation (kWh)</th>--}}
+                                <th>Annual Savings (£)</th>
+                                <th>Lifetime Savings (£) </th>
+                                <th>Breakeven (Years)</th>
+                                <th>ROI (%)</th>
+                                <th>Annual CO<sub>2</sub> Savings (kgs)</th>
+                                <th>Lifetime CO<sub>2</sub> Savings (kgs) </th>
+{{--                                <th>Lifetime CO<sub>2</sub> Emissions (kgs) </th>--}}
+{{--                                <th>Latitude</th>--}}
+{{--                                <th>Longitude</th>--}}
+                                <th>Id</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>System Size (kWp)</th>
+                                <th>System Cost (£)</th>
+                                <th>Annual Generation (kWh)</th>
+                                {{--                                <th>Lifetime Generation (kWh)</th>--}}
+                                <th>Annual Savings (£)</th>
+                                <th>Lifetime Savings (£) </th>
+                                <th>Breakeven (Years)</th>
+                                <th>ROI (%)</th>
+                                <th>Annual CO<sub>2</sub> Savings (kgs)</th>
+                                <th>Lifetime CO<sub>2</sub> Savings (kgs) </th>
+                                {{--                                <th>Lifetime CO<sub>2</sub> Emissions (kgs) </th>--}}
+{{--                                <th>Latitude</th>--}}
+{{--                                <th>Longitude</th>--}}
+                                <th>Id</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+{{--                            <tr>--}}
+{{--                                <td>System Size (kWp)</td>--}}
+{{--                                <td>Annual Generation (kWh)</td>--}}
+{{--                                <td>Annual Savings (£)</td>--}}
+{{--                                <td>Lifetime Savings (£) </td>--}}
+{{--                                <td>System Cost (£)</td>--}}
+{{--                                <td>Break-even Time (years)</td>--}}
+{{--                                <td>Annual CO<sub>2</sub> Savings (kg)</td>--}}
+{{--                                <td>Lifetime CO<sub></sub>2 Savings (kg) </td>--}}
+{{--                                <td>Lifetime CO<sub></sub>2 Emissions (kg) </td>--}}
+{{--                                <td>ROI (%)</td>--}}
+{{--                                <td>Latitude</td>--}}
+{{--                                <td>Longitude</td>--}}
+{{--                                <td>Id</td>--}}
+{{--                            </tr>--}}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Disclaimer -->
         <h4>Disclaimer</h4>
         <h5>The data presented are estimations based on standard, industry-wide assumption; but can differ from actual solar array for the rooftops displayed. Please consult a professional solar installations company for a cutomised proposal.</h5>
@@ -218,12 +290,13 @@
     var totalCount = 0;
     var selectedCount = 0;
     function renderMap(){
-        var jsonString = '{!! $geodata !!}';
+        var jsonString = '{!! auth()->user()->jsonData() !!}';
         var features = [];
         var bounds = new mapboxgl.LngLatBounds();
         var filterGroup = document.getElementById('filter-group');
         if(jsonString.length>0) {
-            var dataArray = JSON.parse(jsonString);
+            var jsonData = JSON.parse(jsonString);
+            var dataArray = jsonData['regions'];
             dataArray.sort(function (a, b) {
                 return a['breakeven_years']- b['breakeven_years'];
             });
@@ -256,7 +329,7 @@
                     // '       <strong>Lifetime CO<sub>2</sub> emissions:</strong> '+numeral(dataArray[key].lifecycle_co2_emissions_kg).format('0,0.0a')+' kgs<br/> '+
                     '       <strong>Lifetime RoI:</strong> '+numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a')+'%<br/> '+
                     '       </p>' +
-                    '       <a href=\\"{{ route('page.reporting') }}?geopoint_id='+dataArray[key].id+'\\" class=\\"btn btn-primary \\" ' +
+                    '       <a href=\\"{{ route('page.reporting') }}\\" class=\\"btn btn-primary \\" ' +
                     '       target=\\"_blank\\" title=\\"Upgrade to download full building report.\\">Generate Report</a>' +
                     '       <button type=\\"button\\" class=\\"btn btn-primary disabled \\" data-toggle=\\"tooltip\\" data-placement=\\"top\\" ' +
                     '       title=\\"Upgrade to view detailed building ownership information, and tenancy details for commercial and industrial buildings.\\">Building Info</button>' +
@@ -268,8 +341,24 @@
                     '"panels": '+dataArray[key].numpanels+', ' +
                     '"roi": '+dataArray[key].lifetime_return_on_investment_percent+'}, ' +
                     '"geometry": {"type": "Point", "coordinates": ' +
-                    '['+dataArray[key].latLon.coordinates[1]+','+ dataArray[key].latLon.coordinates[0]+']}}'
+                    '['+dataArray[key].centre_lon+','+ dataArray[key].centre_lat+']}}'
                 features.push(JSON.parse(featureString));
+                $('#datatable-basic').dataTable().fnAddData( [
+                    numeral(dataArray[key].system_capacity_kWp).format('0,0.0a'),
+                    numeral(dataArray[key].system_cost_GBP).format('0,0.0a'),
+                    numeral(dataArray[key].annual_gen_kWh).format('0,0.0a'),
+                    // numeral(dataArray[key].lifetime_gen_kWh).format('0,0.0a'),
+                    numeral(dataArray[key].annual_gen_GBP).format('0,0.0a'),
+                    numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a'),
+                    dataArray[key].breakeven_years,
+                    numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a'),
+                    numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a'),
+                    numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a'),
+                    // numeral(dataArray[key].lifecycle_co2_emissions_kg).format('0,0.0a'),
+                    // dataArray[key].centre_lat,
+                    // dataArray[key].centre_lon,
+                    dataArray[key].id
+                ]);
                 potential = potential+dataArray[key].system_capacity_kWp;
                 savings = savings+dataArray[key].lifetime_gen_GBP;
                 co2 = co2+dataArray[key].lifetime_co2_saved_kg;
@@ -532,7 +621,59 @@
         });
     }
     $( document ).ready(function() {
+        var table = $('#datatable-basic').DataTable();
+        table.clear();
+        table.select.info( false);
+        table.select.style('single');
+        new $.fn.dataTable.Buttons( table, {
+            buttons: [
+                {text: 'Reset Selection',
+                    action: function ( e, dt, node, config ) {
+                        table.rows('.selected').deselect();
+                    }
+                }
+            ]
+        } );
+        table.buttons().container().appendTo( $('.dataTables_length:eq(0)', table.table().container() ) );
+        $('.dt-buttons .btn').removeClass('btn-secondary').addClass('btn-sm btn-default');
         renderMap();
+
+        table.on( 'select', function ( e, dt, type, indexes ) {
+            if ( type === 'row' ) {
+                var data = table.rows( indexes ).data();
+                var id = data[0][data[0].length-1];
+                var years = data[0][5];
+                var layerId = layerPrefix + years;
+                var layers = map.getStyle().layers;
+                layers.forEach(function(layer) {
+                    if(layer.id.startsWith(layerPrefix)){
+                        if(layer.id == layerId)
+                            map.setLayoutProperty(layer.id, 'visibility', 'visible');
+                        else
+                            map.setLayoutProperty(layer.id, 'visibility', 'none');
+                    }
+                });
+                map.setFilter(layerId, ['==', 'id', id]);
+            }
+        } );
+        table.on( 'deselect', function ( e, dt, type, indexes ) {
+            if ( type === 'row' ) {
+                var data = table.rows( indexes ).data();
+                var id = data[0][data[0].length-1];
+                var years = data[0][5];
+                var layerId = layerPrefix + years;
+                var layers = map.getStyle().layers;
+                layers.forEach(function(layer) {
+                    if (layer.id.startsWith(layerPrefix)) {
+                        layers.forEach(function (layer) {
+                            map.setLayoutProperty(layer.id, 'visibility', 'visible');
+                        });
+                    }
+                });
+                map.setFilter(layerId, null);
+            }
+        } );
+
     });
 </script>
 <style>

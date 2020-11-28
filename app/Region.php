@@ -8,5 +8,8 @@ class Region extends Model
 {
     protected $guarded = [];
 
-
+    public function geopoints()
+    {
+        return $this->hasMany(Geopoint::class);
+    }
 }
