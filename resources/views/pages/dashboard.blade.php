@@ -267,8 +267,7 @@
                     '"area": '+dataArray[key].area_sqm+', ' +
                     '"panels": '+dataArray[key].numpanels+', ' +
                     '"roi": '+dataArray[key].lifetime_return_on_investment_percent+'}, ' +
-                    '"geometry": {"type": "Point", "coordinates": ' +
-                    '['+dataArray[key].latLon.coordinates[1]+','+ dataArray[key].latLon.coordinates[0]+']}}'
+                    '"geometry":'+JSON.stringify(dataArray[key].latLon)+'}'
                 features.push(JSON.parse(featureString));
                 potential = potential+dataArray[key].system_capacity_kWp;
                 savings = savings+dataArray[key].lifetime_gen_GBP;

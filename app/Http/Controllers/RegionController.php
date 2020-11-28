@@ -12,7 +12,7 @@ class RegionController extends Controller
 {
     public function wrapPoint($point)
     {
-        return "ST_GeomFromText('POINT(" . $point['centre_lat'] . " " . $point['centre_lon'] . ")')";
+        return "ST_GeomFromText('POINT(" . $point['centre_lat'] . " " . $point['centre_lon'] . ")', 4326)";
     }
     public function create(Request $request)
     {
