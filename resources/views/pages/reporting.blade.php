@@ -504,7 +504,9 @@
         zoom: 11,
         center: [lon, lat]
     });
-    var marker = new mapboxgl.Marker()
+    var marker = new mapboxgl.Marker({
+            color: '#17192B'
+        })
         .setLngLat([lon, lat])
         .addTo(map);
 </script>
