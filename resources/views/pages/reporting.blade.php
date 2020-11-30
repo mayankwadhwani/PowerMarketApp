@@ -29,7 +29,7 @@
                         </div>
                         <div class="card-body px-lg-10">
                             <div class="row justify-content-center">
-                                <img class="col-lg-3 col-md-4 col-6 pb-6 pt-4" src="{{ asset('argon') }}/img/icons/common/powermarket.png" width="100%" class="" alt="...">
+                                <img class="pb-6 pt-4 col-7 col-sm-5 col-md-4 col-lg-3 col-xl-2" src="{{ asset('argon') }}/img/icons/common/powermarket.png" width="100%" class="" alt="...">
                             </div>
                             <div class="row">
                                 <div class="col-xl-3 col-md-6">
@@ -110,7 +110,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-lg-6 col-sm-12">
                                     <div class="card">
                                         <!-- Card header -->
                                         <div class="card-header">
@@ -126,7 +126,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-sm-12">
+                                <div class="col-lg-6 col-sm-12">
                                     <div class="card">
                                         <!-- Card header -->
                                         <div class="card-header">
@@ -144,7 +144,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6 col-12">
+                                <div class="col-lg-6 col-12">
                                     <div class="card">
                                         <!-- Card header -->
                                         <div class="card-header">
@@ -152,55 +152,55 @@
                                             <h5 class="h3 mb-0">Environmental Impact</h5>
                                         </div>
                                         <!-- Card body -->
-                                        <div class="card-body" style="height:400px;">
+                                        <div class="card-body" style="height:500px;">
                                             <div class="row h-25 align-items-center">
-                                                <div class="col-md-2 col-sm-12">
-                                                    <i class="fas fa-piggy-bank fa-2x"></i>
+                                                <div class="col-md-2 col-sm-2 col-4">
+                                                    <img style="width: 40px;" class="mx-auto" src="{{ asset('argon') }}/img/icons/common/factory.svg" />
                                                 </div>
-                                                <div class="col-md-8 col-sm-12 pl-0">
+                                                <div class="col-md-8 col-sm-7 col-8 pl-0">
                                                     <b class="h5">Tons of carbon eliminated per year</b>
                                                 </div>
-                                                <div class="col-md-2 col-sm-12">
+                                                <div class="col-md-2 col-sm-3 col-12 text-right">
                                                     <strong>324</strong>
                                                 </div>
                                             </div>
                                             <div class="row h-25 align-items-center">
-                                                <div class="col-md-2 col-sm-12">
-                                                    <i class="fas fa-piggy-bank fa-2x"></i>
+                                                <div class="col-md-2 col-sm-2 col-4">
+                                                    <img style="width: 40px;" class="mx-auto" src="{{ asset('argon') }}/img/icons/common/road.svg" />
                                                 </div>
-                                                <div class="col-md-8 col-sm-12 pl-0">
-                                                    <b class="h5">Tons of carbon eliminated per year</b>
+                                                <div class="col-md-8 col-sm-7 col-8 pl-0">
+                                                    <b class="h5">Cars taken off the road per year</b>
                                                 </div>
-                                                <div class="col-md-2 col-sm-12">
+                                                <div class="col-md-2 col-sm-3 col-12 text-right">
                                                     <strong>324</strong>
                                                 </div>
                                             </div>
                                             <div class="row h-25 align-items-center">
-                                                <div class="col-md-2 col-sm-12">
-                                                    <i class="fas fa-piggy-bank fa-2x"></i>
+                                                <div class="col-md-2 col-sm-2 col-4">
+                                                    <img style="width: 40px;" class="mx-auto" src="{{ asset('argon') }}/img/icons/common/tree.svg" />
                                                 </div>
-                                                <div class="col-md-8 col-sm-12 pl-0">
-                                                    <b class="h5">Tons of carbon eliminated per year</b>
+                                                <div class="col-md-8 col-sm-7 col-8 pl-0">
+                                                    <b class="h5">Equivalent of new trees planted</b>
                                                 </div>
-                                                <div class="col-md-2 col-sm-12">
+                                                <div class="col-md-2 col-sm-3 col-12 text-right">
                                                     <strong>324</strong>
                                                 </div>
                                             </div>
                                             <div class="row h-25 align-items-center">
-                                                <div class="col-md-2 col-sm-12">
-                                                    <i class="fas fa-piggy-bank fa-2x"></i>
+                                                <div class="col-md-2 col-sm-2 col-4">
+                                                    <img style="width: 40px;" class="mx-auto" src="{{ asset('argon') }}/img/icons/common/gas.svg" />
                                                 </div>
-                                                <div class="col-md-8 col-sm-12 pl-0">
-                                                    <b class="h5">Tons of carbon eliminated per year</b>
+                                                <div class="col-md-8 col-sm-7 col-8 pl-0">
+                                                    <b class="h5">Litres of petrol/gas saved</b>
                                                 </div>
-                                                <div class="col-md-2 col-sm-12">
+                                                <div class="col-md-2 col-sm-3 col-12 text-right">
                                                     <strong>324</strong>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-12">
+                                <div class="col-lg-6 col-12">
                                     <div class="card">
                                         <!-- Card header -->
                                         <div class="card-header">
@@ -208,20 +208,20 @@
                                             <h5 class="h3 mb-0">Location Details</h5>
                                         </div>
                                         <!-- Card body -->
-                                        <div class="card-body">
+                                        <div class="card-body" style="height:500px;">
                                             <div id="map" style="width: 100%; height: 250px;"></div>
-                                            <div class="row p-3">
-                                                <div class="col-4">
+                                            <div class="row p-3" style="height: 250px;">
+                                                <div class="col-12">
+                                                    <h5 class="h3 text-muted">Address:</h5>
+                                                    <h5 class="h3" id="google-address">{{ $address ?? '' }}</h5>
+                                                </div>
+                                                <div class="col-6">
                                                     <h5 class="h3 text-muted">Lat:</h5>
                                                     <h5 class="h3">{{ $lat ?? ''}}</h5>
                                                 </div>
-                                                <div class="col-4">
+                                                <div class="col-6">
                                                     <h5 class="h3 text-muted">Long:</h5>
                                                     <h5 class="h3">{{ $lon ?? ''}}</h5>
-                                                </div>
-                                                <div class="col-4">
-                                                    <h5 class="h3 text-muted">Address:</h5>
-                                                    <h5 class="h3" id="google-address">{{ $address ?? '' }}</h5>
                                                 </div>
                                             </div>
                                         </div>
@@ -320,10 +320,14 @@
 <script src="{{ asset('argon') }}/vendor/list.js/dist/list.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 <script>
-    var lat = '{!! $lat !!}';
-    var lon= '{!! $lon !!}';
+    var lat = '{!! $lat ?? '
+    ' !!}';
+    var lon = '{!! $lon ?? '
+    ' !!}';
+
     function renderTable() {
-        var jsonString = '{!! $geodata !!}';
+        var jsonString = '{!! $geodata ?? '
+        ' !!}';
         if (jsonString.length > 0) {
             //var jsonData = JSON.parse(jsonString);
             var dataArray = JSON.parse(jsonString);
@@ -361,13 +365,13 @@
                 ],
                 datasets: [{
                     label: 'Savings',
-                    backgroundColor: '#177269',
+                    backgroundColor: '#6074DD',
                     data: [
                         10, 23, 20, 22, 25, 22, 21, 42, 32, 13, 23, 4
                     ]
                 }, {
                     label: 'Export',
-                    backgroundColor: '#F2A94A',
+                    backgroundColor: '#1B2B4B',
                     data: [
                         12, 23, 24, 2, 22, 32, 12, 42, 32, 23, 13, 44
                     ]
@@ -429,8 +433,8 @@
                     scales: {
                         yAxes: [{
                             gridLines: {
-                                color: '#e9ecef',
-                                zeroLineColor: '#e9ecef'
+                                color: '#6074DD',
+                                zeroLineColor: '#6074DD'
                             },
                             ticks: {}
                         }],
@@ -446,7 +450,7 @@
                     datasets: [{
                             label: 'Negative',
                             data: [-50, -20, -10],
-                            borderColor: '#FF0000'
+                            borderColor: '#17192B'
                         },
                         {
                             label: 'Positive',
@@ -500,6 +504,9 @@
         zoom: 11,
         center: [lon, lat]
     });
+    var marker = new mapboxgl.Marker()
+        .setLngLat([lon, lat])
+        .addTo(map);
 </script>
 <style>
     .dataTable tr {
