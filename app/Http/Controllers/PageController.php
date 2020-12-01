@@ -42,25 +42,33 @@ class PageController extends Controller
         } catch (\Exception $e) {
             $address = null;
         }
-        $html = view('pages.reporting', [
+        $html = view('pages.pdf', [
             'size' => $geopoint->system_capacity_kWp,
             'cost' => $geopoint->system_cost_GBP,
             'savings' => $geopoint->lifetime_gen_GBP,
             'breakeven' => $geopoint->breakeven_years,
+            'tons' => round($geopoint->annual_co2_saved_kg / 1000, 2),
+            'cars' => round($geopoint->annual_gen_kWh * 0.0001275, 2),
+            'trees' => round($geopoint->annual_gen_kWh * 0.0117, 2),
+            'oil' => round($geopoint->annual_gen_kWh * 0.0123, 2),
             'lat' => $lat,
             'lon' => $lon,
             'address' => $address,
             'geodata' => json_encode([$geopoint])
         ]);
-        Storage::disk('local')->put('index.html', $html);
-        $process = new Process(['node', 'generate_pdf.js']);
-        $process->run(null, ['PATH' => 'C:\\Program Files\\nodejs']);
+        if ($request->input('download') == true) {
+            $output = [];
+            system('node generate_pdf.js', $output);
+            return $output;
+            // $process = new Process(['node', 'generate_pdf.js']);
+            // $process->run(null, ['PATH' => 'C:\\Program Files\\nodejs']);
+            // if (!$process->isSuccessful()) {
+            //     return $process->getErrorOutput();
+            // }
 
-        if(!$process->isSuccessful()){
-            return $process->getErrorOutput();
+            // return $process->getOutput();
         }
-
-        return $process->getOutput();
+        return $html;
     }
     /**
      * Display the reporting page
@@ -87,10 +95,10 @@ class PageController extends Controller
             'cost' => $geopoint->system_cost_GBP,
             'savings' => $geopoint->lifetime_gen_GBP,
             'breakeven' => $geopoint->breakeven_years,
-            'tons' => round($geopoint->annual_co2_saved_kg/1000, 2),
-            'cars' => round($geopoint->annual_gen_kWh*0.0001275, 2),
-            'trees' => round($geopoint->annual_gen_kWh*0.0117, 2),
-            'oil' => round($geopoint->annual_gen_kWh*0.0123, 2),
+            'tons' => round($geopoint->annual_co2_saved_kg / 1000, 2),
+            'cars' => round($geopoint->annual_gen_kWh * 0.0001275, 2),
+            'trees' => round($geopoint->annual_gen_kWh * 0.0117, 2),
+            'oil' => round($geopoint->annual_gen_kWh * 0.0123, 2),
             'lat' => $lat,
             'lon' => $lon,
             'address' => $address,

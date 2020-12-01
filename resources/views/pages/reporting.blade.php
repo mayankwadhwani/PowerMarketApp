@@ -501,7 +501,7 @@
         style: 'mapbox://styles/mapbox/satellite-streets-v11',
         bearing: -17.6,
         antialias: true,
-        zoom: 11,
+        zoom: 16.5,
         center: [lon, lat]
     });
     var marker = new mapboxgl.Marker({
