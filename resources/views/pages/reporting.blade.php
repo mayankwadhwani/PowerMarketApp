@@ -158,10 +158,10 @@
                                                     <img style="width: 40px;" class="mx-auto" src="{{ asset('argon') }}/img/icons/common/factory.svg" />
                                                 </div>
                                                 <div class="col-md-8 col-sm-7 col-8 pl-0">
-                                                    <b class="h5">Tons of carbon eliminated per year</b>
+                                                    <b class="h5">Tonnes of carbon eliminated per year</b>
                                                 </div>
                                                 <div class="col-md-2 col-sm-3 col-12 text-right">
-                                                    <strong>324</strong>
+                                                    <strong>{{ $tons ?? '' }}</strong>
                                                 </div>
                                             </div>
                                             <div class="row h-25 align-items-center">
@@ -172,7 +172,7 @@
                                                     <b class="h5">Cars taken off the road per year</b>
                                                 </div>
                                                 <div class="col-md-2 col-sm-3 col-12 text-right">
-                                                    <strong>324</strong>
+                                                    <strong>{{ $cars ?? '' }}</strong>
                                                 </div>
                                             </div>
                                             <div class="row h-25 align-items-center">
@@ -183,7 +183,7 @@
                                                     <b class="h5">Equivalent of new trees planted</b>
                                                 </div>
                                                 <div class="col-md-2 col-sm-3 col-12 text-right">
-                                                    <strong>324</strong>
+                                                    <strong>{{ $trees ?? ''}}</strong>
                                                 </div>
                                             </div>
                                             <div class="row h-25 align-items-center">
@@ -194,7 +194,7 @@
                                                     <b class="h5">Litres of petrol/gas saved</b>
                                                 </div>
                                                 <div class="col-md-2 col-sm-3 col-12 text-right">
-                                                    <strong>324</strong>
+                                                    <strong>{{ $oil ?? ''}}</strong>
                                                 </div>
                                             </div>
                                         </div>
