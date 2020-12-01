@@ -7,6 +7,8 @@ use App\Geopoint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class PageController extends Controller
 {
@@ -51,6 +53,14 @@ class PageController extends Controller
             'geodata' => json_encode([$geopoint])
         ]);
         Storage::disk('local')->put('index.html', $html);
+        $process = new Process(['node', 'generate_pdf.js']);
+        $process->run(null, ['PATH' => 'C:\\Program Files\\nodejs']);
+
+        if(!$process->isSuccessful()){
+            return $process->getErrorOutput();
+        }
+
+        return $process->getOutput();
     }
     /**
      * Display the reporting page
