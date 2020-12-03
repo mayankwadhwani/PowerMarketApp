@@ -58,15 +58,21 @@ class PageController extends Controller
         ]);
         if ($request->input('download') == true) {
             $output = [];
-            system('node generate_pdf.js', $output);
-            return $output;
-            // $process = new Process(['node', 'generate_pdf.js']);
-            // $process->run(null, ['PATH' => 'C:\\Program Files\\nodejs']);
-            // if (!$process->isSuccessful()) {
-            //     return $process->getErrorOutput();
-            // }
+            $command = 'node generate_pdf.js 1';
+            exec($command, $output);
+            $report = $output[0];
+            return response()->stream(function () use ($report) {
+                echo base64_decode($report);
+            }, 200, [
+                'Content-Type' => 'application/pdf',
+            ]);
+        // $process = new Process(['node', 'generate_pdf.js']);
+        // $process->run(null, ['PATH' => 'C:\\Program Files\\nodejs']);
+        // if (!$process->isSuccessful()) {
+        //     return $process->getErrorOutput();
+        // }
 
-            // return $process->getOutput();
+        // return $process->getOutput();
         }
         return $html;
     }

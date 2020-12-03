@@ -1,27 +1,27 @@
 const puppet = require("puppeteer");
-const url = "file://C:\\PowerMarketApp\\storage\\app\\index.html";
+const url = "http://localhost:808/pdf?geopoint_id="+process.argv[2];
+
 async function run() {
     try {
         const browser = await puppet.launch({
-            userDataDir: "logs",
-            headless:false,
-            ignoreDefaultArgs: ['--disable-extensions'],
-            args: ["--disable-web-security", "--no-sandbox", 
-        '--shm-size=1gb', '--disable-setuid-sandbox', '--single-process', '--no-zygote'],
+            headless: true,
+            ignoreDefaultArgs: ["--user-data-dir"],
+            args: ["--disable-web-security", "--no-sandbox"],
             pipe: true
         });
         const page = await browser.newPage();
-        await page.goto(url);
+        await page.setContent(html, {
+            waitUntil: "networkidle0"
+        });
         await page.emulateMediaType("screen");
-        await page.pdf({
-            path: "C:\\PowerMarketApp\\storage\\app\\report.pdf",
-            displayHeaderFooter: true,
+        const pdf = await page.pdf({
             printBackground: true,
-            format: 'A4',
+            format: "A4",
             scale: 0.5
         });
         await browser.close();
-        process.exit()
+        console.log(pdf.toString('base64'));
+        process.exit();
     } catch (error) {
         console.log(error);
         process.exit();
