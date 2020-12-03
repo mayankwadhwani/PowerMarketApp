@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
+use Spatie\TemporaryDirectory\TemporaryDirectory;
+
 class PageController extends Controller
 {
     /**
@@ -48,33 +50,27 @@ class PageController extends Controller
             'savings' => $geopoint->lifetime_gen_GBP,
             'breakeven' => $geopoint->breakeven_years,
             'tons' => round($geopoint->annual_co2_saved_kg / 1000, 2),
-            'cars' => round($geopoint->annual_gen_kWh * 0.0001275, 2),
+            'cars' => round($geopoint->annual_gen_kWh * 0.000225, 2),
             'trees' => round($geopoint->annual_gen_kWh * 0.0117, 2),
-            'oil' => round($geopoint->annual_gen_kWh * 0.0123, 2),
+            'oil' => round($geopoint->annual_gen_kWh * 0.2174, 2),
             'lat' => $lat,
             'lon' => $lon,
             'address' => $address,
             'geodata' => json_encode([$geopoint])
         ]);
-        if ($request->input('download') == true) {
-            $output = [];
-            $command = 'node generate_pdf.js 1';
-            exec($command, $output);
-            $report = $output[0];
-            return response()->stream(function () use ($report) {
-                echo base64_decode($report);
-            }, 200, [
-                'Content-Type' => 'application/pdf',
-            ]);
-        // $process = new Process(['node', 'generate_pdf.js']);
-        // $process->run(null, ['PATH' => 'C:\\Program Files\\nodejs']);
-        // if (!$process->isSuccessful()) {
-        //     return $process->getErrorOutput();
-        // }
-
-        // return $process->getOutput();
-        }
-        return $html;
+        $output = [];
+        $tempDir = (new TemporaryDirectory())->create();
+        $tempHtmlPath = $tempDir->path('index.html');
+        file_put_contents($tempHtmlPath, $html);
+        $command = 'node generate_pdf.js "file://' . $tempHtmlPath . '"';
+        exec($command, $output);
+        $report = $output[0];
+        $tempDir->delete();
+        return response()->stream(function () use ($report) {
+            echo base64_decode($report);
+        }, 200, [
+            'Content-Type' => 'application/pdf',
+        ]);
     }
     /**
      * Display the reporting page
@@ -97,14 +93,15 @@ class PageController extends Controller
             $address = null;
         }
         return view('pages.reporting', [
+            'id' => $geopoint->id,
             'size' => $geopoint->system_capacity_kWp,
             'cost' => $geopoint->system_cost_GBP,
             'savings' => $geopoint->lifetime_gen_GBP,
             'breakeven' => $geopoint->breakeven_years,
             'tons' => round($geopoint->annual_co2_saved_kg / 1000, 2),
-            'cars' => round($geopoint->annual_gen_kWh * 0.0001275, 2),
+            'cars' => round($geopoint->annual_gen_kWh * 0.000225, 2),
             'trees' => round($geopoint->annual_gen_kWh * 0.0117, 2),
-            'oil' => round($geopoint->annual_gen_kWh * 0.0123, 2),
+            'oil' => round($geopoint->annual_gen_kWh * 0.2174, 2),
             'lat' => $lat,
             'lon' => $lon,
             'address' => $address,

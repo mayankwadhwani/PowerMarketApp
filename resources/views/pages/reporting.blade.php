@@ -38,7 +38,7 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <h5 class="card-title text-muted mb-0">Size of System</h5>
-                                                    <span class="h2 font-weight-bold mb-0" id="co2-card">{{ $size ?? '' }} kWp</span>
+                                                    <span class="h2 font-weight-bold mb-0" id="co2-card">{{ $size ? number_format($size) : '' }} kWp</span>
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="row">
@@ -57,7 +57,7 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <h5 class="card-title text-muted mb-0">System Cost</h5>
-                                                    <span class="h2 font-weight-bold mb-0" id="savings-card">&#163;{{ $cost ?? ''}}</span>
+                                                    <span class="h2 font-weight-bold mb-0" id="savings-card">&#163;{{ $cost ? number_format($cost) : ''}}</span>
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="row">
@@ -76,7 +76,7 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <h5 class="card-title text-muted mb-0">Lifetime Savings</h5>
-                                                    <span class="h2 font-weight-bold mb-0">&#163;{{ $savings ?? ''}}</span>
+                                                    <span class="h2 font-weight-bold mb-0">&#163;{{ $savings ? number_format($savings) : ''}}</span>
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="row">
@@ -283,7 +283,7 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <a href="{{ route('page.pricing') }}"><button type="button" class="btn btn-primary mb-3">Download Report</button></a>
+                                <a href="{{ route('page.pdf') }}?geopoint_id={{ $id }}"><button type="button" class="btn btn-primary mb-3">Download Report</button></a>
                             </div>
                         </div>
                     </div>

@@ -158,7 +158,7 @@
                 <div class="card border-0">
                     {{--                    <div id="map-custom" class="map-canvas" data-lat="40.748817" data-lng="-73.985428" style="height: 600px;"></div>--}}
                     <div id='map' class="map-canvas" style='height: 600px;'></div>
-                    <nav id="filter-group" class="filter-group" style="border-radius:.375rem">
+                    <nav id="filter-group" class="filter-group">
                         <span style="background-color: #1B2B4B;margin-bottom: 0px;display: block;border-bottom: 1px solid rgba(0, 0, 0, 0.25);padding: 10px;">
                             Break-even</span>
                     </nav>
@@ -545,7 +545,8 @@
         top: 10px;
         right: 10px;
         z-index: 1;
-        border-radius: 3px;
+        border-radius: .375rem;
+        overflow:hidden;
         width: 120px;
         color: #fff;
     }
