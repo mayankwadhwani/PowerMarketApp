@@ -19,8 +19,8 @@ async function run() {
             format: "A4",
             scale: 0.49
         });
-        await browser.close();
         console.log(pdf.toString('base64'));
+        await browser.close();
         process.exit();
     } catch (error) {
         console.log(error);
