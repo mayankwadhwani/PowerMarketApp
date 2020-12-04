@@ -333,7 +333,7 @@
                         },
                         'filter': ['==', 'years', symbol],
                         'paint': {
-                            'icon-color': yearColorMap.get(symbol)
+                            'icon-color': yearColorMap.get(symbol) ?? '#6D0000'
                         }
                         // 'paint': {
                         //     // make circles larger as the user zooms from z12 to z22
@@ -362,7 +362,7 @@
 
                     var label = document.createElement('label');
                     label.setAttribute('for', layerID);
-                    label.setAttribute('style', 'margin-bottom:0px;background-color:'+yearColorMap.get(symbol));
+                    label.setAttribute('style', 'margin-bottom:0px;background-color:'+(yearColorMap.get(symbol) ?? '#6D0000'));
                     label.textContent = symbol + ' Years';
                     filterGroup.appendChild(label);
 
