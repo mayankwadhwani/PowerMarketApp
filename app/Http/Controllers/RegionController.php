@@ -31,8 +31,11 @@ class RegionController extends Controller
                 if($field == 'latLon'){
                     $value[] = $this->wrapPoint($point);
                 }
-                else{ 
+                else if(is_string($point[$field])) { 
                     $value[] = '"'.$point[$field].'"';
+                }
+                else {
+                    $value[] = '"'.json_encode($point[$field]).'"';
                 }
             }
             $value[] = '"'.$region->id.'"';

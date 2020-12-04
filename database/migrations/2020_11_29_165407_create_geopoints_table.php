@@ -30,6 +30,11 @@ class CreateGeopointsTable extends Migration
             $table->double('lifetime_co2_saved_kg')->default(0);
             $table->double('lifecycle_co2_emissions_kg')->default(0);
             $table->double('lifetime_return_on_investment_percent')->default(0);
+            $table->json('lats')->nullabe();
+            $table->json('lons')->nullable();
+            $table->json('yearly_co2_saved_kg')->nullable();
+            $table->json('monthly_gen_export_value_GBP')->nullable();
+            $table->json('monthly_gen_saving_value_GBP')->nullable();
             $table->spatialIndex('latLon');
         });
     }
