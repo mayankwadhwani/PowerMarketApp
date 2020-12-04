@@ -29,7 +29,7 @@
                         </div>
                         <div class="card-body px-lg-10">
                             <div class="row justify-content-center">
-                                <img class="pb-6 pt-4 col-7 col-sm-5 col-md-4 col-lg-3 col-xl-2" src="{{ asset('argon') }}/img/icons/common/powermarket.png" width="100%" class="" alt="...">
+                                <img class="pb-6 pt-4 col-7 col-sm-5 col-md-4 col-lg-3 col-xl-2" src="{{ asset('argon') }}/img/icons/common/powermarket.png" style="width: 100%; height: auto;" class="" alt="...">
                             </div>
                             <div class="row">
                                 <div class="col-xl-3 col-md-6">
