@@ -95,7 +95,7 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <h5 class="card-title text-muted mb-0">Breakeven Time</h5>
-                                                    <span class="h2 font-weight-bold mb-0" id="potential-card">{{ isset($breakeven) ?? ''}} years</span>
+                                                    <span class="h2 font-weight-bold mb-0" id="potential-card">{{ $breakeven ?? ''}} years</span>
                                                 </div>
                                                 <div class="col-auto">
                                                     <div class="row">
@@ -324,7 +324,12 @@
     ' !!}';
     var lon = '{!! $lon ?? '
     ' !!}';
-
+    var monthly_savings = JSON.parse('{!! $monthly_savings ?? '
+        ' !!}');
+    var monthly_exports = JSON.parse('{!! $monthly_exports ?? '
+        ' !!}');
+    var saved_co2 = JSON.parse('{!! $saved_co2 ?? '
+        ' !!} ');
     function renderTable() {
         var jsonString = '{!! $geodata ?? '
         ' !!}';
@@ -366,15 +371,11 @@
                 datasets: [{
                     label: 'Savings',
                     backgroundColor: '#6074DD',
-                    data: [
-                        10, 23, 20, 22, 25, 22, 21, 42, 32, 13, 23, 4
-                    ]
+                    data: monthly_savings
                 }, {
                     label: 'Export',
                     backgroundColor: '#1B2B4B',
-                    data: [
-                        12, 23, 24, 2, 22, 32, 12, 42, 32, 23, 13, 44
-                    ]
+                    data: monthly_exports
                 }]
             };
             // Options
@@ -418,9 +419,12 @@
         // Variables
 
         var $chart = $('#chart-report');
-        var numOfYears = 25;
-        var years = [];
-        for (var i = 1; i <= numOfYears; i++) {
+        var numOfYears = 25, negatives=[], positives=[], years=[];
+        for (var i = 0; i <= numOfYears; i++) {
+            if(saved_co2[i] <= 0) {
+                negatives.push(saved_co2[i]/1000)
+            }
+            positives.push(saved_co2[i]/1000)
             years.push(i);
         }
 
@@ -449,16 +453,12 @@
                     labels: years,
                     datasets: [{
                             label: 'Negative',
-                            data: [-50, -20, -10],
+                            data: negatives,
                             borderColor: '#17192B'
                         },
                         {
                             label: 'Positive',
-                            data: [-50, -20, -10, 1, 4, 8,
-                                10, 15, 19, 22, 26, 27, 29, 30,
-                                35, 39, 42, 48, 50, 52, 55, 56,
-                                59, 60, 61
-                            ]
+                            data: positives
                         }
                     ],
                 }

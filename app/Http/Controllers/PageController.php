@@ -51,12 +51,15 @@ class PageController extends Controller
             'breakeven' => $geopoint->breakeven_years,
             'tons' => round($geopoint->annual_co2_saved_kg / 1000, 2),
             'cars' => round($geopoint->annual_gen_kWh * 0.000225, 2),
-            'trees' => round($geopoint->annual_gen_kWh * 0.0117, 2),
-            'oil' => round($geopoint->annual_gen_kWh * 0.2174, 2),
+            'trees' => round($geopoint->annual_gen_kWh * 0.0117),
+            'oil' => round($geopoint->annual_gen_kWh * 0.2174),
             'lat' => $lat,
             'lon' => $lon,
             'address' => $address,
-            'geodata' => json_encode([$geopoint])
+            'geodata' => json_encode([$geopoint]),
+            'monthly_savings' => json_encode($geopoint->monthly_gen_saving_value_GBP),
+            'monthly_exports' => json_encode($geopoint->monthly_gen_export_value_GBP),
+            'saved_co2' => json_encode($geopoint->yearly_co2_saved_kg)
         ]);
         $output = [];
         $tempDir = (new TemporaryDirectory())->create();
@@ -100,12 +103,15 @@ class PageController extends Controller
             'breakeven' => $geopoint->breakeven_years,
             'tons' => round($geopoint->annual_co2_saved_kg / 1000, 2),
             'cars' => round($geopoint->annual_gen_kWh * 0.000225, 2),
-            'trees' => round($geopoint->annual_gen_kWh * 0.0117, 2),
-            'oil' => round($geopoint->annual_gen_kWh * 0.2174, 2),
+            'trees' => round($geopoint->annual_gen_kWh * 0.0117),
+            'oil' => round($geopoint->annual_gen_kWh * 0.2174),
             'lat' => $lat,
             'lon' => $lon,
             'address' => $address,
-            'geodata' => json_encode([$geopoint])
+            'geodata' => json_encode([$geopoint]),
+            'monthly_savings' => json_encode($geopoint->monthly_gen_saving_value_GBP),
+            'monthly_exports' => json_encode($geopoint->monthly_gen_export_value_GBP),
+            'saved_co2' => json_encode($geopoint->yearly_co2_saved_kg)
         ]);
     }
 
