@@ -36,7 +36,7 @@
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
-            @if (!in_array(request()->route()->getName(), ['welcome', 'page.pricing','page.reporting', 'page.privacy', 'page.lock', 'page.pdf']))
+            @if (!in_array(request()->route()->getName(), ['welcome', 'page.pricing','page.reporting', 'page.privacy', 'page.lock', 'page.pdf', 'page.faq']))
                 @include('layouts.navbars.sidebar')
             @endif
         @endauth

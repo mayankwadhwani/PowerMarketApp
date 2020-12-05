@@ -125,6 +125,10 @@ class PageController extends Controller
         return view('pages.privacy');
     }
 
+    public function faq()
+    {
+        return view('pages.privacy');
+    }
     /**
      * Display the pricing page
      *
