@@ -30,6 +30,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 	Route::prefix('region')->group(function () {
 		Route::post('create', 'RegionController@create');
 	});
+	Route::apiResource('accounts', 'AccountController');
 });
 
 Route::group(['middleware' => 'auth'], function () {
