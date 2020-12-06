@@ -330,6 +330,7 @@
         ' !!}');
     var saved_co2 = JSON.parse('{!! $saved_co2 ?? '
         ' !!} ');
+
     function renderTable() {
         var jsonString = '{!! $geodata ?? '
         ' !!}';
@@ -419,12 +420,16 @@
         // Variables
 
         var $chart = $('#chart-report');
-        var numOfYears = 25, negatives=[], positives=[], years=[];
+        var numOfYears = 25,
+            negatives = [],
+            positives = [],
+            years = [];
+        var firstPositive = 26;
         for (var i = 0; i <= numOfYears; i++) {
-            if(saved_co2[i] <= 0) {
-                negatives.push(saved_co2[i]/1000)
-            }
-            positives.push(saved_co2[i]/1000)
+            if (saved_co2[i] <= 0) {
+                negatives.push(saved_co2[i] / 1000)
+            } else firstPositive = Math.min(firstPositive, i);
+            positives.push(saved_co2[i] / 1000)
             years.push(i);
         }
 
@@ -444,9 +449,37 @@
                         }],
                         xAxes: [{
                             ticks: {
-                                autoskip: true,
+                                callback: function(value, index, values) {
+                                    if(value % 5 == 0)
+                                    return value;
+                                    else return null;
+                                }
                             }
                         }]
+                    },
+                    tooltips: {
+                        callbacks: {
+                            labelColor: function(tooltipItem, data) {
+                                if (tooltipItem.datasetIndex == 0) {
+                                    return {
+                                        backgroundColor: '#17192B'
+                                    }
+                                } else {
+                                    return {
+                                        backgroundColor: '#6074DD'
+                                    }
+                                }
+                            }
+                        },
+                        filter: function(tooltipItem, data) {
+                            var dataIndex = tooltipItem.datasetIndex;
+                            var label = data.labels[tooltipItem.index];
+                            if (dataIndex == 0) {
+                                return true;
+                            } else if (label < firstPositive) {
+                                return false;
+                            } else return true;
+                        }
                     }
                 },
                 data: {
