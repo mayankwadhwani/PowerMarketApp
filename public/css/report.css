@@ -1,11 +1,24 @@
-.card .table thead th{
-   white-space: normal;
-   padding-left: 1rem;
-   padding-right: 1rem;
-   vertical-align: top;
+.card .table thead th {
+    white-space: normal;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    vertical-align: top;
 }
 
 .showing {
-   padding-left: 1.5rem;
-   padding-top: 1.5rem;
+    padding-left: 1.5rem;
+    padding-top: 1.5rem;
+}
+
+.net {
+    position: relative;
+    display: inline-block;
+}
+
+.net img {
+    width: 11px;
+    height: 11px;
+    position: absolute;
+    top: 0px;
+    right: -8px;
 }

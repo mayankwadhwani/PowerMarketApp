@@ -50,7 +50,7 @@ class PageController extends Controller
             'savings' => $geopoint->lifetime_gen_GBP,
             'breakeven' => $geopoint->breakeven_years,
             'tons' => round($geopoint->annual_co2_saved_kg / 1000, 2),
-            'cars' => round($geopoint->annual_gen_kWh * 0.000225, 2),
+            'cars' => round($geopoint->annual_gen_kWh * 0.00025, 2),
             'trees' => round($geopoint->annual_gen_kWh * 0.0117),
             'oil' => round($geopoint->annual_gen_kWh * 0.2174),
             'lat' => $lat,
@@ -61,6 +61,7 @@ class PageController extends Controller
             'monthly_exports' => json_encode($geopoint->monthly_gen_export_value_GBP),
             'saved_co2' => json_encode($geopoint->yearly_co2_saved_kg)
         ]);
+        return $html;
         $output = [];
         $tempDir = (new TemporaryDirectory())->create();
         $tempHtmlPath = $tempDir->path('index.html');
@@ -102,7 +103,7 @@ class PageController extends Controller
             'savings' => $geopoint->lifetime_gen_GBP,
             'breakeven' => $geopoint->breakeven_years,
             'tons' => round($geopoint->annual_co2_saved_kg / 1000, 2),
-            'cars' => round($geopoint->annual_gen_kWh * 0.000225, 2),
+            'cars' => round($geopoint->annual_gen_kWh * 0.00025, 2),
             'trees' => round($geopoint->annual_gen_kWh * 0.0117),
             'oil' => round($geopoint->annual_gen_kWh * 0.2174),
             'lat' => $lat,
@@ -128,6 +129,11 @@ class PageController extends Controller
     public function faq()
     {
         return view('pages.privacy');
+    }
+
+    public function building()
+    {
+        return view('pages.saved_reporting');
     }
     /**
      * Display the pricing page

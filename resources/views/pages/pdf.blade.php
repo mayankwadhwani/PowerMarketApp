@@ -29,14 +29,14 @@
         <div class="container-fluid">
             <div class="row justify-content-center">
                 <div class="col-12">
-                    <div class="pricing card-group mb-3">
-                        <div class="card card-pricing border-0 mb-4">
+                    <div class="pricing card-group">
+                        <div class="card card-pricing border-0 mb-4 mt-4">
                             <div class="card-header bg-transparent">
                                 <h4 class="text-uppercase ls-1 text-primary text-center py-3 mb-0">Report for: {{ $address ?? ''}}</h4>
                             </div>
-                            <div class="card-body px-lg-12">
+                            <div class="card-body px-lg-10">
                                 <div class="row justify-content-center">
-                                    <img class="pb-6 pt-4 col-7 col-sm-5 col-md-4 col-lg-2 col-xl-2" src="{{ asset('argon') }}/img/icons/common/powermarket.png" width="100%" class="" alt="...">
+                                    <img class="pb-6 pt-4 col-7 col-sm-5 col-md-4 col-lg-3 col-xl-2" src="{{ asset('argon') }}/img/icons/common/powermarket.png" style="width: 100%; height: auto;" class="" alt="...">
                                 </div>
                                 <div class="row">
                                     <div class="col-xl-3 col-md-6">
@@ -138,7 +138,11 @@
                                             <!-- Card header -->
                                             <div class="card-header">
                                                 <!-- Title -->
-                                                <h5 class="h3 mb-0">Net Annual CO<sub>2</sub> Savings</h5>
+                                                <h5 class="h3 mb-0 net">Net
+                                                    <img src="{{ asset('svg') }}/info.svg" data-toggle="tooltip" title="After taking CO2 emissions from solar manufacturing into account." />
+                                                </h5>
+                                                &nbsp;
+                                                <h5 class="h3 mb-0 net">Annual CO<sub>2</sub> Savings</h5>
                                             </div>
                                             <!-- Card body -->
                                             <div class="card-body">
@@ -168,7 +172,7 @@
                                                         <b class="h5">Tonnes of carbon eliminated per year</b>
                                                     </div>
                                                     <div class="col-md-2 col-sm-3 col-12 text-right">
-                                                        <strong>{{ $tons ?? '' }}</strong>
+                                                        <strong>{{ isset($tons) ? number_format($tons, 2) : '' }}</strong>
                                                     </div>
                                                 </div>
                                                 <div class="row h-25 align-items-center">
@@ -179,7 +183,7 @@
                                                         <b class="h5">Cars taken off the road per year</b>
                                                     </div>
                                                     <div class="col-md-2 col-sm-3 col-12 text-right">
-                                                        <strong>{{ $cars ?? '' }}</strong>
+                                                        <strong>{{ isset($cars) ? number_format($cars, 2) : '' }}</strong>
                                                     </div>
                                                 </div>
                                                 <div class="row h-25 align-items-center">
@@ -190,7 +194,7 @@
                                                         <b class="h5">Equivalent of new trees planted</b>
                                                     </div>
                                                     <div class="col-md-2 col-sm-3 col-12 text-right">
-                                                        <strong>{{ $trees ?? ''}}</strong>
+                                                        <strong>{{ isset($trees)  ? number_format($trees) : ''}}</strong>
                                                     </div>
                                                 </div>
                                                 <div class="row h-25 align-items-center">
@@ -201,7 +205,7 @@
                                                         <b class="h5">Litres of petrol/gas saved</b>
                                                     </div>
                                                     <div class="col-md-2 col-sm-3 col-12 text-right">
-                                                        <strong>{{ $oil ?? ''}}</strong>
+                                                        <strong>{{ isset($oil) ? number_format($oil) : ''}}</strong>
                                                     </div>
                                                 </div>
                                             </div>
@@ -288,6 +292,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="text-center">
+                                    <a href="{{ route('page.pdf') }}?geopoint_id={{ $id ?? ''}}"><button type="button" class="btn btn-primary mb-3">Download Report</button></a>
                                 </div>
                             </div>
                         </div>
@@ -376,11 +383,13 @@
                     datasets: [{
                         label: 'Savings',
                         backgroundColor: '#6074DD',
-                        data: monthly_savings
+                        data: monthly_savings,
+                        borderWidth: 0
                     }, {
                         label: 'Export',
                         backgroundColor: '#1B2B4B',
-                        data: monthly_exports
+                        data: monthly_exports,
+                        borderWidth: 0
                     }]
                 };
                 // Options
@@ -399,9 +408,6 @@
                     legend: {
                         display: true,
                         position: 'top',
-                        labels: {
-                            boxWidth: 50,
-                        },
                     },
                 }
                 // Init chart
@@ -428,10 +434,11 @@
                 negatives = [],
                 positives = [],
                 years = [];
+            var firstPositive = 26;
             for (var i = 0; i <= numOfYears; i++) {
                 if (saved_co2[i] <= 0) {
                     negatives.push(saved_co2[i] / 1000)
-                }
+                } else firstPositive = Math.min(firstPositive, i);
                 positives.push(saved_co2[i] / 1000)
                 years.push(i);
             }
@@ -446,15 +453,44 @@
                             yAxes: [{
                                 gridLines: {
                                     color: '#6074DD',
-                                    zeroLineColor: '#6074DD'
+                                    zeroLineColor: '#6074DD',
+                                    zeroLineBorderDash: [0, 0]
                                 },
                                 ticks: {}
                             }],
                             xAxes: [{
                                 ticks: {
-                                    autoskip: true,
+                                    callback: function(value, index, values) {
+                                        if (value % 5 == 0)
+                                            return value;
+                                        else return null;
+                                    }
                                 }
                             }]
+                        },
+                        tooltips: {
+                            callbacks: {
+                                labelColor: function(tooltipItem, data) {
+                                    if (tooltipItem.datasetIndex == 0) {
+                                        return {
+                                            backgroundColor: '#17192B'
+                                        }
+                                    } else {
+                                        return {
+                                            backgroundColor: '#6074DD'
+                                        }
+                                    }
+                                }
+                            },
+                            filter: function(tooltipItem, data) {
+                                var dataIndex = tooltipItem.datasetIndex;
+                                var label = data.labels[tooltipItem.index];
+                                if (dataIndex == 0) {
+                                    return true;
+                                } else if (label < firstPositive) {
+                                    return false;
+                                } else return true;
+                            }
                         }
                     },
                     data: {
@@ -511,10 +547,11 @@
             antialias: true,
             zoom: 16.5,
             center: [lon, lat],
-            preserveDrawingBuffer: true
+            preserveDrawingBuffer: true,
+            attributionControl: false
         });
         var marker = new mapboxgl.Marker({
-                color: '#17192B'
+                color: '#F6A22B'
             })
             .setLngLat([lon, lat])
             .addTo(map);

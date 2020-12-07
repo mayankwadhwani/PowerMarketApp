@@ -17,6 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('sample-building-data-report', 'PageController@building')->name('page.building');
 Route::get('dashboard', 'HomeController@index')->name('home');
 Route::get('pricing', 'PageController@pricing')->name('page.pricing');
 Route::get('privacy', 'PageController@privacy')->name('page.privacy');

@@ -168,7 +168,7 @@
         <!-- Disclaimer -->
         <h4>Disclaimer</h4>
         <h5>The data presented are estimations based on standard, industry-wide assumption; but can differ from actual solar array for the rooftops displayed. Please consult a professional solar installations company for a cutomised proposal.</h5>
-        <h5><a href="{{ route('page.faq') }}">FAQ</a></h5>
+        <h5><a href="{{ route('page.faq') }}" target="_blank">FAQ</a></h5>
         <!-- Footer -->
         @include('layouts.footers.auth')
     </div>
@@ -257,9 +257,9 @@
                     '       <strong>Lifetime RoI:</strong> '+numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a')+'%<br/> '+
                     '       </p>' +
                     '       <a href=\\"{{ route('page.reporting') }}?geopoint_id='+dataArray[key].id+'\\" class=\\"btn btn-primary \\" ' +
-                    '       target=\\"_blank\\" title=\\"Upgrade to download full building report.\\">Generate Report</a>' +
-                    '       <button type=\\"button\\" class=\\"btn btn-primary disabled \\" data-toggle=\\"tooltip\\" data-placement=\\"top\\" ' +
-                    '       title=\\"Upgrade to view detailed building ownership information, and tenancy details for commercial and industrial buildings.\\">Building Info</button>' +
+                    '       target=\\"_blank\\">Generate Report</a>' +
+                    '       <a href=\\"{{ route('page.building') }}\\" class=\\"btn btn-primary\\" data-toggle=\\"tooltip\\" data-placement=\\"top\\" ' +
+                    '       target=\\"_blank\\" title=\\"Upgrade to view detailed building ownership information, and tenancy details for commercial and industrial buildings.\\">Building Info</button>' +
                     '   </div>' +
                     '</div>", ' +
                     '"years": '+dataArray[key].breakeven_years+', ' +
@@ -395,6 +395,7 @@
                             .setHTML(description)
                             .setMaxWidth("500px")
                             .addTo(map);
+                        $('[data-toggle="tooltip"]').tooltip();
                     });
                     // Change the cursor to a pointer when the mouse is over the layer.
                     map.on('mouseenter', layerID, function() {
@@ -532,6 +533,7 @@
     }
     $( document ).ready(function() {
         renderMap();
+        $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
 <style>

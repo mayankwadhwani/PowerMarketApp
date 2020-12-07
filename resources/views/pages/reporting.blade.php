@@ -131,7 +131,12 @@
                                         <!-- Card header -->
                                         <div class="card-header">
                                             <!-- Title -->
-                                            <h5 class="h3 mb-0">Net Annual CO<sub>2</sub> Savings</h5>
+                                            <h5 class="h3 mb-0 net">Net
+                                                <img src="{{ asset('svg') }}/info.svg" data-toggle="tooltip"
+                                                title="After taking CO2 emissions from solar manufacturing into account."/>
+                                            </h5>
+                                            &nbsp;
+                                            <h5 class="h3 mb-0 net">Annual CO<sub>2</sub> Savings</h5>
                                         </div>
                                         <!-- Card body -->
                                         <div class="card-body">
@@ -161,7 +166,7 @@
                                                     <b class="h5">Tonnes of carbon eliminated per year</b>
                                                 </div>
                                                 <div class="col-md-2 col-sm-3 col-12 text-right">
-                                                    <strong>{{ isset($tons) ? number_format($tons) : '' }}</strong>
+                                                    <strong>{{ isset($tons) ? number_format($tons, 2) : '' }}</strong>
                                                 </div>
                                             </div>
                                             <div class="row h-25 align-items-center">
@@ -172,7 +177,7 @@
                                                     <b class="h5">Cars taken off the road per year</b>
                                                 </div>
                                                 <div class="col-md-2 col-sm-3 col-12 text-right">
-                                                    <strong>{{ isset($cars) ? number_format($cars) : '' }}</strong>
+                                                    <strong>{{ isset($cars) ? number_format($cars, 2) : '' }}</strong>
                                                 </div>
                                             </div>
                                             <div class="row h-25 align-items-center">
@@ -442,15 +447,16 @@
                         yAxes: [{
                             gridLines: {
                                 color: '#6074DD',
-                                zeroLineColor: '#6074DD'
+                                zeroLineColor: '#6074DD',
+                                zeroLineBorderDash: [0, 0]
                             },
                             ticks: {}
                         }],
                         xAxes: [{
                             ticks: {
                                 callback: function(value, index, values) {
-                                    if(value % 5 == 0)
-                                    return value;
+                                    if (value % 5 == 0)
+                                        return value;
                                     else return null;
                                 }
                             }
@@ -512,6 +518,7 @@
     };
     mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
     $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
         var table = $('#datatable-report').DataTable({
             paging: false,
             searching: false,
@@ -537,7 +544,7 @@
         center: [lon, lat]
     });
     var marker = new mapboxgl.Marker({
-            color: '#17192B'
+            color: '#F6A22B'
         })
         .setLngLat([lon, lat])
         .addTo(map);
