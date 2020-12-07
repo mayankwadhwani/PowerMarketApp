@@ -61,7 +61,6 @@ class PageController extends Controller
             'monthly_exports' => json_encode($geopoint->monthly_gen_export_value_GBP),
             'saved_co2' => json_encode($geopoint->yearly_co2_saved_kg)
         ]);
-        return $html;
         $output = [];
         $tempDir = (new TemporaryDirectory())->create();
         $tempHtmlPath = $tempDir->path('index.html');
