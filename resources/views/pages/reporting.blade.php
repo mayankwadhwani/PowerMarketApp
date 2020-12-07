@@ -161,7 +161,7 @@
                                                     <b class="h5">Tonnes of carbon eliminated per year</b>
                                                 </div>
                                                 <div class="col-md-2 col-sm-3 col-12 text-right">
-                                                    <strong>{{ $tons ?? '' }}</strong>
+                                                    <strong>{{ isset($tons) ? number_format($tons) : '' }}</strong>
                                                 </div>
                                             </div>
                                             <div class="row h-25 align-items-center">
@@ -172,7 +172,7 @@
                                                     <b class="h5">Cars taken off the road per year</b>
                                                 </div>
                                                 <div class="col-md-2 col-sm-3 col-12 text-right">
-                                                    <strong>{{ $cars ?? '' }}</strong>
+                                                    <strong>{{ isset($cars) ? number_format($cars) : '' }}</strong>
                                                 </div>
                                             </div>
                                             <div class="row h-25 align-items-center">
@@ -183,7 +183,7 @@
                                                     <b class="h5">Equivalent of new trees planted</b>
                                                 </div>
                                                 <div class="col-md-2 col-sm-3 col-12 text-right">
-                                                    <strong>{{ $trees ?? ''}}</strong>
+                                                    <strong>{{ isset($trees)  ? number_format($trees) : ''}}</strong>
                                                 </div>
                                             </div>
                                             <div class="row h-25 align-items-center">
@@ -194,7 +194,7 @@
                                                     <b class="h5">Litres of petrol/gas saved</b>
                                                 </div>
                                                 <div class="col-md-2 col-sm-3 col-12 text-right">
-                                                    <strong>{{ $oil ?? ''}}</strong>
+                                                    <strong>{{ isset($oil) ? number_format($oil) : ''}}</strong>
                                                 </div>
                                             </div>
                                         </div>
@@ -372,11 +372,13 @@
                 datasets: [{
                     label: 'Savings',
                     backgroundColor: '#6074DD',
-                    data: monthly_savings
+                    data: monthly_savings,
+                    borderWidth: 0
                 }, {
                     label: 'Export',
                     backgroundColor: '#1B2B4B',
-                    data: monthly_exports
+                    data: monthly_exports,
+                    borderWidth: 0
                 }]
             };
             // Options
@@ -395,9 +397,6 @@
                 legend: {
                     display: true,
                     position: 'top',
-                    labels: {
-                        boxWidth: 50,
-                    },
                 },
             }
             // Init chart
