@@ -73,6 +73,7 @@ class PageController extends Controller
             echo base64_decode($report);
         }, 200, [
             'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'filename="'.$address.'"'
         ]);
     }
     /**

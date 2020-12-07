@@ -138,11 +138,9 @@
                                             <!-- Card header -->
                                             <div class="card-header">
                                                 <!-- Title -->
-                                                <h5 class="h3 mb-0 net">Net
+                                                <h5 class="h3 mb-0 net">Net Annual CO<sub>2</sub> Savings
                                                     <img src="{{ asset('svg') }}/info.svg" data-toggle="tooltip" title="After taking CO2 emissions from solar manufacturing into account." />
                                                 </h5>
-                                                &nbsp;
-                                                <h5 class="h3 mb-0 net">Annual CO<sub>2</sub> Savings</h5>
                                             </div>
                                             <!-- Card body -->
                                             <div class="card-body">
