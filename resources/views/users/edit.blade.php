@@ -44,7 +44,7 @@
 
                                     @include('alerts.feedback', ['field' => 'name'])
                                 </div>
-                                <div class="form-group{{ $errors->has('jsonData') ? ' has-danger' : '' }}">
+                                <!-- <div class="form-group{{ $errors->has('jsonData') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-jsonData">{{ __('Json Data') }}</label>
                                     <textarea name="jsonData" id="input-jsonData"
                                               class="form-control{{ $errors->has('jsonData') ? ' is-invalid' : '' }}"
@@ -52,12 +52,23 @@
                                               required autofocus>{{ old('jsonData', $user->jsonData) }}</textarea>
 
                                     @include('alerts.feedback', ['field' => 'jsonData'])
-                                </div>
+                                </div> -->
                                 <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-email">{{ __('Email') }}</label>
                                     <input type="email" name="email" id="input-email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="{{ __('Email') }}" value="{{ old('email', $user->email) }}" required>
 
                                     @include('alerts.feedback', ['field' => 'email'])
+                                </div>
+                                <div class="form-group{{ $errors->has('organization_id') ? ' has-danger' : '' }}">
+                                    <label class="form-control-label" for="input-organization">{{ __('Organization') }}</label>
+                                    <select name="organization_id" id="input-organization" class="form-control{{ $errors->has('organization_id') ? ' is-invalid' : '' }}" placeholder="{{ __('Organization') }}" required>
+                                        <option value="">-</option>
+                                        @foreach ($organizations as $organization)
+                                            <option value="{{ $organization->id }}" {{ $organization->id == old('organization_id', $user->organization_id) ? 'selected' : '' }}>{{ $organization->name }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    @include('alerts.feedback', ['field' => 'organization_id'])
                                 </div>
                                 <div class="form-group{{ $errors->has('role_id') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-role">{{ __('Role') }}</label>

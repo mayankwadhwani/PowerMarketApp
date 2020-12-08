@@ -4,9 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-use Grimzy\LaravelMysqlSpatial\Types\Point;
-
-class CreateAccountsTable extends Migration
+class AddOrganizationIdToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,12 +13,8 @@ class CreateAccountsTable extends Migration
      */
     public function up()
     {
-        Schema::create('accounts', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->double('lat');
-            $table->double('lon');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('organization_id')->nullable();
         });
     }
 
@@ -31,6 +25,8 @@ class CreateAccountsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accounts');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('organization_id');
+        });
     }
 }

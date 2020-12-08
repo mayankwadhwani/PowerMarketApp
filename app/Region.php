@@ -12,4 +12,8 @@ class Region extends Model
     {
         return $this->hasMany(Geopoint::class);
     }
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
 }

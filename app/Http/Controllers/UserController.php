@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Role;
 use App\User;
+use App\Organization;
+
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 
@@ -64,7 +66,11 @@ class UserController extends Controller
      */
     public function edit(User $user, Role $model)
     {
-        return view('users.edit', ['user' => $user->load('role'), 'roles' => $model->get(['id', 'name'])]);
+        return view('users.edit', [
+            'user' => $user->load('role'),
+            'roles' => $model->get(['id', 'name']),
+            'organizations' => Organization::all()
+        ]);
     }
 
     /**

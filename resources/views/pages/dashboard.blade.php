@@ -178,6 +178,7 @@
     <link rel="stylesheet" href="{{ asset('argon') }}/vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ asset('argon') }}/vendor/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ asset('argon') }}/vendor/datatables.net-select-bs4/css/select.bootstrap4.min.css">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
 @endpush
 @push('js')
 <script src="{{ asset('argon') }}/vendor/datatables.net/js/jquery.dataTables.min.js"></script>
@@ -188,8 +189,7 @@
 <script src="{{ asset('argon') }}/vendor/datatables.net-buttons/js/buttons.flash.min.js"></script>
 <script src="{{ asset('argon') }}/vendor/datatables.net-buttons/js/buttons.print.min.js"></script>
 <script src="{{ asset('argon') }}/vendor/datatables.net-select/js/dataTables.select.min.js"></script>
-<script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+<script src="{{ asset('js') }}/mapbox-gl.js"></script>
 <script src="{{ asset('argon') }}/vendor/list.js/dist/list.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 <script>
@@ -218,7 +218,7 @@
     var totalCount = 0;
     var selectedCount = 0;
     function renderMap(){
-        var jsonString = '{!! $geodata !!}';
+        var jsonString = '{!! $geodata ?? '' !!}';
         var features = [];
         var bounds = new mapboxgl.LngLatBounds();
         var filterGroup = document.getElementById('filter-group');
@@ -298,7 +298,7 @@
             $('#selected-count').text(numeral(dataArray.length).format('0,0'));
         }
         map.on('load', function() {
-            map.loadImage('./svg/map-marker-alt-solid.png', function(error, image) {
+            map.loadImage('../../svg/map-marker-alt-solid.png', function(error, image) {
                 if (error) throw error;
                 map.addImage('marker-icon', image, { 'sdf': true });
                 map.addSource('places', {

@@ -22,3 +22,43 @@
     top: 0px;
     right: -8px;
 }
+
+.orgname {
+    height: 250px;
+}
+
+.orgname .h1 {
+    position: absolute;
+    top: 40%;
+}
+
+.user {
+    padding-left: 15px;
+    padding-top: 15px;
+}
+
+.map-icon {
+    float:right;
+    width: 30px;
+    height: auto;
+}
+.map-icon:hover {
+    cursor: pointer;
+}
+
+.account-header {
+    display: inline-block;
+}
+
+@media (min-width: 400px){
+    .user img {
+        width: 70px;
+        margin-right: 10px;
+    }
+}
+@media (max-width: 400px){
+    .user img {
+        width: 50px;
+        margin-right: 5px;
+    }
+}

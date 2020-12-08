@@ -94,8 +94,17 @@
                         </a>
                         <div class="collapse {{ $parentSection == 'components' ? 'show' : '' }}" id="navbar-components">
                             <ul class="nav nav-sm flex-column">
-                                <li class="nav-item {{ $elementName == 'user-management' ? 'active' : '' }}">
+                                <li class="nav-item active">
                                     <a href="{{ route('user.index') }}" class="nav-link">{{ __('User Management') }}</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a href="{{ route('account.index') }}" class="nav-link">{{ __('Account Management') }}</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a href="{{ route('region.index') }}" class="nav-link">{{ __('Region Management') }}</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a href="{{ route('organization.index') }}" class="nav-link">{{ __('Organization Management') }}</a>
                                 </li>
 {{--                                <li class="nav-item {{ $elementName == 'buttons' ? 'active' : '' }}">--}}
 {{--                                    <a href="{{ route('page.index','buttons') }}" class="nav-link">{{ __('Buttons') }}</a>--}}

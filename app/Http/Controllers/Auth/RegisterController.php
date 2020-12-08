@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Organization;
+use App\Account;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -51,9 +54,8 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'user_type' => ['required'],
-            'user_category' => ['required'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'organization' => ['nullable', 'string', 'unique:organizations,name']
         ]);
     }
 
@@ -65,12 +67,19 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        if (isset($data['organization'])) {
+            $organization = Organization::create([
+                'name' => $data['organization']
+            ]);
+            $default_account = Account::where('name', Controller::DEFAULT_ACCOUNT)->first();
+            $organization->accounts()->attach($default_account);
+        }
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'role_id' => $data['user_type'],
-            'user_category' => $data['user_category'],
+            'role_id' => User::ORG_ADMIN,
             'password' => Hash::make($data['password']),
+            'organization_id' => isset($organization) ? $organization->id : null
         ]);
     }
 }
