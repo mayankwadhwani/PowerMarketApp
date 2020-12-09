@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<script src="{{ asset('js') }}/mapbox-gl.js"></script>
 <div class="header bg-primary">
     <div class="container-fluid">
         <div class="header-body">
@@ -45,7 +46,7 @@
         </div>
         @foreach($accounts as $account)
         <div class="col-lg-4 col-sm-6 col-12">
-            <div class="card">
+            <div class="card account" id="{{ isset($account) ? $account->id : '' }}">
                 <!-- Card header -->
                 <div class="card-header">
                     <!-- Title -->
@@ -82,9 +83,51 @@
         </div>
         @endforeach
     </div>
-    <div class="row">
-
+    @foreach($accounts as $account)
+    <div class="row" id="account-{{ $account->id }}" style="display:none">
+        <div class="col-12 pb-3">
+            <p class="h2">Data Sets:</p>
+        </div>
+        @foreach($account->regions as $region)
+        <div class="col-lg-4 col-sm-6 col-12">
+            <div class="card region" id="{{ $region->id }}" style="z-index: 400;">
+                <!-- Card header -->
+                <div class="card-header">
+                    <!-- Title -->
+                    <h5 class="h3 mb-0 account-header">{{ $region->name }}</h5>
+                    <a href="/dashboard/{{ $account->name }}/{{ $region->name }}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon" /></a>
+                </div>
+                <!-- Card body -->
+                <div class="card-body" style="height:300px;">
+                    <div id="map-region-{{ $region->id }}" style="width: 100%; height: 250px;"></div>
+                </div>
+                <script>
+                    mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
+                    var lat = '{!! $region->lat ?? '
+                    ' !!}';
+                    var lon = '{!! $region->lon ?? '
+                    ' !!}';
+                    var id = '{!! $region->id ?? '
+                    ' !!}';
+                    var map = new mapboxgl.Map({
+                        container: 'map-region-' + id,
+                        style: 'mapbox://styles/mapbox/satellite-streets-v11',
+                        bearing: -17.6,
+                        antialias: true,
+                        zoom: 10,
+                        center: [lon, lat]
+                    });
+                    var marker = new mapboxgl.Marker({
+                            color: '#F6A22B'
+                        })
+                        .setLngLat([lon, lat])
+                        .addTo(map);
+                </script>
+            </div>
+        </div>
+        @endforeach
     </div>
+    @endforeach
 </div>
 @endsection
 @push('css')
@@ -94,7 +137,17 @@
 @push('js')
 <script src="{{ asset('js') }}/mapbox-gl.js"></script>
 <script>
+    var active_account = 0;
     $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip();
+        $(".card.account").click(function(event) {
+            if (active_account == event.currentTarget.id) return;
+            $("#"+active_account+".card.account").removeClass('selected');
+            $("#account-" + active_account).css('display', 'none');
+            active_account = event.currentTarget.id;
+            $("#"+active_account+".card.account").addClass('selected');
+            $("#account-" + active_account).css('display', 'flex');
+        });
     });
 </script>
+@endpush

@@ -43,7 +43,7 @@ class HomeController extends Controller
         return view('pages.organization', [
             'org_name' => $org->name,
             'members' => $members,
-            'accounts' => $org->accounts
+            'accounts' => $org->accounts->load('regions')
         ]);
     }
     public function account($account_name)
