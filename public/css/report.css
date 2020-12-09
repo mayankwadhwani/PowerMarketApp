@@ -38,7 +38,7 @@
 }
 
 .map-icon {
-    float:right;
+    float: right;
     width: 30px;
     height: auto;
 }
@@ -48,15 +48,39 @@
 
 .account-header {
     display: inline-block;
+    color: inherit !important;
+    z-index:101;
+    position: relative;
 }
 
-@media (min-width: 400px){
+.account-header h5 {
+    display: 
+}
+.face {
+    display: none;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 100;
+    opacity: 0.4;
+    background-clip: content-box;
+    box-sizing: border-box;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 30px;
+    margin-bottom: 23px;
+}
+
+@media (min-width: 400px) {
     .user img {
         width: 70px;
         margin-right: 10px;
     }
 }
-@media (max-width: 400px){
+@media (max-width: 400px) {
     .user img {
         width: 50px;
         margin-right: 5px;

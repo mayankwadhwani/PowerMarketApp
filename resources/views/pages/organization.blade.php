@@ -46,12 +46,13 @@
         </div>
         @foreach($accounts as $account)
         <div class="col-lg-4 col-sm-6 col-12">
+            <div class="face"></div>
             <div class="card account" id="{{ isset($account) ? $account->id : '' }}">
                 <!-- Card header -->
                 <div class="card-header">
                     <!-- Title -->
                     <h5 class="h3 mb-0 account-header">{{ isset($account) ? $account->name : '' }}</h5>
-                    <a href="/dashboard/{{ $account->name }}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon" /></a>
+                    <a href="/dashboard/{{ $account->name }}" target="_blank"><img id="icon-{{ $account->id }}" src="{{ asset('svg') }}/map.svg" class="map-icon" /></a>
                 </div>
                 <!-- Card body -->
                 <div class="card-body" style="height:300px;">
@@ -84,13 +85,13 @@
         @endforeach
     </div>
     @foreach($accounts as $account)
-    <div class="row" id="account-{{ $account->id }}" style="display:none">
+    <div class="row" id="account-{{ $account->id }}" style="display: none;">
         <div class="col-12 pb-3">
             <p class="h2">Data Sets:</p>
         </div>
         @foreach($account->regions as $region)
         <div class="col-lg-4 col-sm-6 col-12">
-            <div class="card region" id="{{ $region->id }}" style="z-index: 400;">
+            <div class="card region" id="{{ $region->id }}">
                 <!-- Card header -->
                 <div class="card-header">
                     <!-- Title -->
@@ -99,7 +100,7 @@
                 </div>
                 <!-- Card body -->
                 <div class="card-body" style="height:300px;">
-                    <div id="map-region-{{ $region->id }}" style="width: 100%; height: 250px;"></div>
+                    <div id="map-region-{{ $region->id }}" style="height: 250px;"></div>
                 </div>
                 <script>
                     mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
@@ -115,7 +116,8 @@
                         bearing: -17.6,
                         antialias: true,
                         zoom: 10,
-                        center: [lon, lat]
+                        center: [lon, lat],
+                        attributionControl: false
                     });
                     var marker = new mapboxgl.Marker({
                             color: '#F6A22B'
@@ -142,11 +144,19 @@
         $('[data-toggle="tooltip"]').tooltip();
         $(".card.account").click(function(event) {
             if (active_account == event.currentTarget.id) return;
-            $("#"+active_account+".card.account").removeClass('selected');
+            //setting styles for previous active account
             $("#account-" + active_account).css('display', 'none');
+            var account_card = $("#"+active_account+".card.account");
+            account_card.css('color', 'black');
+            var face = account_card.prev();
+            face.css('display', 'none');
+            //setting styles for new active account
             active_account = event.currentTarget.id;
-            $("#"+active_account+".card.account").addClass('selected');
             $("#account-" + active_account).css('display', 'flex');
+            account_card = $("#"+active_account+".card.account");
+            account_card.css('color', 'white');
+            face = account_card.prev();
+            face.css('display', 'flex');
         });
     });
 </script>
