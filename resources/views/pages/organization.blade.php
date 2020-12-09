@@ -52,7 +52,8 @@
                 <div class="card-header">
                     <!-- Title -->
                     <h5 class="h3 mb-0 account-header">{{ isset($account) ? $account->name : '' }}</h5>
-                    <a href="/dashboard/{{ $account->name }}" target="_blank"><img id="icon-{{ $account->id }}" src="{{ asset('svg') }}/map.svg" class="map-icon" /></a>
+                    <a href="/dashboard/{{ $account->name }}" target="_blank"><img id="icon-{{ $account->id }}-black" src="{{ asset('svg') }}/map.svg" class="map-icon-black" /></a>
+                    <a href="/dashboard/{{ $account->name }}" target="_blank"><img id="icon-{{ $account->id }}-white" src="{{ asset('svg') }}/map-white.svg" class="map-icon-white" /></a>
                 </div>
                 <!-- Card body -->
                 <div class="card-body" style="height:300px;">
@@ -96,7 +97,7 @@
                 <div class="card-header">
                     <!-- Title -->
                     <h5 class="h3 mb-0 account-header">{{ $region->name }}</h5>
-                    <a href="/dashboard/{{ $account->name }}/{{ $region->name }}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon" /></a>
+                    <a href="/dashboard/{{ $account->name }}/{{ $region->name }}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black" /></a>
                 </div>
                 <!-- Card body -->
                 <div class="card-body" style="height:300px;">
@@ -160,7 +161,8 @@
             account_card.css('color', 'black');
             var face = account_card.prev();
             face.css('display', 'none');
-            account_card.find("img").first().attr('src', '{!! asset('svg') !!}/map.svg');
+            $('#icon-'+active_account+'-black').css('display', 'inline-block')
+            $('#icon-'+active_account+'-white').css('display', 'none')
             //setting styles for new active account
             active_account = event.currentTarget.id;
             $("[id=account-" + active_account + "]").css({
@@ -170,7 +172,8 @@
             account_card.css('color', 'white');
             face = account_card.prev();
             face.css('display', 'flex');
-            account_card.find("img").first().attr('src', '{!! asset('svg') !!}/map-white.svg');
+            $('#icon-'+active_account+'-black').css('display', 'none')
+            $('#icon-'+active_account+'-white').css('display', 'inline-block')
         });
     });
 </script>

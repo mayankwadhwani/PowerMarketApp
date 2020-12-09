@@ -37,12 +37,24 @@
     padding-top: 15px;
 }
 
-.map-icon {
+.map-icon-black {
     float: right;
     width: 30px;
     height: auto;
 }
-.map-icon:hover {
+
+.map-icon-black:hover {
+    cursor: pointer;
+}
+
+.map-icon-white {
+    float: right;
+    width: 30px;
+    height: auto;
+    display:none;
+}
+
+.map-icon-white:hover {
     cursor: pointer;
 }
 
