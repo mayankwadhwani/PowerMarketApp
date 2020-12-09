@@ -53,9 +53,11 @@
     position: relative;
 }
 
-.account-header h5 {
-    display: 
+.account a {
+    position: relative;
+    z-index:101;
 }
+
 .face {
     display: none;
     height: 100%;
@@ -72,6 +74,15 @@
     padding-left: 15px;
     padding-bottom: 30px;
     margin-bottom: 23px;
+}
+.card.cluster {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+}
+.cluster-button img {
+    height: 100px;
 }
 
 @media (min-width: 400px) {

@@ -49,6 +49,17 @@
 
                                     @include('alerts.feedback', ['field' => 'email'])
                                 </div>
+                                <div class="form-group{{ $errors->has('organization_id') ? ' has-danger' : '' }}">
+                                    <label class="form-control-label" for="input-organization">{{ __('Organization') }}</label>
+                                    <select name="organization_id" id="input-organization" class="form-control{{ $errors->has('organization_id') ? ' is-invalid' : '' }}" placeholder="{{ __('Organization') }}" required>
+                                        <option value="">-</option>
+                                        @foreach ($organizations as $organization)
+                                            <option value="{{ $organization->id }}" {{ $organization->id == old('organization_id') ? 'selected' : '' }}>{{ $organization->name }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    @include('alerts.feedback', ['field' => 'organization_id'])
+                                </div>
                                 <div class="form-group{{ $errors->has('role_id') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-role">{{ __('Role') }}</label>
                                     <select name="role_id" id="input-role" class="form-control{{ $errors->has('role_id') ? ' is-invalid' : '' }}" placeholder="{{ __('Role') }}" required>

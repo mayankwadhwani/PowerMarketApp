@@ -129,6 +129,16 @@
         </div>
         @endforeach
     </div>
+    <div class="row" id="account-{{ $account->id }}" style="display: none;">
+        <div class="col-12 pb-3">
+            <p class="h2">Clusters:</p>
+        </div>
+        <div class="col-lg-4 col-sm-6 col-12">
+            <div class="card cluster">
+                <a href="{{ route('page.pricing') }}" target="_blank" class="cluster-button"><img src="{{ asset('svg') }}/add-button.svg" class="rounded-circle border-secondary"></a>
+            </div>
+        </div>
+    </div>
     @endforeach
 </div>
 @endsection
@@ -145,18 +155,22 @@
         $(".card.account").click(function(event) {
             if (active_account == event.currentTarget.id) return;
             //setting styles for previous active account
-            $("#account-" + active_account).css('display', 'none');
-            var account_card = $("#"+active_account+".card.account");
+            $("[id=account-" + active_account + "]").css('display', 'none');
+            var account_card = $("#" + active_account + ".card.account");
             account_card.css('color', 'black');
             var face = account_card.prev();
             face.css('display', 'none');
+            account_card.find("img").first().attr('src', '{!! asset('svg') !!}/map.svg');
             //setting styles for new active account
             active_account = event.currentTarget.id;
-            $("#account-" + active_account).css('display', 'flex');
-            account_card = $("#"+active_account+".card.account");
+            $("[id=account-" + active_account + "]").css({
+                'display': 'flex'
+            });
+            account_card = $("#" + active_account + ".card.account");
             account_card.css('color', 'white');
             face = account_card.prev();
             face.css('display', 'flex');
+            account_card.find("img").first().attr('src', '{!! asset('svg') !!}/map-white.svg');
         });
     });
 </script>

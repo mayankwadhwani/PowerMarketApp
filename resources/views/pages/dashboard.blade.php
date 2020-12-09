@@ -7,7 +7,7 @@
     @component('layouts.headers.auth')
         @component('layouts.headers.breadcrumbs')
             @slot('title')
-                {{ __('Dashboard') }}
+                {{ __('Dashboard') }}{{ isset($account) ? " | ".$account : "" }}{{ isset($region) ? " | ".$region : "" }}
             @endslot
 
 {{--            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Dashboard') }}</a></li>--}}

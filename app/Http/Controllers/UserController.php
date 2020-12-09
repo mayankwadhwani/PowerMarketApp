@@ -37,7 +37,10 @@ class UserController extends Controller
      */
     public function create(Role $model)
     {
-        return view('users.create', ['roles' => $model->get(['id', 'name'])]);
+        return view('users.create', [
+            'roles' => $model->get(['id', 'name']),
+            'organizations' => Organization::all()
+        ]);
     }
 
     /**
