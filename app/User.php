@@ -106,6 +106,6 @@ class User extends Authenticatable
 
     public function isMember()
     {
-        return $this->role_id == self::ADMIN || $this->role_id == self::ORG_MEMBER;
+        return $this->role_id == self::ORG_MEMBER;
     }
 }
