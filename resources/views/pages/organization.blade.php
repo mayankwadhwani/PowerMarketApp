@@ -27,6 +27,7 @@
             <span class="h1">{{ $org_name }}</span>
         </div>
     </div>
+    @if(!auth()->user()->isMember())
     <div class="row">
         <div class="col-12">
             <p class="h2">Users:</p>
@@ -37,9 +38,64 @@
         </div>
         @endforeach
         <div class="user">
-            <img src="{{ asset('svg') }}/add-button.svg" class="rounded-circle border-secondary">
+            <a data-toggle="modal" data-target="#modal-form">
+                <img src="{{ asset('svg') }}/add-button.svg" class="rounded-circle border-secondary">
+            </a>
+            <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body p-0">
+                            <div class="card bg-secondary shadow border-0 mb-0">
+                                <div class="card-header bg-white">
+                                    <div class="text-muted text-left mb-3">
+                                        <h2>Invite User</h2>
+                                    </div>
+                                </div>
+                                <div class="card-body bg-white">
+                                    <form method="post" action="{{ route('invitation.store') }}" role="form">
+                                        @csrf
+                                        <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
+                                            <label class="form-control-label" for="input-name">{{ __('Name') }}</label>
+                                            <input type="text" name="name" id="input-name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Enter Name') }}" value="{{ old('name') }}" required autofocus>
+
+                                            @include('alerts.feedback', ['field' => 'name'])
+                                        </div>
+                                        <h4>Admin</h4>
+                                        <div class="form-group{{ $errors->has('is_admin') ? ' has-danger' : '' }}">
+                                            <label class="custom-toggle custom-toggle-success">
+                                                <input type="checkbox" name="is_admin" value="1" checked>
+                                                <span class="custom-toggle-slider rounded-circle" data-label-off="NO" data-label-on="YES"></span>
+                                            </label>
+                                            @include('alerts.feedback', ['field' => 'is_admin'])
+                                        </div>
+                                        <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
+                                            <label class="form-control-label" for="input-email">{{ __('Email') }}</label>
+                                            <input type="email" name="email" id="input-email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="{{ __('Enter Email') }}" value="{{ old('email') }}" required>
+
+                                            @include('alerts.feedback', ['field' => 'email'])
+                                        </div>
+                                        <h4>Accounts</h4>
+                                        @foreach($accounts as $account)
+                                        <div class="custom-control custom-checkbox mb-3">
+                                            <input class="custom-control-input" name="accounts[]" value="{{ $account->id }}" id="customCheck{{ $account->id }}" type="checkbox">
+                                            <label class="custom-control-label" for="customCheck{{ $account->id }}">{{ $account->name }}</label>
+                                        </div>
+                                        @endforeach
+                                        @include('alerts.feedback', ['field' => 'accounts'])
+                                        <div class="text-left">
+                                            <button type="submit" class="btn btn-default my-4">Invite</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    @endif
+    @include('alerts.success')
     <div class="row pt-5">
         <div class="col-12 pb-3">
             <p class="h2">Accounts:</p>
@@ -130,6 +186,7 @@
         </div>
         @endforeach
     </div>
+    @if(!auth()->user()->isMember())
     <div class="row" id="account-{{ $account->id }}" style="display: none;">
         <div class="col-12 pb-3">
             <p class="h2">Clusters:</p>
@@ -140,6 +197,7 @@
             </div>
         </div>
     </div>
+    @endif
     @endforeach
 </div>
 @endsection
@@ -151,7 +209,11 @@
 <script src="{{ asset('js') }}/mapbox-gl.js"></script>
 <script>
     var active_account = 0;
+    var errors_empty = '{!! $errors->isEmpty() !!}';
     $(document).ready(function() {
+        if (errors_empty != 1) {
+            $('#modal-form').modal('show');
+        }
         $('[data-toggle="tooltip"]').tooltip();
         $(".card.account").click(function(event) {
             if (active_account == event.currentTarget.id) return;
@@ -161,8 +223,8 @@
             account_card.css('color', 'black');
             var face = account_card.prev();
             face.css('display', 'none');
-            $('#icon-'+active_account+'-black').css('display', 'inline-block')
-            $('#icon-'+active_account+'-white').css('display', 'none')
+            $('#icon-' + active_account + '-black').css('display', 'inline-block')
+            $('#icon-' + active_account + '-white').css('display', 'none')
             //setting styles for new active account
             active_account = event.currentTarget.id;
             $("[id=account-" + active_account + "]").css({
@@ -172,8 +234,8 @@
             account_card.css('color', 'white');
             face = account_card.prev();
             face.css('display', 'flex');
-            $('#icon-'+active_account+'-black').css('display', 'none')
-            $('#icon-'+active_account+'-white').css('display', 'inline-block')
+            $('#icon-' + active_account + '-black').css('display', 'none')
+            $('#icon-' + active_account + '-white').css('display', 'inline-block')
         });
     });
 </script>

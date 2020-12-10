@@ -41,6 +41,10 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function accounts()
+    {
+        return $this->belongsToMany(Account::class);
+    }
     /**
      * Get the path to the profile picture
      *

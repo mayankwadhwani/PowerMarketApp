@@ -37,29 +37,32 @@ class HomeController extends Controller
         }
         $org = $user->organization;
         $members = [];
-        foreach($org->members as $member){
+        foreach ($org->members as $member) {
             $members[] = $member->name;
         }
         return view('pages.organization', [
             'org_name' => $org->name,
-            'members' => $members,
-            'accounts' => $org->accounts->load('regions')
+            'members' => $user->isMember() ? [] : $members,
+            'accounts' => $user->isMember() ? $user->accounts->load('regions') : $org->accounts->load('regions')
         ]);
     }
     public function account($account_name)
     {
         $account = Account::where('name', $account_name)->first();
         $user = auth()->user();
-        if($account == null){
+        if ($account == null) {
             return abort(404);
         }
-        if($user->isOrgAdmin() && $account_name != Controller::DEFAULT_ACCOUNT){
-            $org = $user->organization;
-            if($org == null) return abort(404);
+        $org = $user->organization;
+        if ($org == null) return abort(404);
+        if ($user->isOrgAdmin() && $account_name != Controller::DEFAULT_ACCOUNT) {
             $account = $org->accounts()->where('name', $account_name)->first();
-            if($account == null) return abort(404);
+            if ($account == null) return abort(404);
         }
-        //here should be validation for org members
+        if ($user->isMember() && $account_name != Controller::DEFAULT_ACCOUNT) {
+            $account = $user->accounts()->where('name', $account_name)->first();
+            if ($account == null) return abort(404);
+        }
         $region_ids = $account->regions()->pluck('id')->toArray();
         $geopoints = Geopoint::whereIn('region_id', $region_ids)->get();
         return view('pages.dashboard', [
@@ -67,21 +70,25 @@ class HomeController extends Controller
             'account' => $account_name
         ]);
     }
-    public function region($account_name, $region_name){
+    public function region($account_name, $region_name)
+    {
         $account = Account::where('name', $account_name)->first();
         $user = auth()->user();
-        if($account == null){
+        if ($account == null) {
             return abort(404);
         }
-        if($user->isOrgAdmin() && $account_name != Controller::DEFAULT_ACCOUNT){
-            $org = $user->organization;
-            if($org == null) return abort(404);
+        $org = $user->organization;
+        if ($org == null) return abort(404);
+        if ($user->isOrgAdmin() && $account_name != Controller::DEFAULT_ACCOUNT) {
             $account = $org->accounts()->where('name', $account_name)->first();
-            if($account == null) return abort(404);
+            if ($account == null) return abort(404);
         }
-        //here should be validation for org members
+        if ($user->isMember() && $account_name != Controller::DEFAULT_ACCOUNT) {
+            $account = $user->accounts()->where('name', $account_name)->first();
+            if ($account == null) return abort(404);
+        }
         $region = $account->regions()->where('name', $region_name)->first();
-        if($region == null) return abort(404);
+        if ($region == null) return abort(404);
         $geopoints = Geopoint::where('region_id', $region->id)->get();
         return view('pages.dashboard', [
             'geodata' => $geopoints,

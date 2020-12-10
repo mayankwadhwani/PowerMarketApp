@@ -25,6 +25,7 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
 	Route::get('/{account}/{region}', 'HomeController@region')->name('region');
 });
 
+Route::get('invitation/create', 'InvitationController@create')->name('invitation.create');
 Route::get('pricing', 'PageController@pricing')->name('page.pricing');
 Route::get('privacy', 'PageController@privacy')->name('page.privacy');
 Route::get('faq', 'PageController@faq')->name('page.faq');
@@ -52,5 +53,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
 
+	Route::post('invitation', 'InvitationController@store')->name('invitation.store');
 	//Route::get('{page}', ['as' => 'page.index', 'uses' => 'PageController@index']);
 });

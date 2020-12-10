@@ -35,6 +35,7 @@
 .user {
     padding-left: 15px;
     padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 .map-icon-black {
@@ -97,6 +98,10 @@
     height: 100px;
 }
 
+.custom-toggle-success {
+    margin-bottom: 15px !important;
+    margin-top: 10px !important;
+}
 @media (min-width: 400px) {
     .user img {
         width: 70px;
