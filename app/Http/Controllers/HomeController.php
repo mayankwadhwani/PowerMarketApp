@@ -54,8 +54,8 @@ class HomeController extends Controller
             return abort(404);
         }
         $org = $user->organization;
-        if ($org == null) return abort(404);
         if ($user->isOrgAdmin() && $account_name != Controller::DEFAULT_ACCOUNT) {
+            if ($org == null) return abort(404);
             $account = $org->accounts()->where('name', $account_name)->first();
             if ($account == null) return abort(404);
         }
@@ -78,8 +78,8 @@ class HomeController extends Controller
             return abort(404);
         }
         $org = $user->organization;
-        if ($org == null) return abort(404);
         if ($user->isOrgAdmin() && $account_name != Controller::DEFAULT_ACCOUNT) {
+            if ($org == null) return abort(404);
             $account = $org->accounts()->where('name', $account_name)->first();
             if ($account == null) return abort(404);
         }
