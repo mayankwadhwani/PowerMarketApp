@@ -28,10 +28,12 @@
                             <h4 class="text-uppercase ls-1 text-primary py-3 mb-0">Sample Report</h4>
                         </div>
                         <div class="card-body px-lg-7">
-                            <img src="{{ asset('argon') }}/img/theme/PMD.png" width="100%" class="" alt="...">
+                            <img src="{{ asset('argon') }}/img/theme/PMD-1.png" width="100%" class="" alt="...">
 
-                            <a href="{{ route('page.pricing') }}"><button type="button" class="btn btn-primary mb-3">Upgrade to Download Reports</button></a>
                         </div>
+                        <a href="{{ route('page.pricing') }}"><button type="button" class="btn btn-primary mb-3">Upgrade to Download Reports</button></a>
+                        <br>
+                    
                         <!-- <div class="card-footer">
                               <a href="mailto: abhinav.jain@powermarket.net" target="_blank" class="text-light">Upgrade to generate your own</a>
                           </div> -->
