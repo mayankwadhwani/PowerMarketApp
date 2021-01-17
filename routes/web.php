@@ -54,5 +54,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
 
 	Route::post('invitation', 'InvitationController@store')->name('invitation.store');
+	Route::post('clusters', 'ClusterController@store');
 	//Route::get('{page}', ['as' => 'page.index', 'uses' => 'PageController@index']);
 });

@@ -11,10 +11,40 @@
             @endslot
 
 {{--            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Dashboard') }}</a></li>--}}
-{{--            <li class="breadcrumb-item active" aria-current="page">{{ __('Default') }}</li>--}}
+{{--            <li class="breadcrumb-item active" aria-current="page">{{ __('Default') }}</li>         --}}
         @endcomponent
     @endcomponent
 
+    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="card bg-secondary shadow border-0 mb-0">
+                        <div class="card-header bg-white">
+                            <div class="text-muted text-left mb-3">
+                                <h2>Create cluster</h2>
+                            </div>
+                        </div>
+                        <div class="card-body bg-white">
+                            <form method="post" action="{{ route('invitation.store') }}" role="form">
+                                @csrf
+                                <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
+                                    <label class="form-control-label" for="input-name">{{ __('Name') }}</label>
+                                    <input type="text" name="name" id="input-name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Enter Name') }}" value="{{ old('name') }}" required autofocus>
+
+                                    @include('alerts.feedback', ['field' => 'name'])
+                                </div>
+                                <div id="response-status" class="alert" role="alert"></div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-default my-4">Create cluster</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container-fluid mt--6">
         <div class="row">
             <div class="col-xl-3 col-md-6">
@@ -142,6 +172,9 @@
                     of <span id="total-count">1</span> entries</span>
             </div>
             <div class="col text-right" style="margin-bottom: 10px;">
+                <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="modal" data-target="#modal-form" aria-haspopup="true" aria-expanded="false">
+                    Create cluster from active points
+                </button>
                 <span class="text-nowrap" style="font-size: .75rem">You are browsing by &nbsp;</span>
                 <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Break-even Time
@@ -178,7 +211,8 @@
     <link rel="stylesheet" href="{{ asset('argon') }}/vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ asset('argon') }}/vendor/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ asset('argon') }}/vendor/datatables.net-select-bs4/css/select.bootstrap4.min.css">
-    <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css'>
+    <link rel="stylesheet" href="{{ asset('css') }}/dashboard.css">
 @endpush
 @push('js')
 <script src="{{ asset('argon') }}/vendor/datatables.net/js/jquery.dataTables.min.js"></script>
@@ -216,14 +250,15 @@
     var yearColorMap = new Map(yearColors);
     var symbolCountMap = new Map();
     var totalCount = 0;
-    var selectedCount = 0;
+    var selectedCount = 0, dataArray;
+    var filterYears = new Map();
     function renderMap(){
         var jsonString = '{!! $geodata ?? '' !!}';
         var features = [];
         var bounds = new mapboxgl.LngLatBounds();
         var filterGroup = document.getElementById('filter-group');
         if(jsonString.length>0) {
-            var dataArray = JSON.parse(jsonString);
+            dataArray = JSON.parse(jsonString);
             dataArray.sort(function (a, b) {
                 return a['breakeven_years']- b['breakeven_years'];
             });
@@ -314,7 +349,7 @@
             features.forEach(function(feature) {
                 var symbol = feature.properties['years'];
                 var layerID = layerPrefix + symbol;
-
+                filterYears[symbol] = true;
                 // Add a layer for this symbol type if it hasn't been added already.
                 if (!map.getLayer(layerID)) {
                     map.addLayer({
@@ -373,6 +408,7 @@
                             'visibility',
                             e.target.checked ? 'visible' : 'none'
                         );
+                        filterYears[symbol] = e.target.checked ? true : false;
                         if(e.target.checked)
                             selectedCount = selectedCount + symbolCountMap[symbol];
                         else
@@ -534,6 +570,31 @@
     $( document ).ready(function() {
         renderMap();
         $('[data-toggle="tooltip"]').tooltip();
+        $('form').submit(function (event){
+            var visiblePoints = [];
+            for (var i = 0; i < dataArray.length; i++) {
+                if (filterYears[dataArray[i].breakeven_years]) {
+                    visiblePoints.push(dataArray[i].id);
+                }
+            }
+            var formData = {
+                'name': $('input[name=name]').val(),
+                '_token': $('input[name=_token]').val(),
+                'geopoints': JSON.stringify(visiblePoints)
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/clusters',
+                data: formData,
+                dataType: 'json',
+                encode: true
+            }).done(function(data){
+                $('#response-status').text(data.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger');
+            }).fail(function (data) {
+                $('#response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success');
+            });
+            event.preventDefault();
+        });
     });
 </script>
 <style>

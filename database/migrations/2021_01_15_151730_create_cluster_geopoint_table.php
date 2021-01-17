@@ -19,7 +19,6 @@ class CreateClusterGeopointTable extends Migration
             $table->primary(['cluster_id', 'geopoint_id']);
             $table->foreign('cluster_id')->references('id')->on('clusters')->onDelete('cascade');
             $table->foreign('geopoint_id')->references('id')->on('geopoints')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
