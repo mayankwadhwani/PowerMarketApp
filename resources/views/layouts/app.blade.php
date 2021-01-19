@@ -36,7 +36,7 @@
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
-            @if (auth()->user()->isAdmin() && !in_array(request()->route()->getName(), ['home', 'welcome', 'invitation.create', 'page.pricing','page.reporting', 'page.privacy', 'page.lock', 'page.pdf', 'page.faq', 'page.building']))
+            @if (auth()->user()->isAdmin() && !in_array(request()->route()->getName(), ['home', 'welcome', 'invitation.create', 'invitation.store', 'page.pricing','page.reporting', 'page.privacy', 'page.lock', 'page.pdf', 'page.faq', 'page.building']))
                 @include('layouts.navbars.sidebar')
             @endif
         @endauth
