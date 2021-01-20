@@ -268,42 +268,44 @@
 
             // for (var key in jsonData) {
             for (key=0; key<dataArray.length; key++) {
-                var featureString = '{"type": "Feature", "properties": ' +
-                    '{"description":"' +
-                    '<div class=\\"card\\" style=\\"margin-bottom:5px;margin-top:5px;margin-right:5px;margin-left:5px;\\">' +
-                    '   <div class=\\"card-header\\" style=\\"padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem; padding-right:1rem;\\">' +
-                    // '       <h5 class=\\"h3 mb-0 \\">Area: '+dataArray[key].area_sqm+'</h5>' +
-                    '       <h5 class=\\"h3 mb-0 \\">Break-even: '+dataArray[key].breakeven_years+' years</h5>' +
-                    '   </div>' +
-                    '   <div class=\\"card-body\\" style=\\"padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;\\">' +
-                    '       <p class=\\"card-text\\">' +
-                    // '       Id: '+dataArray[key].id+'<br/> '+
-                    // '       Roof Class: '+dataArray[key].roofclass+'<br/> '+
-                    // '       Num of Panels: '+dataArray[key].numpanels+'<br/> '+
-                    '       <strong>System Size:</strong> '+numeral(dataArray[key].system_capacity_kWp).format('0,0.0a')+' kWp<br/> '+
-                    // '       <strong>Annual Gen:</strong> '+numeral(dataArray[key].annual_gen_kWh).format('0,0.0a')+' kWh<br/> '+
-                    // '       <strong>Annual Savings:</strong> £ '+numeral(dataArray[key].annual_gen_GBP).format('0,0.0a')+'<br/> '+
-                    '       <strong>System Cost:</strong> £ '+numeral(dataArray[key].system_cost_GBP).format('0,0.0a')+'<br/> '+
-                    '       <strong>Lifetime Savings:</strong> £ '+numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')+'<br/> '+
-                    // '       Break-even Years: '+dataArray[key].breakeven_years+'<br/> '+
-                    // '       <strong>Annual CO<sub>2</sub> saving:</strong> '+numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a')+' kgs<br/> '+
-                    '       <strong>Lifetime CO<sub>2</sub> saving:</strong> '+numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a')+' kgs<br/> '+
-                    // '       <strong>Lifetime CO<sub>2</sub> emissions:</strong> '+numeral(dataArray[key].lifecycle_co2_emissions_kg).format('0,0.0a')+' kgs<br/> '+
-                    '       <strong>Lifetime RoI:</strong> '+numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a')+'%<br/> '+
-                    '       </p>' +
-                    '       <a href=\\"{{ route('page.reporting') }}?geopoint_id='+dataArray[key].id+'\\" class=\\"btn btn-primary \\" ' +
-                    '       target=\\"_blank\\">Generate Report</a>' +
-                    '       <a href=\\"{{ route('page.building') }}\\" class=\\"btn btn-primary\\" data-toggle=\\"tooltip\\" data-placement=\\"top\\" ' +
-                    '       target=\\"_blank\\" title=\\"Upgrade to view detailed building ownership information, and tenancy details for commercial and industrial buildings.\\">Building Info</button>' +
-                    '   </div>' +
-                    '</div>", ' +
-                    '"years": '+dataArray[key].breakeven_years+', ' +
-                    '"id": "'+dataArray[key].id+'", ' +
-                    '"area": '+dataArray[key].area_sqm+', ' +
-                    '"panels": '+dataArray[key].numpanels+', ' +
-                    '"roi": '+dataArray[key].lifetime_return_on_investment_percent+'}, ' +
-                    '"geometry":'+JSON.stringify(dataArray[key].latLon)+'}'
-                features.push(JSON.parse(featureString));
+                var feature = {
+                    type: "Feature",
+                    properties: {
+                        description: `
+                        <div class="card" style="margin-bottom:5px;margin-top:5px;margin-right:5px;margin-left:5px;">
+                            <div class="card-header" style="padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem; padding-right:1rem;">
+                                <h5 class="h3 mb-0 ">Break-even: ${dataArray[key].breakeven_years} years</h5>
+                            </div>
+                            <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
+                                <p class="card-text">
+                                <strong>System Size:</strong> ${numeral(dataArray[key].system_capacity_kWp).format('0,0.0a')} kWp<br/>
+                                <strong>System Cost:</strong> £ ${numeral(dataArray[key].system_cost_GBP).format('0,0.0a')}<br/>
+                                <strong>Lifetime Savings:</strong> £ ${numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')}<br/>
+                                <strong>Lifetime CO<sub>2</sub> saving:</strong> ${numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a')} kgs<br/>
+                                <strong>Lifetime RoI:</strong> ${numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a')}%<br/>
+                                </p>
+                                <a href="{{ route('page.reporting') }}?geopoint_id=${dataArray[key].id}" class="btn btn-primary"
+                                target="_blank">Generate Report</a>
+                                <a href="{{ route('page.building') }}" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+                                target="_blank" title="Upgrade to view detailed building ownership information, and tenancy details for commercial and industrial buildings.">Building Info</a>
+                                <div style="padding-top:1rem; text-align:center;">
+                                <a href="{{ route('page.building') }}" class="btn btn-primary" 
+                                target="_blank">Add to Cluster</a>
+                                </div>
+                            </div>
+                        </div>`,
+                        years: dataArray[key].breakeven_years,
+                        id: dataArray[key].id,
+                        area: dataArray[key].area_sqm,
+                        panels: dataArray[key].numpanels,
+                        roi: dataArray[key].lifetime_return_on_investment_percent
+                    },
+                    geometry: {
+                        type: dataArray[key].latLon.type,
+                        coordinates: dataArray[key].latLon.coordinates
+                    }
+                };
+                features.push(feature);
                 potential = potential+dataArray[key].system_capacity_kWp;
                 savings = savings+dataArray[key].lifetime_gen_GBP;
                 co2 = co2+dataArray[key].lifetime_co2_saved_kg;
