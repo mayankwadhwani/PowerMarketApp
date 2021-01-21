@@ -45,6 +45,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Account::class);
     }
+
+    public function clusters()
+    {
+        return $this->hasMany(Cluster::class);
+    }
     /**
      * Get the path to the profile picture
      *

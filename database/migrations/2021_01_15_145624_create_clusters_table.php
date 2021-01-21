@@ -17,6 +17,8 @@ class CreateClustersTable extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedInteger('user_id');
+            $table->double('lat')->default(0);
+            $table->double('lon')->default(0);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
