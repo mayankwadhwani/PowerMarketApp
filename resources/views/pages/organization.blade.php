@@ -20,6 +20,35 @@
         </div>
     </div>
 </div>
+<!-- Modal for adding clusters -->
+<div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="card bg-secondary shadow border-0 mb-0">
+                    <div class="card-header bg-white">
+                        <div class="text-muted text-left mb-3">
+                            <h2>Create cluster</h2>
+                        </div>
+                    </div>
+                    <div class="card-body bg-white">
+                        <form method="post" action="{{ route('invitation.store') }}" role="form">
+                            @csrf
+                            <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
+                                <label class="form-control-label" for="input-name">{{ __('Name') }}</label>
+                                <input type="text" name="name" id="input-name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Enter Name') }}" value="{{ old('name') }}" required autofocus>
+                            </div>
+                            <div id="response-status" class="alert" role="alert"></div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-default my-4">Create cluster</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Page content -->
 <div class="container-fluid">
     <div class="row">
@@ -186,19 +215,60 @@
         </div>
         @endforeach
     </div>
+    @endforeach
     @if(!auth()->user()->isMember())
-    <div class="row" id="account-{{ $account->id }}" style="display: none;">
+    <div class="row" id="cluster-row">
         <div class="col-12 pb-3">
             <p class="h2">Clusters:</p>
         </div>
+        @if(isset($clusters))
+        @foreach($clusters as $cluster)
         <div class="col-lg-4 col-sm-6 col-12">
-            <div class="card cluster">
-                <a href="{{ route('page.pricing') }}" target="_blank" class="cluster-button"><img src="{{ asset('svg') }}/add-button.svg" class="rounded-circle border-secondary"></a>
+            <div class="card cluster" id="{{ $cluster->id }}">
+                <!-- Card header -->
+                <div class="card-header">
+                    <!-- Title -->
+                    <h5 class="h3 mb-0 account-header">{{ $cluster->name }}</h5>
+                    <a href="/dashboard/clusters/{{ $cluster->name }}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black" /></a>
+                </div>
+                <!-- Card body -->
+                <div class="card-body" style="height:300px;">
+                    <div id="map-cluster-{{ $cluster->id }}" style="height: 250px;"></div>
+                </div>
+                <script>
+                    mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
+                    var lat = '{!! $cluster->lat ?? '
+                    ' !!}';
+                    var lon = '{!! $cluster->lon ?? '
+                    ' !!}';
+                    var id = '{!! $cluster->id ?? '
+                    ' !!}';
+                    var map = new mapboxgl.Map({
+                        container: 'map-cluster-' + id,
+                        style: 'mapbox://styles/mapbox/satellite-streets-v11',
+                        bearing: -17.6,
+                        antialias: true,
+                        zoom: 10,
+                        center: [lon, lat],
+                        attributionControl: false
+                    });
+                    var marker = new mapboxgl.Marker({
+                            color: '#F6A22B'
+                        })
+                        .setLngLat([lon, lat])
+                        .addTo(map);
+                </script>
+            </div>
+        </div>
+        @endforeach
+        @endif
+        <div class="col-lg-4 col-sm-6 col-12">
+            <div class="card add-cluster">
+                <a data-toggle="modal" data-target="#modal-form" target="_blank" class="cluster-button"><img src="{{ asset('svg') }}/add-button.svg" class="rounded-circle border-secondary"></a>
             </div>
         </div>
     </div>
     @endif
-    @endforeach
 </div>
 @endsection
 @push('css')
@@ -236,6 +306,62 @@
             face.css('display', 'flex');
             $('#icon-' + active_account + '-black').css('display', 'none')
             $('#icon-' + active_account + '-white').css('display', 'inline-block')
+        });
+        $(".card.account").first().click();
+        $('#modal-form').submit(function(event) {
+            event.preventDefault();
+            var visiblePoints = [];
+            var formData = {
+                'name': $('input[name=name]').val(),
+                '_token': $('input[name=_token]').val(),
+                'geopoints': JSON.stringify(visiblePoints)
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/clusters',
+                data: formData,
+                dataType: 'json',
+                encode: true
+            }).done(function(data) {
+                $('#response-status').text(data.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(2000).fadeOut();
+                console.log($('#cluster-row:last-child'));
+                $('#cluster-row').children().last().before(`
+                    <div class="col-lg-4 col-sm-6 col-12">
+                        <div class="card cluster" id="${data.cluster.id}">
+                            <!-- Card header -->
+                            <div class="card-header">
+                                <!-- Title -->
+                                <h5 class="h3 mb-0 account-header">${data.cluster.name}</h5>
+                                <a href="/clusters/${data.cluster.name}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black" /></a>
+                            </div>
+                            <!-- Card body -->
+                            <div class="card-body" style="height:300px;">
+                                <div id="map-cluster-${data.cluster.id}" style="height: 250px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                `)
+                var lat = data.cluster.lat;
+                var lon = data.cluster.lon;
+                var id = data.cluster.id;
+                mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
+                var map = new mapboxgl.Map({
+                    container: 'map-cluster-' + id,
+                    style: 'mapbox://styles/mapbox/satellite-streets-v11',
+                    bearing: -17.6,
+                    antialias: true,
+                    zoom: 10,
+                    center: [lon, lat],
+                    attributionControl: false
+                });
+                var marker = new mapboxgl.Marker({
+                        color: '#F6A22B'
+                    })
+                    .setLngLat([lon, lat])
+                    .addTo(map);
+            }).fail(function(data) {
+                $('#response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(2000).fadeOut();
+            });
         });
     });
 </script>

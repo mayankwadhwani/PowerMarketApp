@@ -43,7 +43,8 @@ class HomeController extends Controller
         return view('pages.organization', [
             'org_name' => $org->name,
             'members' => $user->isMember() ? [] : $members,
-            'accounts' => $user->isMember() ? $user->accounts->load('regions') : $org->accounts->load('regions')
+            'accounts' => $user->isMember() ? $user->accounts->load('regions') : $org->accounts->load('regions'),
+            'clusters' => $user->isMember() ? null : $user->clusters
         ]);
     }
     public function account($account_name)

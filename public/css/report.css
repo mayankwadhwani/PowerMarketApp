@@ -52,7 +52,7 @@
     float: right;
     width: 30px;
     height: auto;
-    display:none;
+    display: none;
 }
 
 .map-icon-white:hover {
@@ -62,13 +62,13 @@
 .account-header {
     display: inline-block;
     color: inherit !important;
-    z-index:101;
+    z-index: 101;
     position: relative;
 }
 
 .account a {
     position: relative;
-    z-index:101;
+    z-index: 101;
 }
 
 .face {
@@ -88,14 +88,18 @@
     padding-bottom: 30px;
     margin-bottom: 23px;
 }
-.card.cluster {
+.card.add-cluster {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 300px;
+    height: 375px;
 }
 .cluster-button img {
     height: 100px;
+}
+
+.cluster-button {
+    cursor: pointer;
 }
 
 .custom-toggle-success {

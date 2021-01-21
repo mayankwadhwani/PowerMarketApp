@@ -33,7 +33,10 @@ class ClusterController extends Controller
         ]);
         $cluster->geopoints()->attach($geopoints);
         $cluster->setLatLon();
-        return response()->json(['message' => 'The cluster has been successfully created'], 200);
+        return response()->json([
+            'message' => 'The cluster has been successfully created',
+            'cluster' => new ClusterResource($cluster)
+        ], 200);
     }
 
     public function addGeopoint(Request $request)
