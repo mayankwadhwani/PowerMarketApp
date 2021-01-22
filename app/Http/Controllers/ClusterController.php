@@ -24,6 +24,11 @@ class ClusterController extends Controller
         ]);
         $geopoints = json_decode($request->geopoints);
         $user = $request->user();
+        if (Cluster::where('user_id', $user->id)->where('name', $request->name)->exists()) {
+            return response()->json([
+                'message' => 'The cluster with this name already exists'
+            ], 422);
+        }
         if ($user->isMember()) {
             return abort(404);
         }
@@ -67,6 +72,11 @@ class ClusterController extends Controller
                 }
                 $cluster = Cluster::findOrFail($request->cluster_id);
             } else {
+                if (Cluster::where('user_id', $user->id)->where('name', $request->new_name)->exists()) {
+                    return response()->json([
+                        'message' => 'The cluster with this name already exists'
+                    ], 422);
+                }
                 $cluster = Cluster::create([
                     'name' => $request->new_name,
                     'user_id' => $user->id

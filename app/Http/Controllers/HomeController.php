@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Region;
 use App\Account;
 use App\Geopoint;
+use App\Cluster;
 
 class HomeController extends Controller
 {
@@ -96,5 +97,10 @@ class HomeController extends Controller
             'account' => $account_name,
             'region' => $region_name
         ]);
+    }
+
+    public function cluster(Cluster $cluster) {
+        $user = auth()->user();
+        
     }
 }

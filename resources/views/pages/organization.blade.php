@@ -229,35 +229,12 @@
                 <div class="card-header">
                     <!-- Title -->
                     <h5 class="h3 mb-0 account-header">{{ $cluster->name }}</h5>
-                    <a href="/dashboard/clusters/{{ $cluster->name }}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black" /></a>
+                    <a href="/clusters/{{ $cluster->name }}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black" /></a>
                 </div>
                 <!-- Card body -->
-                <div class="card-body" style="height:300px;">
-                    <div id="map-cluster-{{ $cluster->id }}" style="height: 250px;"></div>
+                <div class="card-body add-cluster" style="height:300px; background-color:#1B2B4B;">
+                    <a href="{{ route('page.pricing') }}" target="_blank" class="cluster-button"><i class="ni ni-curved-next" style="color:white;font-size:50px;"></i></a>
                 </div>
-                <script>
-                    mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
-                    var lat = '{!! $cluster->lat ?? '
-                    ' !!}';
-                    var lon = '{!! $cluster->lon ?? '
-                    ' !!}';
-                    var id = '{!! $cluster->id ?? '
-                    ' !!}';
-                    var map = new mapboxgl.Map({
-                        container: 'map-cluster-' + id,
-                        style: 'mapbox://styles/mapbox/satellite-streets-v11',
-                        bearing: -17.6,
-                        antialias: true,
-                        zoom: 10,
-                        center: [lon, lat],
-                        attributionControl: false
-                    });
-                    var marker = new mapboxgl.Marker({
-                            color: '#F6A22B'
-                        })
-                        .setLngLat([lon, lat])
-                        .addTo(map);
-                </script>
             </div>
         </div>
         @endforeach
@@ -308,6 +285,7 @@
             $('#icon-' + active_account + '-white').css('display', 'inline-block')
         });
         $(".card.account").first().click();
+        window.dispatchEvent(new Event('resize'));
         $('#modal-form').submit(function(event) {
             event.preventDefault();
             var visiblePoints = [];
@@ -324,7 +302,6 @@
                 encode: true
             }).done(function(data) {
                 $('#response-status').text(data.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(2000).fadeOut();
-                console.log($('#cluster-row:last-child'));
                 $('#cluster-row').children().last().before(`
                     <div class="col-lg-4 col-sm-6 col-12">
                         <div class="card cluster" id="${data.cluster.id}">
@@ -335,30 +312,12 @@
                                 <a href="/clusters/${data.cluster.name}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black" /></a>
                             </div>
                             <!-- Card body -->
-                            <div class="card-body" style="height:300px;">
-                                <div id="map-cluster-${data.cluster.id}" style="height: 250px;"></div>
+                            <div class="card-body add-cluster" style="height:300px; background-color:#1B2B4B;">
+                                <a href="{{ route('page.pricing') }}" target="_blank" class="cluster-button"><i class="ni ni-curved-next" style="color:white;font-size:50px;"></i></a>
                             </div>
                         </div>
                     </div>
                 `)
-                var lat = data.cluster.lat;
-                var lon = data.cluster.lon;
-                var id = data.cluster.id;
-                mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
-                var map = new mapboxgl.Map({
-                    container: 'map-cluster-' + id,
-                    style: 'mapbox://styles/mapbox/satellite-streets-v11',
-                    bearing: -17.6,
-                    antialias: true,
-                    zoom: 10,
-                    center: [lon, lat],
-                    attributionControl: false
-                });
-                var marker = new mapboxgl.Marker({
-                        color: '#F6A22B'
-                    })
-                    .setLngLat([lon, lat])
-                    .addTo(map);
             }).fail(function(data) {
                 $('#response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(2000).fadeOut();
             });

@@ -57,5 +57,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('clusters', 'ClusterController@store');
 	Route::post('add/geopoint', 'ClusterController@addGeopoint');
 	Route::get('clusters', 'ClusterController@index');
+	Route::get('clusters/{cluster}', 'HomeController@cluster');
 	//Route::get('{page}', ['as' => 'page.index', 'uses' => 'PageController@index']);
 });
