@@ -142,7 +142,7 @@
                 </div>
                 <!-- Card body -->
                 <div class="card-body" style="height:300px;">
-                    <div id="map-account-{{ $account->id }}" style="width: 100%; height: 250px;"></div>
+                    <div id="map-account-{{ $account->id }}" class="map-border" style="width: 100%; height: 250px;"></div>
                 </div>
                 <script>
                     mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
@@ -186,7 +186,7 @@
                 </div>
                 <!-- Card body -->
                 <div class="card-body" style="height:300px;">
-                    <div id="map-region-{{ $region->id }}" style="height: 250px;"></div>
+                    <div id="map-region-{{ $region->id }}" class="map-border" style="height: 250px;"></div>
                 </div>
                 <script>
                     mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
