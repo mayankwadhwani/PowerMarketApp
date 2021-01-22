@@ -99,8 +99,16 @@ class HomeController extends Controller
         ]);
     }
 
-    public function cluster(Cluster $cluster) {
+    public function cluster($cluster_name) {
         $user = auth()->user();
-        
+        $cluster = Cluster::where('user_id', $user->id)->where('name', $cluster_name)->first();
+        if ($cluster == null){
+            return abort(404);
+        }
+        $geopoints = $cluster->geopoints;
+        return view('pages.dashboard', [
+            'geodata' => $geopoints,
+            'cluster' => $cluster->name
+        ]);
     }
 }
