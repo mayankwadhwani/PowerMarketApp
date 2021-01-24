@@ -87,8 +87,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <h5 class="card-title text-uppercase text-muted mb-0">Total Projects</h5>
-                            <span class="h2 font-weight-bold mb-0">1</span>
+                            <h5 class="card-title text-uppercase text-muted mb-0">Total number of points</h5>
+                            <span class="h2 font-weight-bold mb-0">{{ count($geodata) }}</span>
                         </div>
                         <div class="col-auto">
                             <div class="row">
@@ -262,7 +262,7 @@
         bearing: -17.6,
         antialias: true
     });
-    var clicked_geopoint_id;
+    var clicked_geopoint_id, clicked_layer, clicked_popup;
     var layerPrefix = 'layer-years-';
     var yearColors = [
         [5, '#63c54f'],
@@ -282,7 +282,7 @@
     var selectedCount = 0,
         dataArray;
     var filterYears = new Map();
-
+    var cluster_route = `{!! $cluster ?? '' !!}`
     function renderMap() {
         var jsonString = '{!! $geodata ?? '
         ' !!}';
@@ -300,16 +300,28 @@
 
             // for (var key in jsonData) {
             for (key = 0; key < dataArray.length; key++) {
+                //determining header of point popup
+                var header = `
+                    <h5 style="display:table-cell; vertical-align:middle;" class="h3 mb-0" title="Remove the geopoint from cluster" data-toggle="tooltip" data-placement="top">Remove from cluster</h5>
+                    <a id="remove_from_cluster" style="display:table-cell; cursor:pointer; vertical-align:middle; text-align:center;" data-toggle="modal" data-target="#cluster-remove-form" data-geopoint="${dataArray[key].id}">
+                        <i class="ni ni-fat-delete" style="font-size:20px;vertical-align:middle;"></i>
+                    </a>
+                `
+                if (cluster_route == "") {
+                    header = `
+                        <h5 style="display:table-cell; vertical-align:middle;" class="h3 mb-0" title="Add this geopoint to a new or existing cluster" data-toggle="tooltip" data-placement="top">Add to Cluster</h5>
+                        <a id="add_cluster" style="display:table-cell; cursor:pointer; vertical-align:middle; text-align:center;" data-toggle="modal" data-target="#cluster-form" data-geopoint="${dataArray[key].id}">
+                            <i class="ni ni-fat-add" style="font-size:20px;vertical-align:middle;"></i>
+                        </a>
+                    `
+                }
                 var feature = {
                     type: "Feature",
                     properties: {
                         description: `
                         <div class="card" style="margin-bottom:5px;margin-top:5px;margin-right:5px;margin-left:5px;">
-                            <div class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:1rem;">
-                                <h5 style="display:table-cell; vertical-align:middle;" class="h3 mb-0" title="Add this geopoint to a new or existing cluster" data-toggle="tooltip" data-placement="top">Add to Cluster</h5>
-                                <a id="add_cluster" style="display:inline-block; float:right; cursor:pointer;" data-toggle="modal" data-target="#cluster-form" data-geopoint="${dataArray[key].id}">
-                                    <img style="height:40px;" src="{{ asset('svg') }}/add-button.svg" class="rounded-circle border-secondary">
-                                </a>
+                            <div class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:0;">
+                                ${header}
                             </div>
                             <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
                                 <p class="card-text">
@@ -430,6 +442,8 @@
                             $('#selected-count').text(numeral(selectedCount).format('0,0'));
                         });
                         map.on('click', layerID, function(e) {
+                            if (e.originalEvent.cancelBubble){ return; }
+                            clicked_layer = layerID;
                             var coordinates = e.features[0].geometry.coordinates.slice();
                             var description = e.features[0].properties.description;
 
@@ -440,12 +454,16 @@
                                 coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                             }
 
-                            new mapboxgl.Popup()
+                            var popup = new mapboxgl.Popup()
                                 .setLngLat(coordinates)
                                 .setHTML(description)
                                 .setMaxWidth("500px")
+                                .on('open', function(e) {
+                                    clicked_popup = e.target
+                                })
                                 .addTo(map);
                             $('[data-toggle="tooltip"]').tooltip();
+                            e.originalEvent.cancelBubble = true;
                         });
                         // Change the cursor to a pointer when the mouse is over the layer.
                         map.on('mouseenter', layerID, function() {
@@ -535,6 +553,33 @@
         getClusters();
         $('#map').on('click', '#add_cluster', function(event) {
             clicked_geopoint_id = event.currentTarget.getAttribute("data-geopoint")
+        });
+        $('#map').on('click', '#remove_from_cluster', function(event) {
+            clicked_geopoint_id = event.currentTarget.getAttribute("data-geopoint")
+            var formData = {
+                geopoint_id: clicked_geopoint_id,
+                '_token': $('input[name=_token]').val(),
+                cluster_name: cluster_route
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/remove/geopoint',
+                data: formData,
+                dataType: 'json',
+                encode: true
+            }).done(function(data) {
+                console.log(data.message)
+                features = features.filter(function(feature) {
+                    return feature.properties.id != clicked_geopoint_id
+                })
+                map.getSource('places').setData({
+                    'type': 'FeatureCollection',
+                    'features': features
+                })
+                clicked_popup.remove()
+            }).fail(function(data) {
+                console.log(data.responseJSON.message)
+            });
         });
         $('#modal-form').submit(function(event) {
             event.preventDefault();

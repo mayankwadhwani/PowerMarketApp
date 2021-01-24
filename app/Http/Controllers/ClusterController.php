@@ -90,4 +90,26 @@ class ClusterController extends Controller
             return abort(404);
         }
     }
+
+    public function removeGeopoint(Request $request)
+    {
+        $request->validate([
+            'geopoint_id' => 'required|integer',
+            'cluster_name' => 'required'
+        ]);
+        $user = $request->user();
+        $cluster = Cluster::where([
+            ['user_id', $user->id],
+            ['name', $request->cluster_name]
+        ])->first();
+        if ($cluster == null) {
+            return response()->json([
+                'message' => 'The cluster is not found'
+            ], 404);
+        }
+        $cluster->geopoints()->detach($request->geopoint_id);
+        return response()->json([
+            'message' => 'The geopoint has been successfully removed'
+        ], 200);
+    }
 }
