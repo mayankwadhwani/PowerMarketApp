@@ -283,10 +283,10 @@
         dataArray;
     var filterYears = new Map();
     var cluster_route = `{!! $cluster ?? '' !!}`
+    var features = [];
     function renderMap() {
         var jsonString = '{!! $geodata ?? '
         ' !!}';
-        var features = [];
         var bounds = new mapboxgl.LngLatBounds();
         var filterGroup = document.getElementById('filter-group');
         if (jsonString.length > 0) {
