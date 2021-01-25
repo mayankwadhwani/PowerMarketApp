@@ -27,7 +27,7 @@ class ClusterController extends Controller
         $user = $request->user();
         if (Cluster::where('user_id', $user->id)->where('name', $request->name)->exists()) {
             return response()->json([
-                'message' => 'The cluster with this name already exists'
+                'message' => 'The project with this name already exists'
             ], 422);
         }
         if ($user->isMember()) {
@@ -40,8 +40,9 @@ class ClusterController extends Controller
         $cluster->geopoints()->attach($geopoints);
         $cluster->setLatLon();
         return response()->json([
-            'message' => 'The cluster has been successfully created',
-            'cluster' => new ClusterResource($cluster)
+            'message' => 'The project has been successfully created',
+            'cluster' => new ClusterResource($cluster),
+            'cluster_link' => URL::to('/projects/'.$cluster->name)
         ], 200);
     }
 
@@ -69,13 +70,13 @@ class ClusterController extends Controller
             //cluster possession validation
             if ($request->filled('cluster_id')) {
                 if (!$user->clusters->contains('id', $request->cluster_id)) {
-                    return response()->json(['message' => 'Cluster not found'], 422);
+                    return response()->json(['message' => 'Project not found'], 422);
                 }
                 $cluster = Cluster::findOrFail($request->cluster_id);
             } else {
                 if (Cluster::where('user_id', $user->id)->where('name', $request->new_name)->exists()) {
                     return response()->json([
-                        'message' => 'The cluster with this name already exists'
+                        'message' => 'The project with this name already exists'
                     ], 422);
                 }
                 $cluster = Cluster::create([
@@ -108,7 +109,7 @@ class ClusterController extends Controller
         ])->first();
         if ($cluster == null) {
             return response()->json([
-                'message' => 'The cluster is not found'
+                'message' => 'The project is not found'
             ], 404);
         }
         $cluster->geopoints()->detach($request->geopoint_id);

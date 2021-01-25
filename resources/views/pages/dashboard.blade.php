@@ -32,7 +32,6 @@
                                 <label class="form-control-label" for="input-name">{{ __('Name') }}</label>
                                 <input type="text" name="name" id="input-name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Enter Name') }}" value="{{ old('name') }}" required autofocus>
                             </div>
-                            <div id="response-status" class="alert" role="alert"></div>
                             <div class="text-center">
                                 <button type="submit" class="btn btn-default my-4">Create project</button>
                             </div>
@@ -626,9 +625,15 @@
                 dataType: 'json',
                 encode: true
             }).done(function(data) {
-                $('#response-status').text(data.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(2000).fadeOut();
+                $('#modal-form').modal('hide')
+                $('#next-form').modal('show')
+                getClusters()
+                $('#next-response-status').text(data.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(3000).fadeOut();
+                $('#cluster-href').attr('href', data.cluster_link)
             }).fail(function(data) {
-                $('#response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(2000).fadeOut();
+                $('#modal-form').modal('hide')
+                $('#next-form').modal('show')
+                $('#next-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(3000).fadeOut();
             });
         });
         $('#newClusterCheck').change(function(event) {
