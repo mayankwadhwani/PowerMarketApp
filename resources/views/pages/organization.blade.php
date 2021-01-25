@@ -21,7 +21,7 @@
     </div>
 </div>
 <!-- Modal for adding clusters -->
-<div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+<div class="modal fade" id="cluster-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-body p-0">
@@ -241,7 +241,7 @@
         @endif
         <div class="col-lg-4 col-sm-6 col-12">
             <div class="card add-cluster">
-                <a data-toggle="modal" data-target="#modal-form" target="_blank" class="cluster-button"><img src="{{ asset('svg') }}/add-button.svg" class="rounded-circle border-secondary"></a>
+                <a data-toggle="modal" data-target="#cluster-form" target="_blank" class="cluster-button"><img src="{{ asset('svg') }}/add-button.svg" class="rounded-circle border-secondary"></a>
             </div>
         </div>
     </div>
@@ -286,7 +286,7 @@
         });
         $(".card.account").first().click();
         window.dispatchEvent(new Event('resize'));
-        $('#modal-form').submit(function(event) {
+        $('#cluster-form').submit(function(event) {
             event.preventDefault();
             var visiblePoints = [];
             var formData = {

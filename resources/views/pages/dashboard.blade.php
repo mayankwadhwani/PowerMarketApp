@@ -50,7 +50,7 @@
                 <div class="card bg-secondary shadow border-0 mb-0">
                     <div class="card-header bg-white">
                         <div class="text-muted text-left">
-                            <h2>What's next</h2>
+                            <h2>What next:</h2>
                         </div>
                     </div>
                     <div class="card-body bg-white">
