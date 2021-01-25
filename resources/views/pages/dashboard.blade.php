@@ -87,8 +87,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <h5 class="card-title text-uppercase text-muted mb-0">Total number of points</h5>
-                            <span class="h2 font-weight-bold mb-0">{{ count($geodata) }}</span>
+                            <h5 class="card-title text-uppercase text-muted mb-0">Total number of sites</h5>
+                            <span class="h2 font-weight-bold mb-0">{{ number_format(count($geodata)) }}</span>
                         </div>
                         <div class="col-auto">
                             <div class="row">
@@ -114,7 +114,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <h5 class="card-title text-uppercase text-muted mb-0">Solar Potential</h5>
+                            <h5 class="card-title text-uppercase text-muted mb-0">Total Solar Potential Discovered</h5>
                             <span class="h2 font-weight-bold mb-0" id="potential-card">1</span>
                         </div>
                         <div class="col-auto">
@@ -141,7 +141,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <h5 class="card-title text-uppercase text-muted mb-0">Lifetime savings</h5>
+                            <h5 class="card-title text-uppercase text-muted mb-0">Total Lifetime savings</h5>
                             <span class="h2 font-weight-bold mb-0" id="savings-card">1</span>
                         </div>
                         <div class="col-auto">
@@ -168,7 +168,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <h5 class="card-title text-uppercase text-muted mb-0">Lifetime CO<sub>2</sub> savings</h5>
+                            <h5 class="card-title text-uppercase text-muted mb-0">Total Lifetime CO<sub>2</sub> savings</h5>
                             <span class="h2 font-weight-bold mb-0" id="co2-card">1</span>
                         </div>
                         <div class="col-auto">
@@ -302,16 +302,16 @@
             for (key = 0; key < dataArray.length; key++) {
                 //determining header of point popup
                 var header = `
-                    <h5 style="display:table-cell; vertical-align:middle;" class="h3 mb-0" title="Remove the geopoint from cluster" data-toggle="tooltip" data-placement="top">Remove from cluster</h5>
-                    <a id="remove_from_cluster" style="display:table-cell; cursor:pointer; vertical-align:middle; text-align:center;" data-toggle="modal" data-target="#cluster-remove-form" data-geopoint="${dataArray[key].id}">
-                        <i class="ni ni-fat-delete" style="font-size:20px;vertical-align:middle;"></i>
+                    <h5 class="h3 mb-0" title="Remove the geopoint from cluster" data-toggle="tooltip" data-placement="top">Remove from cluster</h5>
+                    <a id="remove_from_cluster" data-toggle="modal" data-target="#cluster-remove-form" data-geopoint="${dataArray[key].id}">
+                        <img src="{{ asset('argon') }}/img/icons/minus.png" />
                     </a>
                 `
                 if (cluster_route == "") {
                     header = `
-                        <h5 style="display:table-cell; vertical-align:middle;" class="h3 mb-0" title="Add this geopoint to a new or existing cluster" data-toggle="tooltip" data-placement="top">Add to Cluster</h5>
-                        <a id="add_cluster" style="display:table-cell; cursor:pointer; vertical-align:middle; text-align:center;" data-toggle="modal" data-target="#cluster-form" data-geopoint="${dataArray[key].id}">
-                            <i class="ni ni-fat-add" style="font-size:20px;vertical-align:middle;"></i>
+                        <h5 class="h3 mb-0" title="Add this geopoint to a new or existing cluster" data-toggle="tooltip" data-placement="top">Add to Cluster</h5>
+                        <a id="add_cluster" data-toggle="modal" data-target="#cluster-form" data-geopoint="${dataArray[key].id}">
+                            <img src="{{ asset('argon') }}/img/icons/plus.png" />
                         </a>
                     `
                 }
@@ -320,7 +320,7 @@
                     properties: {
                         description: `
                         <div class="card" style="margin-bottom:5px;margin-top:5px;margin-right:5px;margin-left:5px;">
-                            <div class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:0;">
+                            <div id="cluster-header" class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:0;">
                                 ${header}
                             </div>
                             <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
@@ -608,6 +608,7 @@
         });
         $('#newClusterCheck').change(function(event) {
             $('input[name=new_name]').prop('disabled', !event.target.checked)
+            $('#cluster-select').prop('disabled', event.target.checked)
         })
         $('#cluster-form').submit(function(event) {
             event.preventDefault();
@@ -628,6 +629,7 @@
                 encode: true
             }).done(function(data) {
                 $('#cluster-response-status').text(data.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(2000).fadeOut();
+                getClusters();
             }).fail(function(data) {
                 $('#cluster-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(2000).fadeOut();
             });

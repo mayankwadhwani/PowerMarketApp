@@ -1,3 +1,26 @@
 #response-status {
-    display: none
+    display: none;
+}
+
+#cluster-header {
+    background-color: #1a2a4a;
+    color: white;
+}
+
+#cluster-header h5 {
+    display: inline-block;
+    color: white;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+#cluster-header a {
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: middle;
+    text-align: center;
+}
+
+#cluster-header img {
+    height: 30px;
 }
