@@ -22,7 +22,7 @@
                 <div class="card bg-secondary shadow border-0 mb-0">
                     <div class="card-header bg-white">
                         <div class="text-muted text-left mb-3">
-                            <h2>Create cluster</h2>
+                            <h2>Create project</h2>
                         </div>
                     </div>
                     <div class="card-body bg-white">
@@ -34,7 +34,7 @@
                             </div>
                             <div id="response-status" class="alert" role="alert"></div>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-default my-4">Create cluster</button>
+                                <button type="submit" class="btn btn-default my-4">Create project</button>
                             </div>
                         </form>
                     </div>
@@ -57,7 +57,7 @@
                         <div id="next-response-status" class="alert" role="alert"></div>
                         <div class="next-buttons">
                             <button type="button" style="width:48%" data-dismiss="modal" class="btn btn-primary">Keep browsing</button>
-                            <a id="cluster-href" target="_blank" href="/" type="submit" style="width:48%" class="btn btn-default">Go to Cluster</a>
+                            <a id="cluster-href" target="_blank" href="/" type="submit" style="width:48%" class="btn btn-default">Go to Project</a>
                         </div>
                     </div>
                 </div>
@@ -78,22 +78,22 @@
                     <div class="card-body bg-white">
                         <form method="post" action="{{ route('invitation.store') }}" role="form">
                             @csrf
-                            <h5>Existing cluster</h5>
+                            <h5>Existing project</h5>
                             <select class="form-control form-control-sm" id="cluster-select">
                             </select>
                             <h5 style="margin-top: .5rem;">or</h5>
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="newClusterCheck" value="new_cluster">
                                 <label class="custom-control-label" for="newClusterCheck">
-                                    <h5>Create a new cluster</h5>
+                                    <h5>Create a new project</h5>
                                 </label>
                             </div>
                             <div class="form-group{{ $errors->has('new_name') ? ' has-danger' : '' }}">
-                                <input style="margin-top: 1rem;" disabled type="text" name="new_name" id="new-name" class="form-control{{ $errors->has('new_name') ? ' is-invalid' : '' }} form-control-sm" placeholder="{{ __('Enter new cluster name') }}" value="{{ old('new_name') }}" required autofocus>
+                                <input style="margin-top: 1rem;" disabled type="text" name="new_name" id="new-name" class="form-control{{ $errors->has('new_name') ? ' is-invalid' : '' }} form-control-sm" placeholder="{{ __('Enter new project name') }}" value="{{ old('new_name') }}" required autofocus>
                             </div>
                             <!-- <div id="cluster-response-status" class="alert" role="alert"></div> -->
                             <div class="text-center">
-                                <button type="submit" class="btn btn-default">Add to Cluster</button>
+                                <button type="submit" class="btn btn-default">Add to Project</button>
                             </div>
                         </form>
                     </div>
@@ -216,7 +216,7 @@
     <div class="row">
         <div class="col text-left" style="margin-bottom: 10px;">
             <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="modal" data-target="#modal-form" aria-haspopup="true" aria-expanded="false">
-                Create cluster from active points
+                Create project from active points
             </button>
             <span class="text-nowrap" style="font-size: .75rem">
                 Showing
@@ -325,14 +325,14 @@
             for (key = 0; key < dataArray.length; key++) {
                 //determining header of point popup
                 var header = `
-                    <h5 class="h3 mb-0" title="Remove the geopoint from cluster" data-toggle="tooltip" data-placement="top">Remove from cluster</h5>
+                    <h5 class="h3 mb-0" title="Remove the geopoint from project" data-toggle="tooltip" data-placement="top">Remove from project</h5>
                     <a id="remove_from_cluster" data-toggle="modal" data-target="#cluster-remove-form" data-geopoint="${dataArray[key].id}">
                         <img src="{{ asset('argon') }}/img/icons/minus.png" />
                     </a>
                 `
                 if (cluster_route == "") {
                     header = `
-                        <h5 class="h3 mb-0" title="Add this geopoint to a new or existing cluster" data-toggle="tooltip" data-placement="top">Add to Cluster</h5>
+                        <h5 class="h3 mb-0" title="Add this geopoint to a new or existing project" data-toggle="tooltip" data-placement="top">Add to Project</h5>
                         <a id="add_cluster" data-toggle="modal" data-target="#cluster-form" data-geopoint="${dataArray[key].id}">
                             <img src="{{ asset('argon') }}/img/icons/plus.png" />
                         </a>

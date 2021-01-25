@@ -28,7 +28,7 @@
                 <div class="card bg-secondary shadow border-0 mb-0">
                     <div class="card-header bg-white">
                         <div class="text-muted text-left mb-3">
-                            <h2>Create cluster</h2>
+                            <h2>Create project</h2>
                         </div>
                     </div>
                     <div class="card-body bg-white">
@@ -40,7 +40,7 @@
                             </div>
                             <div id="response-status" class="alert" role="alert"></div>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-default my-4">Create cluster</button>
+                                <button type="submit" class="btn btn-default my-4">Create project</button>
                             </div>
                         </form>
                     </div>
@@ -219,7 +219,7 @@
     @if(!auth()->user()->isMember())
     <div class="row" id="cluster-row">
         <div class="col-12 pb-3">
-            <p class="h2">Clusters:</p>
+            <p class="h2">Projects:</p>
         </div>
         @if(isset($clusters))
         @foreach($clusters as $cluster)
@@ -229,7 +229,7 @@
                 <div class="card-header">
                     <!-- Title -->
                     <h5 class="h3 mb-0 account-header">{{ $cluster->name }}</h5>
-                    <a href="/clusters/{{ $cluster->name }}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black" /></a>
+                    <a href="/projects/{{ $cluster->name }}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black" /></a>
                 </div>
                 <!-- Card body -->
                 <div class="card-body add-cluster" style="height:300px; background-color:#1B2B4B;">

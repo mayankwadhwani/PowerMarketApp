@@ -87,7 +87,7 @@ class ClusterController extends Controller
             $cluster->setLatLon();
             return response()->json([
                 'message' => 'Geopoint has been successfully added',
-                'cluster_link' => URL::to('/clusters/'.$cluster->name)
+                'cluster_link' => URL::to('/projects/'.$cluster->name)
             ], 200);
         } else if ($user->isOrgMember()) {
             //not available for org members for now
