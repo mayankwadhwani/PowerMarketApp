@@ -24,3 +24,11 @@
 #cluster-header img {
     height: 30px;
 }
+
+#next-form {
+    transition: opacity .5s linear !important;
+}
+
+.next-buttons {
+    text-align: center;
+}

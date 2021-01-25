@@ -7,6 +7,7 @@ use App\Cluster;
 use App\Http\Resources\ClusterResource;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 
 class ClusterController extends Controller
@@ -84,7 +85,10 @@ class ClusterController extends Controller
             }
             $cluster->addGeopoint($request->geopoint_id);
             $cluster->setLatLon();
-            return response()->json(['message' => 'Geopoint has been successfully added'], 200);
+            return response()->json([
+                'message' => 'Geopoint has been successfully added',
+                'cluster_link' => URL::to('/clusters/'.$cluster->name)
+            ], 200);
         } else if ($user->isOrgMember()) {
             //not available for org members for now
             return abort(404);

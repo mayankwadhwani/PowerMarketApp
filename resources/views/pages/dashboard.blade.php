@@ -43,6 +43,28 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="next-form" tabindex="-1" role="dialog" aria-labelledby="next-form" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="card bg-secondary shadow border-0 mb-0">
+                    <div class="card-header bg-white">
+                        <div class="text-muted text-left">
+                            <h2>What's next</h2>
+                        </div>
+                    </div>
+                    <div class="card-body bg-white">
+                        <div id="next-response-status" class="alert" role="alert"></div>
+                        <div class="next-buttons">
+                            <button type="button" style="width:48%" data-dismiss="modal" class="btn btn-primary">Keep browsing</button>
+                            <a id="cluster-href" target="_blank" href="/" type="submit" style="width:48%" class="btn btn-default">Go to Cluster</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="cluster-form" tabindex="-1" role="dialog" aria-labelledby="cluster-form" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
         <div class="modal-content">
@@ -69,7 +91,7 @@
                             <div class="form-group{{ $errors->has('new_name') ? ' has-danger' : '' }}">
                                 <input style="margin-top: 1rem;" disabled type="text" name="new_name" id="new-name" class="form-control{{ $errors->has('new_name') ? ' is-invalid' : '' }} form-control-sm" placeholder="{{ __('Enter new cluster name') }}" value="{{ old('new_name') }}" required autofocus>
                             </div>
-                            <div id="cluster-response-status" class="alert" role="alert"></div>
+                            <!-- <div id="cluster-response-status" class="alert" role="alert"></div> -->
                             <div class="text-center">
                                 <button type="submit" class="btn btn-default">Add to Cluster</button>
                             </div>
@@ -227,7 +249,7 @@
     </div>
     <!-- Disclaimer -->
     <h4>Disclaimer</h4>
-    <h5>The data presented are estimations based on standard, industry-wide assumption; but can differ from actual solar array for the rooftops displayed. Please consult a professional solar installations company for a cutomised proposal.</h5>
+    <h5>The data presented are estimations based on standard, industry-wide assumption; but can differ from actual solar array for the rooftops displayed. Please consult a professional solar installations company for a customised proposal.</h5>
     <h5><a href="{{ route('page.faq') }}" target="_blank">FAQ</a></h5>
     <!-- Footer -->
     @include('layouts.footers.auth')
@@ -284,6 +306,7 @@
     var filterYears = new Map();
     var cluster_route = `{!! $cluster ?? '' !!}`
     var features = [];
+
     function renderMap() {
         var jsonString = '{!! $geodata ?? '
         ' !!}';
@@ -442,7 +465,9 @@
                             $('#selected-count').text(numeral(selectedCount).format('0,0'));
                         });
                         map.on('click', layerID, function(e) {
-                            if (e.originalEvent.cancelBubble){ return; }
+                            if (e.originalEvent.cancelBubble) {
+                                return;
+                            }
                             clicked_layer = layerID;
                             var coordinates = e.features[0].geometry.coordinates.slice();
                             var description = e.features[0].properties.description;
@@ -628,10 +653,15 @@
                 dataType: 'json',
                 encode: true
             }).done(function(data) {
-                $('#cluster-response-status').text(data.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(2000).fadeOut();
-                getClusters();
+                $('#cluster-form').modal('hide')
+                $('#next-form').modal('show')
+                getClusters()
+                $('#next-response-status').text(data.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(3000).fadeOut();
+                $('#cluster-href').attr('href', data.cluster_link)
             }).fail(function(data) {
-                $('#cluster-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(2000).fadeOut();
+                $('#cluster-form').modal('hide')
+                $('#next-form').modal('show')
+                $('#next-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(3000).fadeOut();
             });
         });
     });
