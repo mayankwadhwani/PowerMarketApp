@@ -254,7 +254,7 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <a href="{{ route('page.pdf') }}?geopoint_id={{ $id ?? ''}}"><button type="button" class="btn btn-primary mb-3">Download Report</button></a>
+                                <a href="{{ route('page.cluster_pdf', $project ?? '') }}"><button type="button" class="btn btn-primary mb-3">Download Report</button></a>
                             </div>
                         </div>
                     </div>
@@ -301,7 +301,6 @@
     var jsonString = `{!! $geodata ?? '
     ' !!}`;
     var dataArray = JSON.parse(jsonString);
-    console.log(dataArray);
     function renderTable() {
         var table = $('#datatable-report').DataTable({
             // paging: false,
