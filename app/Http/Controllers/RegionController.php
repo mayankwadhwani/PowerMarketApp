@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Region;
 use App\Geopoint;
 use App\Account;
-
+use App\Jobs\ReverseGeocoding;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -47,6 +47,8 @@ class RegionController extends Controller
             $values[] = "(" . implode(",", $value) . ")";
         };
         DB::insert('insert into geopoints (' . implode(",", Geopoint::COLUMNS) . ',region_id) values ' . implode(",", $values));
+        $geopoints = Geopoint::where('region_id', $region->id)->get();
+        ReverseGeocoding::dispatch($geopoints);
         return redirect()->route('region.index')->withStatus(__('Region successfully created.'));
     }
     public function create(Region $region)

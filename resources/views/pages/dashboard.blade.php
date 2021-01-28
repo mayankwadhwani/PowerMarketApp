@@ -307,8 +307,8 @@
     var features = [];
 
     function renderMap() {
-        var jsonString = '{!! $geodata ?? '
-        ' !!}';
+        var jsonString = `{!! $geodata ?? '
+        ' !!}`;
         var bounds = new mapboxgl.LngLatBounds();
         var filterGroup = document.getElementById('filter-group');
         if (jsonString.length > 0) {

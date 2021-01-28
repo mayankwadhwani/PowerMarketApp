@@ -88,6 +88,12 @@ return [
             'driver' => 'errorlog',
             'level' => 'debug',
         ],
+
+        'geocodinglog' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/geocoding.log'),
+            'level' => 'critical'
+        ]
     ],
 
 ];

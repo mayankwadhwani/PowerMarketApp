@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Geopoint;
+use App\Cluster;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
@@ -73,7 +71,7 @@ class PageController extends Controller
             echo base64_decode($report);
         }, 200, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'filename="'.$address.'.pdf"'
+            'Content-Disposition' => 'filename="' . $address . '.pdf"'
         ]);
     }
     /**
@@ -83,6 +81,9 @@ class PageController extends Controller
      */
     public function reporting(Request $request)
     {
+        $request->validate([
+            'geopoint_id' => 'required|integer'
+        ]);
         $geopoint = Geopoint::find($request->geopoint_id);
         if (is_null($geopoint)) {
             return view('pages.reporting');
@@ -116,6 +117,45 @@ class PageController extends Controller
         ]);
     }
 
+    public function clusterReporting(Request $request, $cluster_name)
+    {
+        $user = $request->user();
+        $cluster = Cluster::where([
+            ['name', $cluster_name],
+            ['user_id', $user->id]
+        ])->first();
+        if (is_null($cluster)) {
+            return view('pages.reporting');
+        }
+        $geopoints = $cluster->geopoints;
+        $monthly_savings = array_fill(0, 12, 0);
+        $monthly_exports = array_fill(0, 12, 0);
+        $yearly_co2 = array_fill(0, 26, 0);
+        foreach ($geopoints as $geopoint) {
+            for ($i = 0; $i < 12; $i++) {
+                $monthly_savings[$i] += $geopoint->monthly_gen_saving_value_GBP[$i];
+                $monthly_exports[$i] += $geopoint->monthly_gen_export_value_GBP[$i];
+            }
+            for ($i = 0; $i < 26; $i++) {
+                $yearly_co2[$i] += $geopoint->yearly_co2_saved_kg[$i];
+            }
+        }
+        return view('pages.cluster_reporting', [
+            'project' => $cluster->name,
+            'size' => $geopoints->sum('system_capacity_kWp'),
+            'cost' => $geopoints->sum('system_cost_GBP'),
+            'savings' => $geopoints->sum('lifetime_gen_GBP'),
+            'breakeven' => $geopoints->avg('breakeven_years'),
+            'tons' => round($geopoints->sum('annual_co2_saved_kg') / 1000, 2),
+            'cars' => round($geopoints->sum('annual_gen_kWh') * 0.00025, 2),
+            'trees' => round($geopoints->sum('annual_gen_kWh') * 0.0117),
+            'oil' => round($geopoints->sum('annual_gen_kWh') * 0.2174),
+            'geodata' => json_encode($geopoints),
+            'monthly_savings' => json_encode($monthly_savings),
+            'monthly_exports' => json_encode($monthly_exports),
+            'saved_co2' => json_encode($yearly_co2)
+        ]);
+    }
     /**
      * Display the privacy page
      *
