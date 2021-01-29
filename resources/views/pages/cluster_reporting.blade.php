@@ -231,6 +231,7 @@
                                             <table class="table" id="datatable-report">
                                                 <thead class="thead-light">
                                                     <tr>
+                                                        <th>Id</th>
                                                         <th>System Size (kWp)</th>
                                                         <th>System Cost (£)</th>
                                                         <th>Annual Generation (kWh)</th>
@@ -300,8 +301,11 @@
 
     var jsonString = `{!! $geodata ?? '
     ' !!}`;
+    var map;
     var dataArray = JSON.parse(jsonString);
+
     function renderTable() {
+        var layerPrefix = 'layer-years-';
         var table = $('#datatable-report').DataTable({
             // paging: false,
             // searching: false,
@@ -324,6 +328,7 @@
             $('#count').append(dataArray.length);
             for (key = 0; key < dataArray.length; key++) {
                 $('#datatable-report').dataTable().fnAddData([
+                    dataArray[key].id,
                     numeral(dataArray[key].system_capacity_kWp).format('0,0.0a'),
                     numeral(dataArray[key].system_cost_GBP).format('0,0.0a'),
                     numeral(dataArray[key].annual_gen_kWh).format('0,0.0a'),
@@ -337,6 +342,20 @@
                 ]);
             }
         }
+        table.on('select', function(e, dt, type, indexes) {
+            if (type === 'row') {
+                var data = table.rows(indexes).data();
+                var id = data[0][0];
+                map.setFilter('places', ['==', 'id', id]);
+            }
+        });
+        table.on('deselect', function(e, dt, type, indexes) {
+            if (type === 'row') {
+                map.setFilter('places', null);
+            }
+        });
+        var column = table.column(0)
+        column.visible(false)
     }
 
     function renderBarChart() {
@@ -486,7 +505,7 @@
     function renderMap() {
         var features = []
         mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
-        var map = new mapboxgl.Map({
+        map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/satellite-streets-v11',
             bearing: -17.6,
@@ -498,7 +517,7 @@
             var feature = {
                 type: 'Feature',
                 properties: {
-                    'market-size': 'small'
+                    id: dataArray[key].id
                 },
                 geometry: {
                     type: dataArray[key].latLon.type,

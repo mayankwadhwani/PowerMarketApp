@@ -40,13 +40,14 @@
 
 .map-icon-black {
     float: right;
-    width: 30px;
+    width: 25px;
     height: auto;
-    margin-right: 10px;
 }
 
 .report-icon {
-    font-size: 33px;
+    font-size: 27px;
+    color: #191B2F;
+    margin-right: 20px;
 }
 .map-icon-black:hover {
     cursor: pointer;

@@ -643,11 +643,17 @@
                 $('#delete-next-form').modal('show')
                 var break_even_years
                 features = features.filter(function(feature) {
-                    if(feature.properties.id == clicked_geopoint_id) {
+                    if (feature.properties.id == clicked_geopoint_id) {
                         break_even_years = feature.properties.years
                     }
                     return feature.properties.id != clicked_geopoint_id
                 })
+                symbolCountMap[break_even_years] -= 1
+                totalCount -= 1
+                selectedCount -= 1
+                $('#total-count').text(numeral(totalCount).format('0,0'));
+                $('#selected-count').text(numeral(selectedCount).format('0,0'));
+                $('#total-sites').text(totalCount)
                 map.getSource('places').setData({
                     'type': 'FeatureCollection',
                     'features': features
