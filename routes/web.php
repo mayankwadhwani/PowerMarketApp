@@ -30,7 +30,7 @@ Route::get('pricing', 'PageController@pricing')->name('page.pricing');
 Route::get('privacy', 'PageController@privacy')->name('page.privacy');
 Route::get('faq', 'PageController@faq')->name('page.faq');
 Route::get('reporting', 'PageController@reporting')->middleware('auth')->name('page.reporting');
-Route::get('reporting/cluster/{cluster_name}', 'PageController@clusterReporting')->middleware('auth')->name('page.cluster_reporting');
+Route::get('reporting/project/{cluster_name}', 'PageController@clusterReporting')->middleware('auth')->name('page.cluster_reporting');
 Route::get('pdf', 'PageController@pdf')->middleware('auth')->name('page.pdf');
 Route::get('pdf/cluster/{cluster_name}', 'PageController@clusterPdf')->middleware('auth')->name('page.cluster_pdf');
 Route::get('lock', 'PageController@lock')->name('page.lock');

@@ -15,6 +15,27 @@
 @endcomponent
 @endcomponent
 
+<div class="modal fade" id="delete-form" tabindex="-1" role="dialog" aria-labelledby="delete-form" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="card bg-secondary shadow border-0 mb-0">
+                    <div class="card-header bg-white">
+                        <div class="text-muted text-left">
+                            <h2>Are you sure you want to remove the site?</h2>
+                        </div>
+                    </div>
+                    <div class="card-body bg-white">
+                        <div class="next-buttons">
+                            <button type="button" style="width:48%" id="remove-site" class="btn btn-primary">Yes</button>
+                            <button type="button" style="width:48%" data-dismiss="modal" class="btn btn-primary">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
         <div class="modal-content">
@@ -42,15 +63,39 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="delete-next-form" tabindex="-1" role="dialog" aria-labelledby="delete-next-form" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="card bg-secondary shadow border-0 mb-0">
+                    <div class="card-header bg-white">
+                        <h2 class="text-muted text-left">What next:</h2>
+                        <button id="close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="card-body bg-white">
+                        <div id="delete-next-response-status" class="alert" role="alert"></div>
+                        <div class="next-buttons">
+                            <button type="button" style="width:48%" data-dismiss="modal" class="btn btn-primary">Keep browsing</button>
+                            <a target="_blank" href="/dashboard" type="submit" style="width:48%" class="btn btn-default">Add more sites</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="next-form" tabindex="-1" role="dialog" aria-labelledby="next-form" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-body p-0">
                 <div class="card bg-secondary shadow border-0 mb-0">
                     <div class="card-header bg-white">
-                        <div class="text-muted text-left">
-                            <h2>What next:</h2>
-                        </div>
+                        <h2 class="text-muted text-left">What next:</h2>
+                        <button id="close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="card-body bg-white">
                         <div id="next-response-status" class="alert" role="alert"></div>
@@ -109,7 +154,7 @@
                     <div class="row">
                         <div class="col">
                             <h5 class="card-title text-uppercase text-muted mb-0">Total number of sites</h5>
-                            <span class="h2 font-weight-bold mb-0">{{ number_format(count($geodata)) }}</span>
+                            <span class="h2 font-weight-bold mb-0" id="total-sites">{{ number_format(count($geodata)) }}</span>
                         </div>
                         <div class="col-auto">
                             <div class="row">
@@ -325,7 +370,7 @@
                 //determining header of point popup
                 var header = `
                     <h5 class="h3 mb-0" title="Remove the geopoint from project" data-toggle="tooltip" data-placement="top">Remove from project</h5>
-                    <a id="remove_from_cluster" data-toggle="modal" data-target="#cluster-remove-form" data-geopoint="${dataArray[key].id}">
+                    <a id="remove_from_cluster" data-toggle="modal" data-target="#delete-form" data-geopoint="${dataArray[key].id}">
                         <img src="{{ asset('argon') }}/img/icons/minus.png" />
                     </a>
                 `
@@ -341,7 +386,7 @@
                     type: "Feature",
                     properties: {
                         description: `
-                        <div class="card" style="margin-bottom:5px;margin-top:5px;margin-right:5px;margin-left:5px;">
+                        <div class="card popup-card">
                             <div id="cluster-header" class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:0;">
                                 ${header}
                             </div>
@@ -580,6 +625,8 @@
         });
         $('#map').on('click', '#remove_from_cluster', function(event) {
             clicked_geopoint_id = event.currentTarget.getAttribute("data-geopoint")
+        });
+        $('#remove-site').on('click', function(event) {
             var formData = {
                 geopoint_id: clicked_geopoint_id,
                 '_token': $('input[name=_token]').val(),
@@ -592,8 +639,13 @@
                 dataType: 'json',
                 encode: true
             }).done(function(data) {
-                console.log(data.message)
+                $('#delete-form').modal('hide')
+                $('#delete-next-form').modal('show')
+                var break_even_years
                 features = features.filter(function(feature) {
+                    if(feature.properties.id == clicked_geopoint_id) {
+                        break_even_years = feature.properties.years
+                    }
                     return feature.properties.id != clicked_geopoint_id
                 })
                 map.getSource('places').setData({
@@ -601,10 +653,13 @@
                     'features': features
                 })
                 clicked_popup.remove()
+                $('#delete-next-response-status').text(data.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(3000).fadeOut();
             }).fail(function(data) {
-                console.log(data.responseJSON.message)
+                $('#delete-form').modal('hide')
+                $('#delete-next-form').modal('show')
+                $('#delete-next-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(3000).fadeOut();
             });
-        });
+        })
         $('#modal-form').submit(function(event) {
             event.preventDefault();
             var visiblePoints = [];

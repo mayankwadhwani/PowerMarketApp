@@ -255,7 +255,7 @@
 
                                                                                                                                                 PowerMarket
                                                                                                                                                 <br>
-                                                                                                                                                Software for Solar Analytics
+                                                                                                                                                Your HQ for Solar Project Management
                                                                                                                                                 <br>
                                                                                                                                                 2021 &#169; PowerMarket
 

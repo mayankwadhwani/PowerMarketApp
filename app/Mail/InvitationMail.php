@@ -32,7 +32,10 @@ class InvitationMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->from(config('mail.from.address'))->view("emails.invite")->with([
+        $user_name = $this->user_name ?? "User";
+        return $this->from(['address' => config('mail.from.address'), 'name' => 'Lucas from PowerMarket'])
+        ->subject("{$user_name} has invited you to join their workspace on PowerMarket")
+        ->view("emails.invite")->with([
             'user_name' => $this->user_name,
             'link' => route('invitation.create')."?id={$this->id}&token={$this->token}",
             'organization' => $this->organization

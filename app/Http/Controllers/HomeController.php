@@ -37,13 +37,9 @@ class HomeController extends Controller
             return redirect('dashboard/Gloucestershire');
         }
         $org = $user->organization;
-        $members = [];
-        foreach ($org->members as $member) {
-            $members[] = $member->name;
-        }
         return view('pages.organization', [
             'org_name' => $org->name,
-            'members' => $user->isMember() ? [] : $members,
+            'members' => $user->isMember() ? [] : $org->members,
             'accounts' => $user->isMember() ? $user->accounts->load('regions') : $org->accounts->load('regions'),
             'clusters' => $user->isMember() ? null : $user->clusters
         ]);

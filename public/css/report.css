@@ -42,8 +42,12 @@
     float: right;
     width: 30px;
     height: auto;
+    margin-right: 10px;
 }
 
+.report-icon {
+    font-size: 33px;
+}
 .map-icon-black:hover {
     cursor: pointer;
 }
@@ -98,7 +102,7 @@
     height: 100px;
 }
 
-.cluster-button {
+.add-button {
     cursor: pointer;
 }
 

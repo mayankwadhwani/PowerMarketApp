@@ -12,7 +12,7 @@
                         </h3> -->
 
                         <h3 class="text-lead text-light mt-3 mb-0">
-                            {{ __('Locate solar sites, forecast their generation prospects, and calculate your potential ROI') }}
+                            {{ __('Your HQ for Solar Project Management') }}
                             @include('alerts.migrations_check')
                         </h3>
                     </div>

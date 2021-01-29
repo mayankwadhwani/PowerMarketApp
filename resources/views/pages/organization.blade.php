@@ -63,12 +63,12 @@
         </div>
         @foreach($members as $member)
         <div class="user">
-            <img src="{{ asset('argon') }}/img/theme/team-4.jpg" title="{{ $member }}" data-toggle="tooltip" class="rounded-circle border-secondary">
+            <img src="{{ $member->picture ? asset('/storage/'.$member->picture) : asset('argon').'/img/theme/team-4.jpg'}}" title="{{ $member->name }}" data-toggle="tooltip" class="rounded-circle border-secondary">
         </div>
         @endforeach
         <div class="user">
             <a data-toggle="modal" data-target="#modal-form">
-                <img src="{{ asset('svg') }}/add-button.svg" class="rounded-circle border-secondary">
+                <img src="{{ asset('svg') }}/add-button.svg" class="rounded-circle border-secondary add-button">
             </a>
             <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
@@ -230,6 +230,7 @@
                     <!-- Title -->
                     <h5 class="h3 mb-0 account-header">{{ $cluster->name }}</h5>
                     <a href="/projects/{{ $cluster->name }}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black" /></a>
+                    <a href="/reporting/project/{{ $cluster->name }}" target="_blank"><i class="ni ni-chart-pie-35 map-icon-black report-icon"></i></a>
                 </div>
                 <!-- Card body -->
                 <div class="card-body add-cluster" style="height:300px; background-color:#1B2B4B;">
@@ -241,7 +242,7 @@
         @endif
         <div class="col-lg-4 col-sm-6 col-12">
             <div class="card add-cluster">
-                <a data-toggle="modal" data-target="#cluster-form" target="_blank" class="cluster-button"><img src="{{ asset('svg') }}/add-button.svg" class="rounded-circle border-secondary"></a>
+                <a data-toggle="modal" data-target="#cluster-form" target="_blank" class="add-button"><img src="{{ asset('svg') }}/add-button.svg" class="rounded-circle border-secondary"></a>
             </div>
         </div>
     </div>
