@@ -1,5 +1,6 @@
 const puppet = require("puppeteer");
 const html_path = process.argv[2]
+const pdf_name = process.argv[3]
 
 async function run() {
     try {
@@ -14,12 +15,12 @@ async function run() {
             waitUntil: "networkidle0"
         });
         await page.emulateMediaType("screen");
-        const pdf = await page.pdf({
+        await page.pdf({
             printBackground: true,
             format: "A4",
-            scale: 0.49
+            scale: 0.49,
+            path: `${__dirname}/${pdf_name}`
         });
-        console.log(pdf.toString('base64'));
         await browser.close();
         process.exit();
     } catch (error) {

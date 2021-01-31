@@ -7,11 +7,16 @@ use App\Cluster;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
 class PageController extends Controller
 {
+    public static function randomString() {
+        list($usec, $sec) = explode(" ", microtime());
+        return ((float)$usec + (float)$sec);
+    }
     /**
      * Display all the static pages when authenticated
      *
@@ -63,16 +68,15 @@ class PageController extends Controller
         $tempDir = (new TemporaryDirectory())->create();
         $tempHtmlPath = $tempDir->path('index.html');
         file_put_contents($tempHtmlPath, $html);
-        $command = 'node generate_pdf.js "file://' . $tempHtmlPath . '"';
+        $tempPdfName = self::RandomString().".pdf";
+        $command = 'node ../storage/app/pdfs/generate_pdf.js "file://' . $tempHtmlPath . '" "' . $tempPdfName .'"';
         exec($command, $output);
-        $report = $output[0];
         $tempDir->delete();
-        return response()->stream(function () use ($report) {
-            echo base64_decode($report);
-        }, 200, [
+        $pathToPdf = Storage::disk('local')->path('pdfs/'.$tempPdfName);
+        return response()->file($pathToPdf, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'filename="' . $address . '.pdf"'
-        ]);
+        ])->deleteFileAfterSend();
     }
     /**
      * Display the reporting page
@@ -158,16 +162,15 @@ class PageController extends Controller
         $tempDir = (new TemporaryDirectory())->create();
         $tempHtmlPath = $tempDir->path('index.html');
         file_put_contents($tempHtmlPath, $html);
-        $command = 'node generate_pdf.js "file://' . $tempHtmlPath . '"';
+        $tempPdfName = self::RandomString().".pdf";
+        $command = 'node ../storage/app/pdfs/generate_pdf.js "file://' . $tempHtmlPath . '" "' . $tempPdfName .'"';
         exec($command, $output);
-        $report = $output[0];
         $tempDir->delete();
-        return response()->stream(function () use ($report) {
-            echo base64_decode($report);
-        }, 200, [
+        $pathToPdf = Storage::disk('local')->path('pdfs/'.$tempPdfName);
+        return response()->file($pathToPdf, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'filename="' . $cluster->name . '.pdf"'
-        ]);
+        ])->deleteFileAfterSend();
     }
     
     public function clusterReporting(Request $request, $cluster_name)
