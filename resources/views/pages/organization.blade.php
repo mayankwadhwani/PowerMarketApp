@@ -36,9 +36,9 @@
                     </div>
                     <div class="card-body bg-white">
                         <div id="delete-next-response-status" class="alert" role="alert"></div>
-                        <div class="next-buttons">
+                        <div class="next-buttons" style="text-align:center;">
                             <button type="button" style="width:48%" data-dismiss="modal" class="btn btn-primary">Keep browsing</button>
-                            <a target="_blank" href="/dashboard" type="submit" style="width:48%" class="btn btn-default">Add more sites</a>
+                            <!-- <a target="_blank" href="/dashboard" type="submit" style="width:48%" class="btn btn-default">Add more sites</a> -->
                         </div>
                     </div>
                 </div>
@@ -273,7 +273,7 @@
                 <div class="card-header">
                     <!-- Title -->
                     <h5 class="h3 mb-0 account-header">{{ $cluster->name }}</h5>
-                    <a id="delete" data-target="#delete-form" data-toggle="modal" data-id="{{$cluster->id}}"><i class="fa fa-trash-alt map-icon-black" style="font-size:27px;color:#191B2F;"></i></a>
+                    <a class="delete" data-target="#delete-form" data-toggle="modal" data-id="{{$cluster->id}}"><i class="fa fa-trash-alt map-icon-black" style="font-size:27px;color:#191B2F;"></i></a>
                     <a href="/projects/{{ $cluster->name }}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black report-icon " /></a>
                     <a href="/reporting/project/{{ $cluster->name }}" target="_blank"><i class="ni ni-chart-pie-35 map-icon-black report-icon"></i></a>
                 </div>
@@ -309,7 +309,7 @@
             $('#modal-form').modal('show');
         }
         $('[data-toggle="tooltip"]').tooltip();
-        $("#delete").click(function(event){
+        $("#cluster-row").on('click', '.delete', function(event){
             clicked_project = event.currentTarget.getAttribute("data-id")
         })
         $("#delete-yes").click(function(event) {
@@ -326,6 +326,7 @@
                 $('#delete-form').modal('hide')
                 $('#delete-next-form').modal('show')
                 $('#delete-next-response-status').text(data.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(3000).fadeOut();
+                $(`#${clicked_project}`).parent().remove()
             }).fail(function(data) {
                 $('#delete-form').modal('hide')
                 $('#delete-next-form').modal('show')
@@ -379,7 +380,7 @@
                             <div class="card-header">
                                 <!-- Title -->
                                 <h5 class="h3 mb-0 account-header">${data.cluster.name}</h5>
-                                <a id="delete" data-target="#delete-form" data-toggle="modal" data-id="${data.cluster.id}"><i class="fa fa-trash-alt map-icon-black" style="font-size:27px;color:#191B2F;"></i></a>
+                                <a class="delete" data-target="#delete-form" data-toggle="modal" data-id="${data.cluster.id}"><i class="fa fa-trash-alt map-icon-black" style="font-size:27px;color:#191B2F;"></i></a>
                                 <a href="/projects/${data.cluster.name}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black report-icon" /></a>
                                 <a href="/reporting/project/${data.cluster.name}" target="_blank"><i class="ni ni-chart-pie-35 map-icon-black report-icon"></i></a>
                             </div>

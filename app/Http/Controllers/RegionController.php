@@ -107,6 +107,8 @@ class RegionController extends Controller
                 $values[] = "(" . implode(",", $value) . ")";
             };
             DB::insert('insert into geopoints (' . implode(",", Geopoint::COLUMNS) . ',region_id) values ' . implode(",", $values));
+            $geopoints = Geopoint::where('region_id', $region->id)->get();
+            ReverseGeocoding::dispatch($geopoints);
         }
         $region->save();
         return redirect()->route('region.index')->withStatus(__('Region successfully updated.'));
