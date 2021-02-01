@@ -233,8 +233,9 @@
                     <a href="/reporting/project/{{ $cluster->name }}" target="_blank"><i class="ni ni-chart-pie-35 map-icon-black report-icon"></i></a>
                 </div>
                 <!-- Card body -->
-                <div class="card-body add-cluster" style="height:300px; background-color:#1B2B4B;">
-                    <a href="{{ route('page.pricing') }}" target="_blank" class="cluster-button"><i class="ni ni-curved-next" style="color:white;font-size:50px;"></i></a>
+                <div class="card-body add-cluster" style="height:300px;max-width:100%;">
+                    <img style="height: 250px;" src="https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/static/pin-s+F6A22B({{$cluster->lon}},{{$cluster->lat}})/{{$cluster->lon}},{{$cluster->lat}},10,0,0/800x300?access_token=pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow">
+                    <!-- <a href="{{ route('page.pricing') }}" target="_blank" class="cluster-button"><i class="ni ni-curved-next" style="color:white;font-size:50px;"></i></a> -->
                 </div>
             </div>
         </div>
