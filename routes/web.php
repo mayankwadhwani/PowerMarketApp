@@ -57,6 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::post('invitation', 'InvitationController@store')->name('invitation.store');
 	Route::post('clusters', 'ClusterController@store');
+	Route::delete('clusters/{cluster}', 'ClusterController@delete');
 	Route::post('add/geopoint', 'ClusterController@addGeopoint');
 	Route::post('remove/geopoint', 'ClusterController@removeGeopoint');
 	Route::get('clusters', 'ClusterController@index');

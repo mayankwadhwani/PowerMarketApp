@@ -663,7 +663,7 @@
             }).fail(function(data) {
                 $('#delete-form').modal('hide')
                 $('#delete-next-form').modal('show')
-                $('#delete-next-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(3000).fadeOut();
+                $('#delete-next-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(3000).fadeOut();
             });
         })
         $('#modal-form').submit(function(event) {

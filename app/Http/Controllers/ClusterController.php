@@ -117,4 +117,11 @@ class ClusterController extends Controller
             'message' => 'The geopoint has been successfully removed'
         ], 200);
     }
+
+    public function delete(Cluster $cluster){
+        $cluster->delete();
+        return response()->json([
+            'message' => 'Project is successfully deleted'
+        ], 200);
+    }
 }

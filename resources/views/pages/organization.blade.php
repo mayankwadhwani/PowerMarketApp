@@ -2,6 +2,50 @@
 
 @section('content')
 <script src="{{ asset('js') }}/mapbox-gl.js"></script>
+<div class="modal fade" id="delete-form" tabindex="-1" role="dialog" aria-labelledby="delete-form" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="card bg-secondary shadow border-0 mb-0">
+                    <div class="card-header bg-white">
+                        <div class="text-muted text-left">
+                            <h2>Are you sure you want to remove the project?</h2>
+                        </div>
+                    </div>
+                    <div class="card-body bg-white">
+                        <div class="next-buttons">
+                            <button type="button" style="width:48%" id="delete-yes" class="btn btn-primary">Yes</button>
+                            <button type="button" style="width:48%" data-dismiss="modal" class="btn btn-primary">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="delete-next-form" tabindex="-1" role="dialog" aria-labelledby="delete-next-form" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="card bg-secondary shadow border-0 mb-0">
+                    <div class="card-header bg-white">
+                        <h2 class="text-muted text-left">What next:</h2>
+                        <button id="close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="card-body bg-white">
+                        <div id="delete-next-response-status" class="alert" role="alert"></div>
+                        <div class="next-buttons">
+                            <button type="button" style="width:48%" data-dismiss="modal" class="btn btn-primary">Keep browsing</button>
+                            <a target="_blank" href="/dashboard" type="submit" style="width:48%" class="btn btn-default">Add more sites</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="header bg-primary">
     <div class="container-fluid">
         <div class="header-body">
@@ -229,7 +273,8 @@
                 <div class="card-header">
                     <!-- Title -->
                     <h5 class="h3 mb-0 account-header">{{ $cluster->name }}</h5>
-                    <a href="/projects/{{ $cluster->name }}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black" /></a>
+                    <a id="delete" data-target="#delete-form" data-toggle="modal" data-id="{{$cluster->id}}"><i class="fa fa-trash-alt map-icon-black" style="font-size:27px;color:#191B2F;"></i></a>
+                    <a href="/projects/{{ $cluster->name }}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black report-icon " /></a>
                     <a href="/reporting/project/{{ $cluster->name }}" target="_blank"><i class="ni ni-chart-pie-35 map-icon-black report-icon"></i></a>
                 </div>
                 <!-- Card body -->
@@ -257,12 +302,36 @@
 <script src="{{ asset('js') }}/mapbox-gl.js"></script>
 <script>
     var active_account = 0;
+    var clicked_project;
     var errors_empty = '{!! $errors->isEmpty() !!}';
     $(document).ready(function() {
         if (errors_empty != 1) {
             $('#modal-form').modal('show');
         }
         $('[data-toggle="tooltip"]').tooltip();
+        $("#delete").click(function(event){
+            clicked_project = event.currentTarget.getAttribute("data-id")
+        })
+        $("#delete-yes").click(function(event) {
+            var formData = {
+                '_token': $('input[name=_token]').val()
+            }
+            $.ajax({
+                type: 'DELETE',
+                url: '/clusters/' + clicked_project,
+                data: formData,
+                dataType: 'json',
+                encode: true
+            }).done(function(data) {
+                $('#delete-form').modal('hide')
+                $('#delete-next-form').modal('show')
+                $('#delete-next-response-status').text(data.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(3000).fadeOut();
+            }).fail(function(data) {
+                $('#delete-form').modal('hide')
+                $('#delete-next-form').modal('show')
+                $('#delete-next-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(3000).fadeOut();
+            });
+        })
         $(".card.account").click(function(event) {
             if (active_account == event.currentTarget.id) return;
             //setting styles for previous active account
@@ -310,11 +379,13 @@
                             <div class="card-header">
                                 <!-- Title -->
                                 <h5 class="h3 mb-0 account-header">${data.cluster.name}</h5>
-                                <a href="/clusters/${data.cluster.name}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black" /></a>
+                                <a id="delete" data-target="#delete-form" data-toggle="modal" data-id="${data.cluster.id}"><i class="fa fa-trash-alt map-icon-black" style="font-size:27px;color:#191B2F;"></i></a>
+                                <a href="/projects/${data.cluster.name}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black report-icon" /></a>
+                                <a href="/reporting/project/${data.cluster.name}" target="_blank"><i class="ni ni-chart-pie-35 map-icon-black report-icon"></i></a>
                             </div>
                             <!-- Card body -->
-                            <div class="card-body add-cluster" style="height:300px; background-color:#1B2B4B;">
-                                <a href="{{ route('page.pricing') }}" target="_blank" class="cluster-button"><i class="ni ni-curved-next" style="color:white;font-size:50px;"></i></a>
+                            <div class="card-body add-cluster" style="height:300px;max-width:100%;">
+                                <img style="height: 250px;max-width:100%;object-fit:cover;border-radius:.375rem;" src="https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/static/pin-s+F6A22B(${data.cluster.lon},${data.cluster.lat})/${data.cluster.lon},${data.cluster.lat},10,0,0/800x300?access_token=pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow">
                             </div>
                         </div>
                     </div>
