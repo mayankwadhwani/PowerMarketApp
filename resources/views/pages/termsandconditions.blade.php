@@ -25,7 +25,7 @@
                   <div class="pricing card-group flex-column flex-md-row mb-3">
                       <div class="card card-pricing border-0 text-center mb-4">
                           <div class="card-header bg-transparent">
-                              <h4 class="text-uppercase ls-1 text-primary py-3 mb-0">Beta Evaluation Licence and  Non-Disclosure Agreement</h4>
+                              <h4 class="text-uppercase ls-1 text-primary py-3 mb-0">POWERMARKET TERMS AND CONDITIONS</h4>
                           </div>
                           <div class="card-body px-lg-7">
 
@@ -165,7 +165,7 @@ This Agreement and any dispute or claim arising out of or in connection with it 
 </p>
 
 
-                              <a href="mailto: abhinav.jain@powermarket.net"><button type="button" class="btn btn-primary mb-3">Questions about the Beta Agreement?</button></a>
+                              <a href="mailto: abhinav.jain@powermarket.net"><button type="button" class="btn btn-primary mb-3">Questions about our Terms of Use?</button></a>
                           </div>
                           <!-- <div class="card-footer">
                               <a href="mailto: abhinav.jain@powermarket.net" target="_blank" class="text-light">Upgrade to generate your own</a>
