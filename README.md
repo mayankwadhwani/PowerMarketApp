@@ -2,10 +2,6 @@
 
 ![version](https://img.shields.io/badge/version-1.2.1-blue.svg) ![license](https://img.shields.io/badge/license-MIT-blue.svg) [![GitHub issues open](https://img.shields.io/github/issues/creativetimofficial/ct-argon-dashboard-pro-laravel.svg?maxAge=2592000)](https://github.com/creativetimofficial/ct-argon-dashboard-pro-laravel/issues?q=is%3Aopen+is%3Aissue) [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/creativetimofficial/ct-argon-dashboard-pro-laravel/ct-argon-dashboard-pro-laravel.svg?maxAge=2592000)](https://github.com/creativetimofficial/ct-argon-dashboard-pro-laravel/issues?q=is%3Aissue+is%3Aclosed)
 
-*Frontend version*: Argon Dashboard v1.0.0. More info at https://www.creative-tim.com/product/argon-dashboard-pro
-
-![Product Image](https://mapping.powermarket.ai/)
-
 ## Prerequisites
 
 If you don't already have an Apache local environment with PHP and MySQL, use one of the following links:
