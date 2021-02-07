@@ -4,7 +4,7 @@
 
 *Frontend version*: Argon Dashboard v1.0.0. More info at https://www.creative-tim.com/product/argon-dashboard-pro
 
-![Product Image](https://s3.amazonaws.com/creativetim_bucket/products/146/original/opt_adp_laravel_thumbnail.jpg?1550851795)
+![Product Image](https://mapping.powermarket.ai/)
 
 ## Prerequisites
 
@@ -29,11 +29,11 @@ You will also need to install Composer: https://getcomposer.org/doc/00-intro.md
 
 ## Usage
 
-To start testing the Pro theme, register as a user or log in using one of the default users: 
+To start testing the Pro theme, register as a user or log in using one of the default users:
 
 - admin type - **admin@argon.com** with the password **secret**
-- creator type - **creator@argon.com** with the password **secret** 
-- member type - **member@argon.com** with the password **secret** 
+- creator type - **creator@argon.com** with the password **secret**
+- member type - **member@argon.com** with the password **secret**
 
 Make sure to run the migrations and seeders for the above credentials to be available.
 
@@ -299,34 +299,14 @@ In the item management we have an **observer** (`app\Observers\ItemObserver`) ex
 public function deleting(Item  $item)
 {
     File::delete(storage_path("/app/public/{$item->picture}"));
-    
+
     $item->tags()->detach();
 }
 ```
 
 The policy which authorizes the user on item management pages is implemented in `App\Policies\ItemPolicy.php`.
 
-## Credits
-
-- [Creative Tim](https://creative-tim.com/)
-- [Updivision](https://updivision.com)
-
 ## Screen shots
 
 ![Argon Login](/screens/Login.png)
-
-![Argon Register ](/screens/Register.png)
-
-![Argon Dashboard](/screens/Dashboard.png)
-
-![Argon Roles](/screens/RoleManagement.png)
-
-![Argon Users](/screens/UserManagement.png)
-
-![Argon Profile](/screens/Profile.png)
-
-![Argon Items](/screens/ItemManagement.png)
-
-![Argon Item Create](/screens/ItemCreate.png)
-# PowerMarketApp
 # PowerMarketApp
