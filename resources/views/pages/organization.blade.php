@@ -46,7 +46,7 @@
         </div>
     </div>
 </div>
-<div class="header bg-primary">
+<!-- <div class="header bg-primary">
     <div class="container-fluid">
         <div class="header-body">
             <div class="row align-items-center py-4">
@@ -63,7 +63,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- Modal for adding clusters -->
 <div class="modal fade" id="cluster-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
@@ -95,13 +95,13 @@
 </div>
 <!-- Page content -->
 <div class="container-fluid">
-    <div class="row">
+    <div class="row" style="margin-right: 0px; margin-left: 0px;">
         <div class="col-12 orgname">
             <span class="h1">{{ $org_name }}</span>
         </div>
     </div>
     @if(!auth()->user()->isMember())
-    <div class="row">
+    <div class="row" style="margin-right: 0px; margin-left: 0px;">
         <div class="col-12">
             <p class="h2">Users:</p>
         </div>
@@ -169,7 +169,7 @@
     </div>
     @endif
     @include('alerts.success')
-    <div class="row pt-5">
+    <div class="row pt-5" style="margin-right: 0px; margin-left: 0px;">
         <div class="col-12 pb-3">
             <p class="h2">Accounts:</p>
         </div>
@@ -215,7 +215,7 @@
         @endforeach
     </div>
     @foreach($accounts as $account)
-    <div class="row" id="account-{{ $account->id }}" style="display: none;">
+    <div class="row" id="account-{{ $account->id }}" style="display: none; margin-right: 0px; margin-left: 0px;">
         <div class="col-12 pb-3">
             <p class="h2">Data Sets:</p>
         </div>
@@ -261,7 +261,7 @@
     </div>
     @endforeach
     @if(!auth()->user()->isMember())
-    <div class="row" id="cluster-row">
+    <div class="row" style="margin-right: 0px; margin-left: 0px;" id="cluster-row">
         <div class="col-12 pb-3">
             <p class="h2">Projects:</p>
         </div>
