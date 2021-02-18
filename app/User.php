@@ -48,7 +48,7 @@ class User extends Authenticatable
 
     public function clusters()
     {
-        return $this->hasMany(Cluster::class);
+        return $this->belongsToMany(Cluster::class);
     }
     /**
      * Get the path to the profile picture

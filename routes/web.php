@@ -60,6 +60,11 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('clusters/{cluster}', 'ClusterController@delete');
 	Route::post('add/geopoint', 'ClusterController@addGeopoint');
 	Route::post('remove/geopoint', 'ClusterController@removeGeopoint');
+
+	Route::get('notifications/markread', 'NotificationController@markRead');
+
+	Route::post('share/clusters/{cluster_id}', 'ClusterController@shareCluster');
+
 	Route::get('clusters', 'ClusterController@index');
 	Route::get('projects/{cluster}', 'HomeController@cluster');
 	//Route::get('{page}', ['as' => 'page.index', 'uses' => 'PageController@index']);
