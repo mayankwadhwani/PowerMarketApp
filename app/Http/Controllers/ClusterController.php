@@ -3,18 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Cluster;
-
+use App\User;
 use App\Http\Resources\ClusterResource;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\NewSharedProject;
+
 class ClusterController extends Controller
 {
     public function index(Request $request)
     {
-        return ClusterResource::collection($request->user()->clusters);
+        // return ClusterResource::collection($request->user()->clusters);
+        $my_clusters = DB::table('clusters')->where('user_id', $request->user()->id)->get();
+        return ClusterResource::collection($my_clusters);
     }
 
     public function store(Request $request)
@@ -116,6 +121,27 @@ class ClusterController extends Controller
         return response()->json([
             'message' => 'The geopoint has been successfully removed'
         ], 200);
+    }
+
+    //adding each user_id in the array contained in the request to the cluster_user pivot table for a cluster
+    public function shareCluster(Request $request)
+    {
+        //$request object should contain: 1. cluster_id of selected cluster; 2. an array of the user('s id) selected
+        $request->validate([
+            'cluster_id' => 'required',
+            'co_owners' => 'required',
+        ]);
+
+        $cluster = Cluster::findOrFail($request->cluster_id);
+        $cluster->users()->syncWithoutDetaching($request->co_owners); //add the co-owner ids to this cluster in the pivot table
+
+        $co_owners = User::findOrFail($request->co_owners); // the user to notify (single user for now)
+        $co_owners->notify(new NewSharedProject(Auth::user(), $cluster));
+
+        return response()->json([
+            'message' => 'Project is successfully shared.' //may add co owner names in the future
+        ], 200);
+
     }
 
     public function delete(Cluster $cluster){
