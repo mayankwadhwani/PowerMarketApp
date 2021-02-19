@@ -61,7 +61,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('add/geopoint', 'ClusterController@addGeopoint');
 	Route::post('remove/geopoint', 'ClusterController@removeGeopoint');
 
-	Route::get('notifications/markread', 'NotificationController@markRead');
+	Route::post('notifications/markAsRead', 'NotificationController@markAsRead');
 
 	Route::post('share/clusters/{cluster_id}', 'ClusterController@shareCluster');
 

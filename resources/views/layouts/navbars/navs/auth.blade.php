@@ -49,8 +49,8 @@
                         </div>
 
                         <!-- List group -->
-                        @foreach(Auth::user()->notifications as $notification)
-                        <div class="list-group list-group-flush">
+                        @foreach(Auth::user()->unreadNotifications as $notification)
+                        <div class="list-group list-group-flush single-notification" data-notification={{ $notification->id }}>
                           <!-- <a href="{{ route('page.pricing') }}" class="list-group-item list-group-item-action"> -->
                           <div class="list-group-item list-group-item-action">
                             <div class="row align-items-center">
@@ -198,3 +198,32 @@
         </div>
     </div>
 </nav>
+
+
+<script src="{{ asset('argon') }}/vendor/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".single-notification").on("click", function(event){
+            var clickedNotification = $(this).attr("data-notification");
+            var data = {
+                'notificationId': clickedNotification
+            };
+            $.ajax({
+                headers:{
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'POST',
+                url: '/notifications/markAsRead',
+                data: data,
+                dataType: 'json',
+                encode: true
+            }).done(function(data){
+                //alert("marked as read!")
+                //location.reload(true);
+            }).fail(function(){
+                alert('something went wrong...');
+                //location.reload(true);
+            });
+        });
+    });
+</script>

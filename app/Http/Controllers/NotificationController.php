@@ -11,15 +11,20 @@ use App\Notifications\NewSharedProject;
 
 class NotificationController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
+  public function __construct()
+  {
+    $this->middleware('auth');
+  }
+  public function markAsRead(Request $request) {
+
+    $notification= auth()->user()->unreadNotifications->find($request->notificationId);
+
+    if($notification !== null) {
+      $notification->markAsRead();
     }
-    public function markRead() {
-        //mark notifications as read for the logged-in user
-        foreach(Auth::user()->unreadNotifications as $notification) {
-            $notification -> markAsRead();
-        }
-        return redirect()->route('home');
-    }
+
+    return response()->json([
+      'message' => 'Notification marked as Read.'
+    ], 200);
+  }
 }
