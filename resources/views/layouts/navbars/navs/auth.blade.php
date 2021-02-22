@@ -106,7 +106,7 @@
                         </div> -->
                         <!-- End of Hard Coded Notifications -->
 
-                        <a href="#!" class="dropdown-item text-center text-primary font-weight-bold py-3">View all</a>
+                        <a href="{{ route('page.pricing') }}" target="_blank" class="dropdown-item text-center text-primary font-weight-bold py-3">Upgrade</a>
                     </div>
                 </li>
 {{--                <li class="nav-item dropdown">--}}
