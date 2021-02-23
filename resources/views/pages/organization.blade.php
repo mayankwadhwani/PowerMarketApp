@@ -103,7 +103,7 @@
 </div>
 <div class="container-fluid">
     @if(!auth()->user()->isMember())
-    <div class="row" style="margin-right: 15px; margin-left: 15px;">
+    <div class="row pt-5" style="margin-right: 15px; margin-left: 15px;">
         <div class="col-12 pb-3">
             <p class="h2">Users</p>
         </div>
