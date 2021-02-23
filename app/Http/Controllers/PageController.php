@@ -127,9 +127,19 @@ class PageController extends Controller
             ['name', $cluster_name],
             ['user_id', $user->id]
         ])->first();
+
+        // if (is_null($cluster)) {
+        //     return view('pages.reporting');
+        // }
+
+        // temporary fix until cluster-user relations update properly: allows viewing on both own projects and shared projects
         if (is_null($cluster)) {
-            return view('pages.reporting');
+            $cluster = $user->clusters->where('name', $cluster_name)->first();
+            if (is_null($cluster)) {
+                return view('pages.reporting');
+            }
         }
+
         $geopoints = $cluster->geopoints;
         $monthly_savings = array_fill(0, 12, 0);
         $monthly_exports = array_fill(0, 12, 0);
@@ -180,9 +190,19 @@ class PageController extends Controller
             ['name', $cluster_name],
             ['user_id', $user->id]
         ])->first();
+
+        // if (is_null($cluster)) {
+        //     return view('pages.reporting');
+        // }
+
+        // temporary fix until cluster-user relations update properly: allows viewing on both own projects and shared projects
         if (is_null($cluster)) {
-            return view('pages.reporting');
+            $cluster = $user->clusters->where('name', $cluster_name)->first();
+            if (is_null($cluster)) {
+                return view('pages.reporting');
+            }
         }
+
         $geopoints = $cluster->geopoints;
         $monthly_savings = array_fill(0, 12, 0);
         $monthly_exports = array_fill(0, 12, 0);
