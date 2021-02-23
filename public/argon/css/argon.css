@@ -787,6 +787,17 @@ pre code
     padding-left: 15px;
 }
 
+.container-fluid-org
+{
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+    background: RGBA(29, 44, 73, 1.00);
+    margin-bottom: 3rem;
+}
+
 .row
 {
     display: flex;
