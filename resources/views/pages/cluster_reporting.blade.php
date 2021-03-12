@@ -310,7 +310,7 @@
         var table = $('#datatable-report').DataTable({
             // paging: false,
             // searching: false,
-            ordering: false,
+            // ordering: false,
             info: false,
             language: {
                 paginate: {
