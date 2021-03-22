@@ -51,7 +51,7 @@
                             @csrf
                             <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
                                 <label class="form-control-label" for="input-name">{{ __('Name') }}</label>
-                                <input type="text" name="name" id="input-name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Enter Name') }}" value="{{ old('name') }}" required autofocus>
+                                <input maxlength="15" type="text" name="name" id="input-name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Enter Name') }}" value="{{ old('name') }}" required autofocus>
                             </div>
                             <div class="text-center">
                                 <button type="submit" class="btn btn-default my-4">Create project</button>
@@ -133,7 +133,7 @@
                                 </label>
                             </div>
                             <div class="form-group{{ $errors->has('new_name') ? ' has-danger' : '' }}">
-                                <input style="margin-top: 1rem;" disabled type="text" name="new_name" id="new-name" class="form-control{{ $errors->has('new_name') ? ' is-invalid' : '' }} form-control-sm" placeholder="{{ __('Enter new project name') }}" value="{{ old('new_name') }}" required autofocus>
+                                <input maxlength="15" style="margin-top: 1rem;" disabled type="text" name="new_name" id="new-name" class="form-control{{ $errors->has('new_name') ? ' is-invalid' : '' }} form-control-sm" placeholder="{{ __('Enter new project name') }}" value="{{ old('new_name') }}" required autofocus>
                             </div>
                             <!-- <div id="cluster-response-status" class="alert" role="alert"></div> -->
                             <div class="text-center">
@@ -266,16 +266,29 @@
      @endif
     </div>
     <div class="row">
-        <div class="col text-left" style="margin-bottom: 10px;">
-            <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="modal" data-target="#modal-form" aria-haspopup="true" aria-expanded="false">
-                Create project from active points
-            </button>
-            <span class="text-nowrap" style="font-size: .75rem">
-                Showing
-                <span id="selected-count">1</span>
-                of <span id="total-count">1</span> entries</span>
-        </div>
-        <div class="col text-right" style="margin-bottom: 10px;">
+
+      <div class="col text-left" style="margin-bottom: 10px;">
+        <span class="text-nowrap" style="font-size: .75rem; margin-right: .5rem;">Show active solar sites &nbsp;</span>
+        <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
+          <input id="checkExisting" type="checkbox">
+          <span class="custom-toggle-slider rounded-circle" style=""></span>
+        </label>
+      </div>
+
+      <div class="col text-right" style="margin-bottom: 10px;">
+        <span class="text-nowrap" style="font-size: .75rem; margin-right: .5rem;">
+          Showing
+            <span id="selected-count">1</span>
+            of <span id="total-count">1</span>
+          sites
+        </span>
+        <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="modal" data-target="#modal-form" aria-haspopup="true" aria-expanded="false">
+          Create project from active points
+        </button>
+      </div>
+        <!-- show existing solar toggle -->
+        <!-- end of show existing solar toggle -->
+        <!-- <div class="col text-right" style="margin-bottom: 10px;">
             <span class="text-nowrap" style="font-size: .75rem">You are browsing by &nbsp;</span>
             <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Break-even Time
@@ -285,7 +298,7 @@
             </div>
             {{-- <a href="#" class="btn btn-sm btn-neutral">{{ __('New') }}</a>--}}
             {{-- <a href="#" class="btn btn-sm btn-neutral">{{ __('Filters') }}</a>--}}
-        </div>
+        </div> -->
     </div>
     <div class="row">
         <div class="col">
@@ -364,7 +377,7 @@
     var filterYears = new Map();
     var cluster_route = `{!! $cluster ?? '' !!}`
     var features = [];
-
+    var checkExisting = document.querySelector("#checkExisting");
     function renderMap() {
         var jsonString = `{!! $geodata ?? '
         ' !!}`;
@@ -372,6 +385,9 @@
         var filterGroup = document.getElementById('filter-group');
         if (jsonString.length > 0) {
             dataArray = JSON.parse(jsonString);
+
+            console.log(dataArray)
+
             dataArray.sort(function(a, b) {
                 return a['breakeven_years'] - b['breakeven_years'];
             });
@@ -423,7 +439,8 @@
                         id: dataArray[key].id,
                         area: dataArray[key].area_sqm,
                         panels: dataArray[key].numpanels,
-                        roi: dataArray[key].lifetime_return_on_investment_percent
+                        roi: dataArray[key].lifetime_return_on_investment_percent,
+                        existingSolar: dataArray[key].existingsolar
                     },
                     geometry: {
                         type: dataArray[key].latLon.type,
@@ -489,10 +506,19 @@
                                     ['zoom'], 10, 0.1, 15, 1
                                 ]
                             },
-                            'filter': ['==', 'years', symbol],
+                            'filter': [
+                                    "all",
+                                    ["==", "years", symbol],
+                                    ["!=", "existingSolar", "Y"]
+                            ],
                             'paint': {
-                                'icon-color': yearColorMap.get(symbol) ?? '#6D0000'
-                            }
+                                    'icon-color': [
+                                        'match',
+                                        ['get', 'existingSolar'],
+                                        'Y', '#5F73E3',
+                                        yearColorMap.get(symbol),
+                            ]
+                          }
                         });
 
                         // Add checkbox and label elements for the layer.
@@ -612,10 +638,37 @@
                         break;
                     }
                 }
+                var yearsArray = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+                checkExisting.onclick = function (e) {
+                    layers.forEach(layer => {
+
+                        if(layer.type === "symbol" && layer.id !== "cluster-count"){
+                            if(checkExisting.checked){
+
+                                var year = layer.filter[1][2]
+
+                                var include_existing =["==", "years", year];
+                                map.setFilter(layer.id, include_existing);
+
+                            } else {
+                            var filter_existing =[
+                                "all",
+                                ["==", "years", layer.filter[1][2]],
+                                ["!=", "existingSolar", "Y"]
+                            ];
+                            map.setFilter(layer.id, filter_existing);
+
+                            }
+                        }
+                    })
+                }
                 map.fitBounds(bounds);
             });
         });
-    }
+      }
+
+
+
 
     function getClusters() {
         $.ajax({
