@@ -343,7 +343,7 @@
         ' !!}');
     var yearly_gen_exports = JSON.parse('{!! $yearly_gen_exports ?? '
         ' !!}');
-    // console.log("m-gen-cap: ", monthly_gen_captive, "m-gen-exp: ", monthly_gen_exports, "y-gen-cap: ", yearly_gen_captive, 'yearly_gen_exports: ', yearly_gen_exports, "saved_co2: ", saved_co2  );
+    console.log("m-gen-cap: ", monthly_gen_captive, "m-gen-exp: ", monthly_gen_exports, "y-gen-cap: ", yearly_gen_captive, 'yearly_gen_exports: ', yearly_gen_exports, "saved_co2: ", saved_co2  );
 
     var jsonString = `{!! $geodata ?? '
     ' !!}`;

@@ -215,15 +215,25 @@ class PageController extends Controller
             for ($i = 0; $i < 12; $i++) {
                 $monthly_savings[$i] += $geopoint->monthly_gen_saving_value_GBP[$i];
                 $monthly_exports[$i] += $geopoint->monthly_gen_export_value_GBP[$i];
-                $monthly_gen_captive[$i] += $geopoint->monthly_gen_captive_kWh[$i];
-                $monthly_gen_exports[$i] += $geopoint->monthly_gen_export_kWh[$i];
+
+                if ($geopoint->monthly_gen_captive_kWh) {
+                  $monthly_gen_captive[$i] += $geopoint->monthly_gen_captive_kWh[$i];
+                }
+                if ($geopoint->monthly_gen_export_kWh) {
+                  $monthly_gen_exports[$i] += $geopoint->monthly_gen_export_kWh[$i];
+                }
             }
             for ($i = 0; $i < 26; $i++) {
                 $yearly_co2[$i] += $geopoint->yearly_co2_saved_kg[$i];
             }
+
             for ($i = 0; $i < 25; $i++) {
-                $yearly_gen_captive[$i] += $geopoint->yearly_gen_captive_kWh[$i]; //verified that y-gen-cap and y-gen-exp both are arrays of 25 values
-                $yearly_gen_exports[$i] += $geopoint->yearly_gen_export_kWh[$i];
+                if ($geopoint->yearly_gen_captive_kWh) {
+                  $yearly_gen_captive[$i] += $geopoint->yearly_gen_captive_kWh[$i];
+                }
+                if ($geopoint->yearly_gen_export_kWh) {
+                  $yearly_gen_exports[$i] += $geopoint->yearly_gen_export_kWh[$i];
+                }
             }
         }
         return view('pages.cluster_reporting', [
