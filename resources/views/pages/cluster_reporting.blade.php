@@ -152,15 +152,13 @@
                                   <!-- Card header -->
                                   <div class="card-header">
                                     <!-- Title -->
-                                    <h5 class="h3 mb-0 net">Net Annual Generation (kWh)
-                                      <!-- <img src="{{ asset('svg') }}/info.svg" data-toggle="tooltip" title="After taking CO2 emissions from solar manufacturing into account." /> -->
-                                    </h5>
+                                    <h5 class="h3 mb-0">Monthly Generation (kWh)</h5>
                                   </div>
                                   <!-- Card body -->
                                   <div class="card-body">
                                     <div class="chart">
                                       <!-- Chart wrapper -->
-                                      <canvas id="chart-report-generation" class="chart-canvas"></canvas>
+                                      <canvas id="chart-bar-gen"></canvas>
                                     </div>
                                   </div>
                                 </div>
@@ -170,13 +168,15 @@
                                   <!-- Card header -->
                                   <div class="card-header">
                                     <!-- Title -->
-                                    <h5 class="h3 mb-0">Monthly Generation (kWh)</h5>
+                                    <h5 class="h3 mb-0 net">Net Annual Generation (kWh)
+                                      <!-- <img src="{{ asset('svg') }}/info.svg" data-toggle="tooltip" title="After taking CO2 emissions from solar manufacturing into account." /> -->
+                                    </h5>
                                   </div>
                                   <!-- Card body -->
                                   <div class="card-body">
                                     <div class="chart">
                                       <!-- Chart wrapper -->
-                                      <canvas id="chart-bar-gen"></canvas>
+                                      <canvas id="chart-report-generation" class="chart-canvas"></canvas>
                                     </div>
                                   </div>
                                 </div>
