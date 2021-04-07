@@ -457,17 +457,17 @@
                           datasets: [
                               {
                                   label: 'Savings',
-                                  backgroundColor: 'RGBA(98, 118, 214, 1.00)',
+                                  backgroundColor: 'RGBA(218, 182, 87, 1.00)',
                                   data: monthly_savings,
                                   borderWidth: 0,
-                                  borderColor: 'RGBA(98, 118, 214, 1.00)',
+                                  borderColor: 'RGBA(218, 182, 87, 1.00)',
                                   //fill: false
                               },
                               {
                                   label: 'Export',
-                                  backgroundColor: "RGBA(30, 43, 73, 1)",
+                                  backgroundColor: "RGBA(197, 130, 75, 1.00)",
                                   data: monthly_exports,
-                                  borderColor: "RGBA(30, 43, 73, 1)",
+                                  borderColor: "RGBA(197, 130, 75, 1.00)",
                                   //borderColor: '#6074DD',
                                   borderWidth: 0,
                                   //fill: false
