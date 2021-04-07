@@ -774,7 +774,7 @@
                 }
             };
 
-        // function renderMap() {
+        function renderMap() {
             var features = []
             mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
             var map = new mapboxgl.Map({
@@ -834,7 +834,7 @@
             })
 
             map.fitBounds(bounds)
-        // }
+        }
 
         $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip();
@@ -842,7 +842,7 @@
             renderLineChart_gen();
             renderBarChart_co2();
             renderBarChart_gen();
-            // renderMap();
+            renderMap();
             renderTable();
         });
     </script>
