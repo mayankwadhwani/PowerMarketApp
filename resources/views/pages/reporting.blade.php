@@ -382,8 +382,8 @@
         ' !!}');
 
     function renderTable() {
-        var jsonString = '{!! $geodata ?? '
-        ' !!}';
+        var jsonString = `{!! $geodata ?? '
+        ' !!}`;
         if (jsonString.length > 0) {
             //var jsonData = JSON.parse(jsonString);
             var dataArray = JSON.parse(jsonString);
