@@ -6,6 +6,8 @@ use App\Region;
 use App\Account;
 use App\Geopoint;
 use App\Cluster;
+use App\Helpers\pro;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -98,6 +100,62 @@ class HomeController extends Controller
             'geodata' => $geopoints,
             'account' => $account_name,
             'region' => $region_name
+        ]);
+    }
+
+    public function region_pro(Request $request){
+        $account_name = $request->account;
+        $account = Account::where('name', $account_name)->first();
+        $region_name = $request->region;
+        //region may or may not be passed through the request:
+        if ($region_name) {
+            $region = $account->regions()->where('name', $region_name)->first();
+            $geopoints = Geopoint::where('region_id', $region->id)->get();
+            //dd("with region name", $geopoints);
+        } else{
+            $region_ids = $account->regions()->pluck('id')->toArray();
+            $geopoints = Geopoint::whereIn('region_id', $region_ids)->get();
+            //dd("without region name", $geopoints);
+        };
+        //dd($geopoints);
+        if($geopoints == null) return abort(404);
+        //-----------user input params-------------
+        //----laravel blade input seems unable to pass input of type "number" as numeric values----
+        //----so manually converting input fields from string to floats in controller, for now-----
+        $captive_use = $request->captive_use ?  floatval($request->captive_use) : 0.8;
+        $export_tariff = $request->export_tariff ? floatval($request->export_tariff) : 0.055;
+        //$domestic_tariff may have a different value if account is "PPS"
+        if($request->tariff){
+            $domestic_tariff = floatval($request->domestic_tariff);
+        } else{
+            if($account_name == "PPS"){
+                $domestic_tariff = 0.095;
+            }else{
+                $domestic_tariff = 0.146;
+            }
+        }
+        $commercial_tariff = $request->commercial_tariff ? floatval($request->commercial_tariff) : 0.12;
+        $cost_of_small_system = $request->cost_of_small_system ? floatval($request->cost_of_small_system) : 6000;
+        $system_size_kwp = $request->system_size_kwp ? floatval($request->system_size_kwp) : 5;
+        $test_geopoint = $geopoints->where("id", 19483);
+        $pro_geopoints = pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, $geopoints);
+        //dd($geopoints->where('id', 17499));
+        $prev_inputs = [
+            "captive_use" => $captive_use,
+            "export_tariff" => $export_tariff,
+            "domestic_tariff" => $domestic_tariff,
+            "commercial_tariff" => $commercial_tariff,
+            "cost_of_small_system" => $cost_of_small_system,
+            "system_size_kwp" => $system_size_kwp
+        ];
+        return view('pages.dashboard-pro', [
+            'geodata' => $pro_geopoints,
+            'account' => $account_name,
+            'region' => $region_name,
+            "captive_use" => $captive_use,
+            "export_tariff" => $export_tariff,
+            "prev_inputs" => $prev_inputs,
+            "test_geopoint" => $test_geopoint
         ]);
     }
 

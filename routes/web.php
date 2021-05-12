@@ -68,4 +68,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('clusters', 'ClusterController@index');
 	Route::get('projects/{cluster}', 'HomeController@cluster');
 	//Route::get('{page}', ['as' => 'page.index', 'uses' => 'PageController@index']);
+
+	Route::get('/pro/{account}/{region?}', 'HomeController@region_pro')->name('home.region_pro');
+
 });
