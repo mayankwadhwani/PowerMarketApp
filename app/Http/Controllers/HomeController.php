@@ -128,7 +128,7 @@ class HomeController extends Controller
         if($request->tariff){
             $domestic_tariff = floatval($request->domestic_tariff);
         } else{
-            if($account_name == "PPS"){
+            if($account_name == "Gloucestershire | PPS"){
                 $domestic_tariff = 0.095;
             }else{
                 $domestic_tariff = 0.146;

@@ -280,12 +280,12 @@
                        @include('alerts.feedback', ['field' => 'export_tariff'])
                    </div>
                    <div class="col-sm-2 form-group{{ $errors->has('domestic-tariff') ? ' has-danger' : '' }}">
-                       <label class="form-control-label" for="input-domestic-tariff">{{ __('Domestic Tariff') }}</label>
+                       <label class="form-control-label" for="input-domestic-tariff">{{ __('Residential Tariff') }}</label>
                        <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder='default: {{ ($account == 'Gloucestershire | PPS') ? 0.095 : 0.146 }}' value="{{ old('domestic-tariff') }}">
                        @include('alerts.feedback', ['field' => 'domestic_tariff'])
                    </div>
                    <div class="col-sm-2 form-group{{ $errors->has('commercial-tariff') ? ' has-danger' : '' }}">
-                       <label class="form-control-label" for="input-commercial-tariff">{{ __('Commercial Tariff') }}</label>
+                       <label class="form-control-label" for="input-commercial-tariff">{{ __('Non-Residential Tariff') }}</label>
                        <input type="number" step="any" name="commercial_tariff" id="input-commercial-tariff" class="form-control{{ $errors->has('commercial-tariff') ? ' is-invalid' : '' }}" placeholder="{{ __('default: 0.12') }}" value="{{ old('commercial-tariff') }}">
                        @include('alerts.feedback', ['field' => 'commercial_tariff'])
                    </div>
