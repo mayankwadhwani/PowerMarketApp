@@ -290,7 +290,7 @@
                        @include('alerts.feedback', ['field' => 'commercial_tariff'])
                    </div>
                    <div class="col-sm-4 form-group">
-                       <label class="form-control-label" for="input-system-cost-per-kwp">{{ __('system_cost_per_kwp (total cost / system size)') }}</label>
+                       <label class="form-control-label" for="input-system-cost-per-kwp">{{ __('System Cost per kWp (total cost / system size)') }}</label>
                        <div class="input-group" id="input-system-cost-per-kwp">
                            {{-- <div class="form-group{{ $errors->has('cost_of_small_system') ? ' has-danger' : '' }}"> --}}
                                {{-- <label class="form-control-label" for="input-cost-of-small-system">{{ __('cost_of_small_system') }}</label> --}}
