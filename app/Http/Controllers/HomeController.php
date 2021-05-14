@@ -125,7 +125,7 @@ class HomeController extends Controller
         $captive_use = $request->captive_use ?  floatval($request->captive_use) : 0.8;
         $export_tariff = $request->export_tariff ? floatval($request->export_tariff) : 0.055;
         //$domestic_tariff may have a different value if account is "PPS"
-        if($request->tariff){
+        if($request->domestic_tariff){
             $domestic_tariff = floatval($request->domestic_tariff);
         } else{
             if($account_name == "Gloucestershire | PPS"){
@@ -152,6 +152,60 @@ class HomeController extends Controller
             'geodata' => $pro_geopoints,
             'account' => $account_name,
             'region' => $region_name,
+            'cluster' => "",
+            "captive_use" => $captive_use,
+            "export_tariff" => $export_tariff,
+            "prev_inputs" => $prev_inputs,
+            "test_geopoint" => $test_geopoint
+        ]);
+    }
+
+    public function cluster_pro(Request $request){
+        //dd($request);
+        $user = auth()->user();
+        $cluster_name = $request->cluster;
+        $cluster = Cluster::where('user_id', $user->id)->where('name', $cluster_name)->first();
+        //temporary fix until cluster-user relationship updated properly
+        if ($cluster == null){
+            $cluster = $user->clusters->where('name', $cluster_name)->first();
+            if($cluster == null) {
+                return abort(404);
+            }
+        }
+        $geopoints = $cluster->geopoints;
+        if($geopoints == null) return abort(404);
+        //-----------user input params-------------
+        //----laravel blade input seems unable to pass input of type "number" as numeric values----
+        //----so manually converting input fields from string to floats in controller, for now-----
+        $captive_use = $request->captive_use ?  floatval($request->captive_use) : 0.8;
+        $export_tariff = $request->export_tariff ? floatval($request->export_tariff) : 0.055;
+        //$domestic_tariff may have a different value if account is "PPS"
+        if($request->domestic_tariff){
+            $domestic_tariff = floatval($request->domestic_tariff);
+        } else{
+            //to-do: how to use default 0.095 for PPS accounts
+           $domestic_tariff = 0.146;
+        }
+        //dd($domestic_tariff);
+        $commercial_tariff = $request->commercial_tariff ? floatval($request->commercial_tariff) : 0.12;
+        $cost_of_small_system = $request->cost_of_small_system ? floatval($request->cost_of_small_system) : 6000;
+        $system_size_kwp = $request->system_size_kwp ? floatval($request->system_size_kwp) : 5;
+        $test_geopoint = $geopoints->where("id", 19483);
+        $pro_geopoints = pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, $geopoints);
+        //dd($geopoints->where('id', 17499));
+        $prev_inputs = [
+            "captive_use" => $captive_use,
+            "export_tariff" => $export_tariff,
+            "domestic_tariff" => $domestic_tariff,
+            "commercial_tariff" => $commercial_tariff,
+            "cost_of_small_system" => $cost_of_small_system,
+            "system_size_kwp" => $system_size_kwp
+        ];
+        return view('pages.dashboard-pro', [
+            'geodata' => $pro_geopoints,
+            'cluster' => $cluster->name,
+            'region'=>'',
+            'account' => '',
             "captive_use" => $captive_use,
             "export_tariff" => $export_tariff,
             "prev_inputs" => $prev_inputs,

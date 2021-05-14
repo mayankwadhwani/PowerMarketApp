@@ -70,5 +70,6 @@ Route::group(['middleware' => 'auth'], function () {
 	//Route::get('{page}', ['as' => 'page.index', 'uses' => 'PageController@index']);
 
 	Route::get('/pro/{account}/{region?}', 'HomeController@region_pro')->name('home.region_pro');
+	Route::get('/pro-cluster/{cluster}', 'HomeController@cluster_pro')->name('home.cluster_pro');
 
 });

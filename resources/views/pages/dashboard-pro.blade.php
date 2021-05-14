@@ -267,7 +267,11 @@
 
 
      <div>
-       <form class="mt-5" id="pro-form" method="get" action="{{ route('home.region_pro', ['account' => $account, 'region' => $region]) }}" role="form">
+       @if(!empty($cluster))
+            <form class="pro-form mt-5" method="get" action="{{ route('home.cluster_pro', ['cluster' => $cluster]) }}" role="form">
+        @else
+            <form class="pro-form mt-5" method="get" action="{{ route('home.region_pro', ['account' => $account, 'region' => $region ?? '']) }}" role="form">
+        @endif
          @csrf
          <div class="row">
            <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
@@ -282,7 +286,11 @@
            </div>
            <div class="col-sm-2 form-group{{ $errors->has('domestic-tariff') ? ' has-danger' : '' }}">
              <label class="form-control-label" for="input-domestic-tariff">{{ __('Residential Tariff') }}</label>
-             <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="pro-input form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" data-account={{ $account }} placeholder = "{{ ($account == 'Gloucestershire | PPS') ? 0.095 : 0.146 }}" value="{{ $prev_inputs['domestic_tariff'] }}">
+             @if(!empty($account))
+                  <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="pro-input form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder='{{ ($account == 'Gloucestershire | PPS') ? 0.095 : 0.146 }}' value="{{ $prev_inputs['domestic_tariff'] }}">
+              @else
+                  <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="pro-input form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder="0.146"  value="{{ $prev_inputs['domestic_tariff'] }}">
+              @endif
              @include('alerts.feedback', ['field' => 'domestic_tariff'])
            </div>
            <div class="col-sm-2 form-group{{ $errors->has('commercial-tariff') ? ' has-danger' : '' }}">
@@ -777,7 +785,7 @@
             system_size_kwp: 5
         }
         //attach event handler to each of the pro input fields
-        $("#pro-form").find(".pro-input").each(function(input){
+        $(".pro-form").find(".pro-input").each(function(input){
             //->input gives the index number;  $this gives the actual element
             //reset pro-form values to original:
             const inputName = $(this).attr("name")
