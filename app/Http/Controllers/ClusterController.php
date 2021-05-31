@@ -29,6 +29,11 @@ class ClusterController extends Controller
             'geopoints' => 'required|json',
         ]);
         $geopoints = json_decode($request->geopoints);
+
+        if($request->pro_params){
+          $pro_params = json_decode($request->pro_params);
+        };
+
         $user = $request->user();
         if (Cluster::where('user_id', $user->id)->where('name', $request->name)->exists()) {
             return response()->json([
@@ -42,7 +47,27 @@ class ClusterController extends Controller
             'name' => $request->name,
             'user_id' => $user->id
         ]);
-        $cluster->geopoints()->attach($geopoints);
+
+        //$cluster->geopoints()->attach($geopoints);
+        //create data array for each geopoint and insert to db using a single query:
+        $geopoint_data = [];
+        foreach($geopoints as $geopoint){
+            // the hardcoded values account for when user create cluster directly from the non-pro dashboard
+            // (meaning no value in each input field)
+            array_push($geopoint_data, [
+                'cluster_id'=>$cluster->id,
+                'geopoint_id' => $geopoint,
+                'captive_use'=>$pro_params->captive_use ?? 0.8,
+                'export_tariff' => $pro_params->export_tariff ?? 0.055,
+                'domestic_tariff' => $pro_params->domestic_tariff ?? 0.146,
+                'commercial_tariff' => $pro_params->commercial_tariff ?? 0.12,
+                'system_cost' => $pro_params->system_cost ?? 6000,
+                'system_size' => $pro_params->system_size ?? 5
+            ]);
+        };
+
+        DB::table('cluster_geopoint')->insert($geopoint_data);
+
         $cluster->setLatLon();
         return response()->json([
             'message' => 'The project has been successfully created',
@@ -96,7 +121,21 @@ class ClusterController extends Controller
                     'user_id' => $user->id
                 ]);
             }
-            $cluster->addGeopoint($request->geopoint_id);
+
+            // $cluster->addGeopoint($request->geopoint_id);
+            //insert geopoint with all the pro params:
+            $pro_params = json_decode($request->pro_params);
+
+            $geopoint_params = [
+                'captive_use'=>$pro_params->captive_use ?? 0.8,
+                'export_tariff' => $pro_params->export_tariff ?? 0.055,
+                'domestic_tariff' => $pro_params->domestic_tariff ?? 0.146,
+                'commercial_tariff' => $pro_params->commercial_tariff ?? 0.12,
+                'system_cost' => $pro_params->system_cost ?? 6000,
+                'system_size' => $pro_params->system_size ?? 5
+            ];
+            $cluster->addGeopoint($request->geopoint_id, $geopoint_params);
+
             $cluster->setLatLon();
             return response()->json([
                 'message' => 'Geopoint has been successfully added',

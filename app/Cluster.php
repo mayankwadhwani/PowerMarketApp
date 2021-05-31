@@ -17,7 +17,14 @@ class Cluster extends Model
 
     public function geopoints()
     {
-        return $this->belongsToMany(Geopoint::class);
+      return $this->belongsToMany(Geopoint::class)->withPivot([
+          'captive_use',
+          'export_tariff',
+          'domestic_tariff',
+          'commercial_tariff',
+          'system_cost',
+          'system_size'
+        ]);;
     }
 
     public function setLatLon()
@@ -32,7 +39,7 @@ class Cluster extends Model
         $this->save();
     }
 
-    public function addGeopoint($geopoint_id) {
-        $this->geopoints()->syncWithoutDetaching($geopoint_id);
+    public function addGeopoint($geopoint_id, $geopoint_params) {
+        $this->geopoints()->syncWithoutDetaching(array($geopoint_id => $geopoint_params));
     }
 }

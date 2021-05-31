@@ -42,6 +42,18 @@ class Geopoint extends Model
         'latLon'
     ];
 
+    public function clusters()
+   {
+       return $this->belongsToMany(Cluster::class)->withPivot([
+               'captive_use',
+               'export_tariff',
+               'domestic_tariff',
+               'commercial_tariff',
+               'system_cost',
+               'system_size'
+           ]);
+   }
+
     protected $casts = [
         'monthly_gen_saving_value_GBP' => 'array',
         'monthly_gen_export_value_GBP' => 'array',
