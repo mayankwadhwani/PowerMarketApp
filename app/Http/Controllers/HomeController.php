@@ -172,6 +172,9 @@ class HomeController extends Controller
                 return abort(404);
             }
         }
+
+        $currentDBParams = $this->getClusterParams($cluster);
+
         $geopoints = $cluster->geopoints;
         if($geopoints == null) return abort(404);
         //-----------user input params-------------
@@ -209,8 +212,22 @@ class HomeController extends Controller
             "captive_use" => $captive_use,
             "export_tariff" => $export_tariff,
             "prev_inputs" => $prev_inputs,
-            "test_geopoint" => $test_geopoint
+            "test_geopoint" => $test_geopoint,
+            'currentDBParams' => $currentDBParams
         ]);
+    }
+
+    private function getClusterParams($cluster){
+        $firstPoint = $cluster->geopoints->first();
+        $currentParams = [
+            "captive_use" => $firstPoint->pivot->captive_use,
+            "export_tariff" => $firstPoint->pivot->export_tariff,
+            "domestic_tariff" => $firstPoint->pivot->domestic_tariff,
+            "commercial_tariff" => $firstPoint -> pivot -> commercial_tariff,
+            "cost_of_small_system" => $firstPoint->pivot -> system_cost,
+            "system_size_kwp" => $firstPoint->pivot->system_size
+        ];
+        return $currentParams;
     }
 
     public function cluster($cluster_name) {
@@ -222,6 +239,9 @@ class HomeController extends Controller
                 return abort(404);
             }
         }
+
+        $currentDBParams = $this->getClusterParams($cluster);
+
         $geopoints = $cluster->geopoints;
 
         $pro_geopoints = [];
@@ -242,6 +262,7 @@ class HomeController extends Controller
         return view('pages.dashboard', [
         'geodata' => collect($pro_geopoints),
         'cluster' => $cluster->name,
+        'currentDBParams' => $currentDBParams
         ]);
 
 

@@ -32,6 +32,18 @@ class PageController extends Controller
         return abort(404);
     }
 
+    private function getProGeopoints($cluster){
+      $geopoints = $cluster->geopoints;
+      $firstPoint = $geopoints->first();
+      $captive_use = $firstPoint->pivot->captive_use;
+      $export_tariff = $firstPoint->pivot->export_tariff;
+      $domestic_tariff = $firstPoint->pivot->domestic_tariff;
+      $commercial_tariff = $firstPoint -> pivot -> commercial_tariff;
+      $cost_of_small_system = $firstPoint->pivot -> system_cost;
+      $system_size_kwp = $firstPoint->pivot->system_size;
+      $pro_geopoints = pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, $geopoints);
+      return $pro_geopoints;
+    }
 
     private function getGeopointData($geopoints){
 
@@ -211,6 +223,9 @@ class PageController extends Controller
             }
         }
 
+        $geopoints = $this->getProGeopoints($cluster);
+        $data_array= $this->getGeopointData($geopoints);
+
         $geopoints = $cluster->geopoints;
         $data_array= $this->getGeopointData($geopoints);
         // $monthly_savings = array_fill(0, 12, 0);
@@ -278,6 +293,9 @@ class PageController extends Controller
                 return view('pages.reporting');
             }
         }
+
+        $geopoints = $this->getProGeopoints($cluster);
+        $data_array= $this->getGeopointData($geopoints);
 
         $geopoints = $cluster->geopoints;
         $data_array= $this->getGeopointData($geopoints);

@@ -259,6 +259,24 @@
                 <div class="col">
                   <div class="card">
                     <div class="card-header">
+                      <h3 class="mb-0">Core Assumptions</h3>
+                      <p class="text-sm mb-0">
+                      </p>
+                    </div>
+
+                  <div class="card-body">
+                    <div>
+                      <h4>This cluster has been made with the following assumptions:</h4>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <div class="row">
+                <div class="col">
+                  <div class="card">
+                    <div class="card-header">
                       <h3 class="mb-0">Location Data</h3>
                       <p class="text-sm mb-0">
                       </p>
