@@ -105,6 +105,19 @@ class PageController extends Controller
        ];
    }
 
+   private function getClusterParams($cluster){
+        $firstPoint = $cluster->geopoints->first();
+        $currentParams = [
+            "captive_use" => $firstPoint->pivot->captive_use,
+            "export_tariff" => $firstPoint->pivot->export_tariff,
+            "domestic_tariff" => $firstPoint->pivot->domestic_tariff,
+            "commercial_tariff" => $firstPoint -> pivot -> commercial_tariff,
+            "cost_of_small_system" => $firstPoint->pivot -> system_cost,
+            "system_size_kwp" => $firstPoint->pivot->system_size
+        ];
+        return $currentParams;
+    }
+
 
     public function pdf(Request $request)
     {
@@ -223,6 +236,8 @@ class PageController extends Controller
             }
         }
 
+        $currentDBParams = $this->getClusterParams($cluster);
+
         $geopoints = $this->getProGeopoints($cluster);
         $data_array= $this->getGeopointData($geopoints);
 
@@ -258,6 +273,7 @@ class PageController extends Controller
             'yearly_gen_captive' => json_encode($data_array['yearly_gen_captive']),
             'yearly_gen_exports' => json_encode($data_array['yearly_gen_exports']),
             'saved_co2' => json_encode($data_array['yearly_co2']),
+            'currentDBParams' => $currentDBParams
         ]);
         $output = [];
         $tempDir = (new TemporaryDirectory())->create();
@@ -296,6 +312,8 @@ class PageController extends Controller
 
         $geopoints = $this->getProGeopoints($cluster);
         $data_array= $this->getGeopointData($geopoints);
+
+        $currentDBParams = $this->getClusterParams($cluster);
 
         $geopoints = $cluster->geopoints;
         $data_array= $this->getGeopointData($geopoints);
@@ -349,6 +367,7 @@ class PageController extends Controller
             'yearly_gen_captive' => json_encode($data_array['yearly_gen_captive']),
             'yearly_gen_exports' => json_encode($data_array['yearly_gen_exports']),
             'saved_co2' => json_encode($data_array['yearly_co2']),
+            'currentDBParams' => $currentDBParams
         ]);
     }
     /**

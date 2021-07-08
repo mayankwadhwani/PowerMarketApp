@@ -261,6 +261,33 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                  <div class="col">
+                                    <div class="card">
+                                      <div class="card-header">
+                                        <h3 class="mb-0">Core Assumptions</h3>
+                                        <div>
+                                          <h4>The data above has been premised on the following core assumptions:</h4>
+                                          <span>Total cost for system: {{ $currentDBParams['cost_of_small_system'] }} | </span>
+                                          <span>System size in kWp: {{ $currentDBParams['system_size_kwp'] }} | </span>
+                                          <span>Captive Use: {{ $currentDBParams['captive_use'] }} | </span>
+                                          <span>Export Tariff: {{ $currentDBParams['export_tariff'] }} | </span>
+                                          <span>Residential Tariff: {{ $currentDBParams['domestic_tariff'] }} | </span>
+                                          <span>Non-Residential Tariff: {{ $currentDBParams['commercial_tariff'] }}</span>
+                                        </div>
+                                        <p class="text-sm mb-0">
+                                        </p>
+                                      </div>
+
+                                    <div class="card-body">
+                                      <div>
+                                        <h4>This cluster has been made with the following assumptions:</h4>
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                                <div class="row">
                                     <div class="col">
                                         <div class="card">
                                             <div class="card-header">

@@ -477,7 +477,7 @@
         var map = new mapboxgl.Map({
           container: 'map',
           style: 'mapbox://styles/mapbox/satellite-v9',
-          pitch: 45,
+          pitch: 10,
           bearing: -17.6,
           antialias: true
         });
@@ -632,7 +632,7 @@
                   'features': features
                 },
                 cluster: true,
-                clusterMaxZoom: 12, // Max zoom to cluster points on
+                clusterMaxZoom: 28, // Max zoom to cluster points on
                 clusterRadius: 50
               });
               features.forEach(function(feature) {
@@ -649,7 +649,7 @@
                       'icon-image': 'marker-icon',
                       'icon-allow-overlap': true,
                       "icon-size": ['interpolate', ['linear'],
-                      ['zoom'], 10, 0.1, 15, 1
+                      ['zoom'], 1, 0.5, 10, 1
                     ]
                   },
                   'filter': [
