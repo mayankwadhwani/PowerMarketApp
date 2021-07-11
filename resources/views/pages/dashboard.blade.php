@@ -632,7 +632,7 @@
                   'features': features
                 },
                 cluster: true,
-                clusterMaxZoom: 28, // Max zoom to cluster points on
+                clusterMaxZoom: 18, // Max zoom to cluster points on
                 clusterRadius: 50
               });
               features.forEach(function(feature) {
