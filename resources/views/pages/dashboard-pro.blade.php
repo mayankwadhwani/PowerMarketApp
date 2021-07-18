@@ -364,8 +364,8 @@
               <div class="col-sm-2 text-left">
                 <button type="submit" class="btn btn-default my-4">Run</button>
               </div>
-              <div class="col-sm-2 text-left">
-                <button id="reset-btn" class="btn btn-default my-4">Reset</button>
+              <div class="col-sm-2 offset-sm-8 text-right">
+                <button id="reset-btn" class="btn btn-default-outline my-4">Reset</button>
               </div>
             </div>
           </form>
@@ -426,8 +426,8 @@
                   <div class="col-sm-2 text-left">
                     <button type="submit" class="btn btn-default my-4">Run</button>
                   </div>
-                  <div class="col-sm-2 text-left">
-                    <button id="reset-btn" class="btn btn-default my-4">Reset</button>
+                  <div class="col-sm-2 offset-sm-8 text-right">
+                    <button id="reset-btn" class="btn btn-default-outline my-4">Reset</button>
                   </div>
                 </div>
               </form>
@@ -500,17 +500,22 @@
         var clicked_geopoint_id, clicked_layer, clicked_popup;
         var layerPrefix = 'layer-years-';
         var yearColors = [
+          [0, '#FFFFFF'],
+          [1, '#63c54f'],
+          [2, '#63c54f'],
+          [3, '#63c54f'],
+          [4, '#63c54f'],
           [5, '#63c54f'],
-          [6, '#63c54f'],
-          [7, '#63c54f'],
+          [6, '#e0b542'],
+          [7, '#e0b542'],
           [8, '#e0b542'],
           [9, '#e0b542'],
-          [10, '#cf7f3e'],
+          [10, '#e0b542'],
           [11, '#cf7f3e'],
-          [12, '#bd403a'],
-          [13, '#bd403a'],
-          [14, '#bd403a'],
-          [15, '#bd403a'],
+          [12, '#cf7f3e'],
+          [13, '#cf7f3e'],
+          [14, '#cf7f3e'],
+          [15, '#cf7f3e'],
           [16, '#bd403a'],
           [17, '#bd403a'],
           [18, '#bd403a'],
@@ -664,7 +669,7 @@
                       'match',
                       ['get', 'existingSolar'],
                       'Y', '#5F73E3',
-                      yearColorMap.get(symbol)??'#282C33',
+                      yearColorMap.get(symbol)??'#6D0000',
                     ]
                   }
                 });

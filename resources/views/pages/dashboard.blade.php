@@ -330,23 +330,23 @@
             <div class="input-group" id="input-system-cost-per-kwp">
               {{-- <div class="form-group{{ $errors->has('cost_of_small_system') ? ' has-danger' : '' }}"> --}}
                 {{-- <label class="form-control-label" for="input-cost-of-small-system">{{ __('cost_of_small_system') }}</label> --}}
-                <input type="number" step="any" class="form-control" name="cost_of_small_system" id="input-cost-of-small-system" class="form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}" placeholder="{{ __('Total Cost: £6000') }}" value="{{ old('cost_of_small_system') }}">
+                <input type="number" step="any" class="form-control" name="cost_of_small_system" id="input-cost-of-small-system" class="form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['cost_of_small_system'] }}" value="{{ old('cost_of_small_system') }}">
                 @include('alerts.feedback', ['field' => 'cost_of_small_system'])
                 {{-- </div> --}}
                 {{-- <div class="form-group{{ $errors->has('system_size_kwp') ? ' has-danger' : '' }}"> --}}
-                  <input type="number" step="any" class="form-control" name="system_size_kwp" id="input-system-size-kwp" class="form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder="{{ __('System Size: 5kw') }}" value="{{ old('system_size_kwp') }}">
+                  <input type="number" step="any" class="form-control" name="system_size_kwp" id="input-system-size-kwp" class="form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['system_size_kwp'] }}" value="{{ old('system_size_kwp') }}">
                   @include('alerts.feedback', ['field' => 'system_size_kwp'])
                   {{-- </div> --}}
                 </div>
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Captive use." /></label>
-                <input type="number" step="any" name="captive_use" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder='{{ __("0.8") }}' value="{{ old('captive-use') }}"autofocus>
+                <input type="number" step="any" name="captive_use" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['captive_use'] }}" value="{{ old('captive-use') }}"autofocus>
                 @include('alerts.feedback', ['field' => 'captive_use'])
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-export-tariff">{{ __('Export Tariff') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Export tariff." /></label>
-                <input type="number" step="any" name="export_tariff" id="input-export-tariff" class="form-control{{ $errors->has('export-tariff') ? ' is-invalid' : '' }}" placeholder="{{ __('0.055') }}" value="{{ old('export-tariff') }}">
+                <input type="number" step="any" name="export_tariff" id="input-export-tariff" class="form-control{{ $errors->has('export-tariff') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['export_tariff'] }}" value="{{ old('export-tariff') }}">
                 @include('alerts.feedback', ['field' => 'export_tariff'])
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('domestic-tariff') ? ' has-danger' : '' }}">
@@ -354,13 +354,13 @@
                 @if(!empty($account))
                 <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder='default: {{ ($account == 'Gloucestershire | PPS') ? 0.095 : 0.146 }}' value="{{ old('domestic-tariff') }}">
                 @else
-                <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder="{{ __('0.146') }}"  value="{{ old('domestic-tariff') }}">
+                <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['domestic_tariff'] }}"  value="{{ old('domestic-tariff') }}">
                 @endif
                 @include('alerts.feedback', ['field' => 'domestic_tariff'])
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('commercial-tariff') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-commercial-tariff">{{ __('Non-Residential Tariff') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Non-residential tariff." /></label>
-                <input type="number" step="any" name="commercial_tariff" id="input-commercial-tariff" class="form-control{{ $errors->has('commercial-tariff') ? ' is-invalid' : '' }}" placeholder="{{ __('0.12') }}" value="{{ old('commercial-tariff') }}">
+                <input type="number" step="any" name="commercial_tariff" id="input-commercial-tariff" class="form-control{{ $errors->has('commercial-tariff') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['commercial_tariff'] }}" value="{{ old('commercial-tariff') }}">
                 @include('alerts.feedback', ['field' => 'commercial_tariff'])
               </div>
               <div class="col-sm-2 text-left">
@@ -498,17 +498,22 @@
         var clicked_geopoint_id, clicked_layer, clicked_popup;
         var layerPrefix = 'layer-years-';
         var yearColors = [
+          [0, '#FFFFFF'],
+          [1, '#63c54f'],
+          [2, '#63c54f'],
+          [3, '#63c54f'],
+          [4, '#63c54f'],
           [5, '#63c54f'],
-          [6, '#63c54f'],
-          [7, '#63c54f'],
+          [6, '#e0b542'],
+          [7, '#e0b542'],
           [8, '#e0b542'],
           [9, '#e0b542'],
-          [10, '#cf7f3e'],
+          [10, '#e0b542'],
           [11, '#cf7f3e'],
-          [12, '#bd403a'],
-          [13, '#bd403a'],
-          [14, '#bd403a'],
-          [15, '#bd403a'],
+          [12, '#cf7f3e'],
+          [13, '#cf7f3e'],
+          [14, '#cf7f3e'],
+          [15, '#cf7f3e'],
           [16, '#bd403a'],
           [17, '#bd403a'],
           [18, '#bd403a'],
@@ -662,7 +667,7 @@
                       'match',
                       ['get', 'existingSolar'],
                       'Y', '#5F73E3',
-                      yearColorMap.get(symbol)??'#282C33',
+                      yearColorMap.get(symbol)??'#6D0000',
                     ]
                   }
                 });
@@ -953,7 +958,7 @@
       }
 
       .filter-group {
-        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        font: 10px/8px 'Helvetica Neue', Arial, Helvetica, sans-serif;
         font-weight: 600;
         position: absolute;
         top: 10px;
@@ -962,7 +967,7 @@
         border-radius: .375rem;
         overflow: hidden;
         width: 120px;
-        color: #fff;
+        color: #d9dbdf;
       }
 
       .filter-group input[type='checkbox']:first-child+label {
