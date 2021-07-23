@@ -277,6 +277,14 @@
         <span class="custom-toggle-slider rounded-circle" style=""></span>
       </label>
     </div>
+    <div class="col text-left" style="margin-bottom: 10px;">
+      <span class="text-nowrap" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">0 Solar Data &nbsp;</span>
+      <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
+        <input id="zeroSolarData" type="checkbox">
+        <span class="custom-toggle-slider rounded-circle" style=""></span>
+      </label>
+    </div>
+    
 
     <div class="col text-right" style="margin-bottom: 10px;">
       <span class="text-nowrap" style="font-size: .75rem; margin-right: .5rem;">
@@ -424,8 +432,14 @@
                     @include('alerts.feedback', ['field' => 'commercial_tariff'])
                   </div>
                   <div class="col-sm-2 text-left">
-                    <button type="submit" class="btn btn-default my-4">Run</button>
+                    <button type="submit" class="btn btn-default my-4 my-2-2">Run</button>
                   </div>
+
+                  <div class="col-sm-2 text-left">
+                    <a href="#" class="btn btn-default my-4 my-2-2" data-toggle="modal" data-target="#modal-form" aria-haspopup="true" aria-expanded="false">Save as new project</a>
+                  </div>
+
+
                   <div class="col-sm-2 offset-sm-8 text-right">
                     <button id="reset-btn" class="btn btn-default-outline my-4">Reset</button>
                   </div>
@@ -565,41 +579,81 @@
                 </a>
                 `
               }
-              var feature = {
-                type: "Feature",
-                properties: {
-                  description: `
-                  <div class="card popup-card">
-                  <div id="cluster-header" class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:0;">
-                  ${header}
-                  </div>
-                  <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
-                  <p class="card-text">
-                  <strong>Break-even:</strong> ${dataArray[key].breakeven_years} years</br>
-                  <strong>System Size:</strong> ${numeral(dataArray[key].system_capacity_kWp).format('0,0.0a')} kWp<br/>
-                  <strong>System Cost:</strong> £ ${numeral(dataArray[key].system_cost_GBP).format('0,0.0a')}<br/>
-                  <strong>Lifetime Savings:</strong> £ ${numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')}<br/>
-                  <strong>Lifetime CO<sub>2</sub> saving:</strong> ${numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a')} kgs<br/>
-                  <strong>Lifetime RoI:</strong> ${numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a')}%<br/>
-                  </p>
-                  <a href="{{ route('page.reporting') }}?geopoint_id=${dataArray[key].id}" class="btn btn-primary"
-                  target="_blank">Generate Report</a>
-                  <a href="{{ route('page.building') }}" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
-                  target="_blank" title="Upgrade to view detailed building ownership information, and tenancy details for commercial and industrial buildings.">Building Info</a>
-                  </div>
-                  </div>`,
-                  years: dataArray[key].breakeven_years,
-                  id: dataArray[key].id,
-                  area: dataArray[key].area_sqm,
-                  panels: dataArray[key].numpanels,
-                  roi: dataArray[key].lifetime_return_on_investment_percent,
-                  existingSolar: dataArray[key].existingsolar
-                },
-                geometry: {
-                  type: dataArray[key].latLon.type,
-                  coordinates: dataArray[key].latLon.coordinates
-                }
-              };
+
+              var feature = "";
+
+              if(dataArray[key].breakeven_years == 0 && dataArray[key].area_sqm == 0 && dataArray[key].numpanels == 0 && dataArray[key].lifetime_return_on_investment_percent == 0 && dataArray[key].existingsolar == 0){
+                feature = {
+                  type: "Feature",
+                  properties: {
+                    description: `
+                    <div class="card popup-card">
+                    <div id="cluster-header" class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:0;">
+                    ${header}
+                    </div>
+                    <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
+                    <p class="card-text">
+                      There is no solar data for this location.
+                    </p>
+                    <a href="{{ route('page.reporting') }}?geopoint_id=${dataArray[key].id}" class="btn btn-primary"
+                    target="_blank">Generate Report</a>
+                    <a href="{{ route('page.building') }}" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+                    target="_blank" title="Upgrade to view detailed building ownership information, and tenancy details for commercial and industrial buildings.">Building Info</a>
+                    </div>
+                    </div>`,
+                    years: dataArray[key].breakeven_years,
+                    id: dataArray[key].id,
+                    area: dataArray[key].area_sqm,
+                    panels: dataArray[key].numpanels,
+                    roi: dataArray[key].lifetime_return_on_investment_percent,
+                    existingSolar: dataArray[key].existingsolar
+                  },
+                  geometry: {
+                    type: dataArray[key].latLon.type,
+                    coordinates: dataArray[key].latLon.coordinates
+                  }
+                };
+              }
+              else{
+                feature = {
+                  type: "Feature",
+                  properties: {
+                    description: `
+                    <div class="card popup-card">
+                    <div id="cluster-header" class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:0;">
+                    ${header}
+                    </div>
+                    <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
+                    <p class="card-text">
+                    <strong>Break-even:</strong> ${dataArray[key].breakeven_years} years</br>
+                    <strong>System Size:</strong> ${numeral(dataArray[key].system_capacity_kWp).format('0,0.0a')} kWp<br/>
+                    <strong>System Cost:</strong> £ ${numeral(dataArray[key].system_cost_GBP).format('0,0.0a')}<br/>
+                    <strong>Lifetime Savings:</strong> £ ${numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')}<br/>
+                    <strong>Lifetime CO<sub>2</sub> saving:</strong> ${numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a')} kgs<br/>
+                    <strong>Lifetime RoI:</strong> ${numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a')}%<br/>
+                    </p>
+                    <a href="{{ route('page.reporting') }}?geopoint_id=${dataArray[key].id}" class="btn btn-primary"
+                    target="_blank">Generate Report</a>
+                    <a href="{{ route('page.building') }}" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+                    target="_blank" title="Upgrade to view detailed building ownership information, and tenancy details for commercial and industrial buildings.">Building Info</a>
+                    </div>
+                    </div>`,
+                    years: dataArray[key].breakeven_years,
+                    id: dataArray[key].id,
+                    area: dataArray[key].area_sqm,
+                    panels: dataArray[key].numpanels,
+                    roi: dataArray[key].lifetime_return_on_investment_percent,
+                    existingSolar: dataArray[key].existingsolar
+                  },
+                  geometry: {
+                    type: dataArray[key].latLon.type,
+                    coordinates: dataArray[key].latLon.coordinates
+                  }
+                };
+              }
+
+
+
               features.push(feature);
               potential = potential + dataArray[key].system_capacity_kWp;
               savings = savings + dataArray[key].lifetime_gen_GBP;

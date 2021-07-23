@@ -130,7 +130,14 @@ if(!function_exists('pro_params')){
                 $lifetime_value = $annual_gen_val * $panel_domestic_lifetime_value_factor;
             }
             //3. lifetime_return_on_investment_percent:
-            $return_on_investment = $lifetime_value / $sys_cost;
+            
+            try {
+                $return_on_investment = $lifetime_value / $sys_cost;
+            }
+            catch(Exception $ex){
+                $return_on_investment = 0;
+            }
+
             //4. annualized_return_on_investment_percent:
             $annual_roi = (1 + $return_on_investment) ** (1 / $panel_lifetime) - 1;
             //5. breakeven_years calculation
