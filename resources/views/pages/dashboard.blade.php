@@ -279,7 +279,7 @@
     <div class="col text-left" style="margin-bottom: 10px;">
       <span class="text-nowrap" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">0 Solar Data &nbsp;</span>
       <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
-        <input id="zeroSolarData" type="checkbox">
+        <input id="zeroSolarData" name="zeroSolarData" type="checkbox">
         <span class="custom-toggle-slider rounded-circle" style=""></span>
       </label>
     </div>
@@ -408,7 +408,7 @@
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }}<img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Here you can modify your projected captive use, as a percentage." /></label>
-                    <input type="number" step="any" name="captive_use" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder='{{ __("0.8") }}' value="{{ old('captive-use') }}"autofocus>
+                    <input type="number" step="any" name="captive_use" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder='{{ __("80") }}' value="{{ old('captive-use') }}"autofocus>
                     @include('alerts.feedback', ['field' => 'captive_use'])
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
@@ -598,7 +598,7 @@
                       panels: dataArray[key].numpanels,
                       roi: dataArray[key].lifetime_return_on_investment_percent,
                       existingSolar: dataArray[key].existingsolar,
-                      solarData: 'N'
+                      solarData: 'Y'
                     },
                     geometry: {
                       type: dataArray[key].latLon.type,
@@ -711,8 +711,7 @@
                   'filter': [
                     "all",
                     ["==", "years", symbol],
-                    ["!=", "existingSolar", "Y"],
-                    ["!=", "solarData", "Y"],
+                    ["!=", "existingSolar", "Y"]
                   ],
                   'paint': {
                     'icon-color': [
@@ -866,29 +865,37 @@
               })
             }
 
-            zeroSolarData.onclick = function (e) {
-              layers.forEach(layer => {
+
+            $(document).on('change', '[name="zeroSolarData"]', function() {
+                var checkbox = $(this), // Selected or current checkbox
+                    value = checkbox.val(); // Value of checkbox
+               layers.forEach(layer => {
 
                 if(layer.type === "symbol" && layer.id !== "cluster-count"){
-                  if(zeroSolarData.checked){
-
-                    var year = layer.filter[1][3]
-
-                    var include_existing =["==", "years", year];
-                    map.setFilter(layer.id, include_existing);
-
-                  } else {
-                    var filter_existing =[
+                  if (checkbox.is(':checked'))
+                  {
+                  var filter_existing =[
                       "all",
-                      ["==", "years", layer.filter[1][3]],
+                      ["==", "years", layer.filter[1][2]],
                       ["!=", "solarData", "Y"]
                     ];
                     map.setFilter(layer.id, filter_existing);
+     
+
+                  }else
+                  {
+
+               var year = layer.filter[1][2]
+                    var include_existing =["==", "years", year];
+                    map.setFilter(layer.id, include_existing);
+
+         
 
                   }
                 }
-              })
-            }
+              });
+            });
+
 
             map.fitBounds(bounds);
           });
