@@ -14,6 +14,27 @@
 {{-- <li class="breadcrumb-item active" aria-current="page">{{ __('Default') }}</li> --}}
 @endcomponent
 @endcomponent
+<style type="text/css">
+.mapboxgl-popup-close-button {outline: 0 !important;}
+span.text-nowrap.zero-solar-span {
+    position: relative;
+    top: -7px;
+}
+
+span.text-nowrap.active-solar {
+    position: relative;
+    top: -7px;
+}
+div#calculated-area {
+    padding-top: 4px;
+}
+#calculated-area-container{
+  display: none;
+}
+label[for="layer-years-0"] {
+    display: none !important;
+}
+</style>
 <div class="modal fade" id="delete-form" tabindex="-1" role="dialog" aria-labelledby="delete-form" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
     <div class="modal-content">
@@ -269,14 +290,14 @@
 
   <div class="row">
     <div class="col text-left" style="margin-bottom: 10px;">
-      <span class="text-nowrap" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">Show active solar sites &nbsp;</span>
+      <span class="text-nowrap active-solar" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">Show active solar sites &nbsp;</span>
       <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
         <input id="checkExisting" type="checkbox">
         <span class="custom-toggle-slider rounded-circle" style=""></span>
       </label>
     </div>
     <div class="col text-left" style="margin-bottom: 10px;">
-      <span class="text-nowrap" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">0 Solar Data &nbsp;</span>
+      <span class="text-nowrap zero-solar-span" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">0 Solar Data &nbsp;</span>
       <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
         <input id="zeroSolarData" name="zeroSolarData" type="checkbox">
         <span class="custom-toggle-slider rounded-circle" style=""></span>
@@ -322,6 +343,15 @@
     </div>
   </div>
 
+  <div class="card" id="calculated-area-container">
+    <div class="card-body">
+      <div class="card-inner-body">
+        <div id="calculated-area">
+          
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="card">
     <div class="card-body">
@@ -348,7 +378,7 @@
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Captive use." /></label>
-                <input type="number" step="any" name="captive_use" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['captive_use'] }}" value="{{ old('captive-use') }}"autofocus>
+                <input type="number" step="any" name="captive_use" max="100" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['captive_use'] }}" value="{{ old('captive-use') }}"autofocus>
                 @include('alerts.feedback', ['field' => 'captive_use'])
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
@@ -407,7 +437,7 @@
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }}<img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Here you can modify your projected captive use, as a percentage." /></label>
-                    <input type="number" step="any" name="captive_use" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder='{{ __("80") }}' value="{{ old('captive-use') }}"autofocus>
+                    <input type="number" step="any" name="captive_use" max="100" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder='{{ __("80") }}' value="{{ old('captive-use') }}"autofocus>
                     @include('alerts.feedback', ['field' => 'captive_use'])
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
@@ -480,6 +510,17 @@
         <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
         <script>
+
+        $(document).ready(function(){
+           $("input[name='captive_use']").change(function() {
+            number = $("input[name='captive_use']").val()
+             if( number <= 0 || number > 100 ) {
+                 $("input[name='captive_use']").val("");
+               }
+             });
+        });
+
+
         mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
         var map = new mapboxgl.Map({
           container: 'map',
@@ -576,7 +617,7 @@
               
               var feature = "";
 
-              if(dataArray[key].breakeven_years == 0 && dataArray[key].system_capacity_kWp == 0 && dataArray[key].system_cost_GBP == 0 && dataArray[key].lifetime_co2_saved_kg == 0 && dataArray[key].lifetime_return_on_investment_percent == 0){
+              if(dataArray[key].breakeven_years == 0){
                  feature = {
                     type: "Feature",
                     properties: {
@@ -710,7 +751,8 @@
                   'filter': [
                     "all",
                     ["==", "years", symbol],
-                    ["!=", "existingSolar", "Y"]
+                    ["!=", "existingSolar", "Y"],
+                    ["!=", "solarData", "Y"]
                   ],
                   'paint': {
                     'icon-color': [
@@ -865,6 +907,52 @@
             }
 
 
+
+            map.on('draw.create', updateArea);
+            map.on('draw.delete', updateArea);
+            map.on('draw.update', updateArea);
+             
+            function updateArea(e) {
+
+                $("#calculated-area-container").slideDown();
+                var fttemp = [];
+                var totallength = 0;
+
+                var srchwithin = [];
+                var data = draw.getAll();
+                var answer = document.getElementById('calculated-area');
+                if (data.features.length > 0) {
+
+              
+                features.forEach(function(feature) {
+                  fttemp.push(feature.geometry.coordinates);
+                });
+
+                data.features.forEach(function(feature) {
+                  srchwithin.push(feature.geometry.coordinates);
+                });
+
+                var points = turf.points(fttemp);
+
+                srchwithin.forEach(function(srchin){
+                  
+                  var searchWithin = turf.polygon(srchin);
+
+                  var ptsWithin = turf.pointsWithinPolygon(points, searchWithin);
+
+                  totallength = totallength + ptsWithin.features.length;
+
+
+                });
+                
+                $("#calculated-area").html("Polygon Selection " + numeral(totallength).format('0,0') + " of " + numeral(dataArray.length).format('0,0') + " sites.");
+
+
+                }
+
+            }
+
+
             $(document).on('change', '[name="zeroSolarData"]', function() {
                 var checkbox = $(this), // Selected or current checkbox
                     value = checkbox.val(); // Value of checkbox
@@ -873,20 +961,22 @@
                 if(layer.type === "symbol" && layer.id !== "cluster-count"){
                   if (checkbox.is(':checked'))
                   {
-                  var filter_existing =[
-                      "all",
-                      ["==", "years", layer.filter[1][2]],
-                      ["!=", "solarData", "Y"]
-                    ];
-                    map.setFilter(layer.id, filter_existing);
+  
      
+                    var year = layer.filter[1][2]
+                    var include_existing =["==", "years", year];
+                    map.setFilter(layer.id, include_existing);
+
 
                   }else
                   {
+                  var filter_existing =[
+                        "all",
+                        ["==", "years", layer.filter[1][2]],
+                        ["!=", "solarData", "Y"]
+                      ];
+                      map.setFilter(layer.id, filter_existing);
 
-               var year = layer.filter[1][2]
-                    var include_existing =["==", "years", year];
-                    map.setFilter(layer.id, include_existing);
 
          
 
@@ -897,9 +987,20 @@
 
 
             map.fitBounds(bounds);
+
+    
+
+
+        
+
+
+           // console.log(ptsWithin);
+
+
           });
         });
       }
+
 
 
 
