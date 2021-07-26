@@ -34,6 +34,18 @@ div#calculated-area {
 label[for="layer-years-0"] {
     display: none !important;
 }
+div#calculated-area {
+    width: 50%;
+    float: left;
+}
+
+.create-new-pp {
+    width: 50%;
+    float: left;
+    text-align: right;
+}
+
+.card-inner-body::after {content: "";display: block;clear: both;}
 </style>
 <div class="modal fade" id="delete-form" tabindex="-1" role="dialog" aria-labelledby="delete-form" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
@@ -83,6 +95,36 @@ label[for="layer-years-0"] {
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="modal-form-polygon" tabindex="-1" role="dialog" aria-labelledby="modal-form-polygon" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <div class="card bg-secondary shadow border-0 mb-0">
+          <div class="card-header bg-white">
+            <div class="text-muted text-left mb-3">
+              <h2>Create project from polygon</h2>
+            </div>
+          </div>
+          <div class="card-body bg-white">
+            <form method="post" action="{{ route('invitation.store') }}" role="form">
+              @csrf
+              <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
+                <label class="form-control-label" for="input-name">{{ __('Name') }}</label>
+                <input maxlength="15" type="text" name="namepoly" id="input-name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Enter Name') }}" value="{{ old('name') }}" required autofocus>
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-default my-4">Create project</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="delete-next-form" tabindex="-1" role="dialog" aria-labelledby="delete-next-form" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
     <div class="modal-content">
@@ -349,6 +391,11 @@ label[for="layer-years-0"] {
         <div id="calculated-area">
           
         </div>
+        <div class="create-new-pp">
+          <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="modal" data-target="#modal-form-polygon" aria-haspopup="true" aria-expanded="false">
+              Create project from polygon
+         </button>
+        </div>
       </div>
     </div>
   </div>
@@ -576,6 +623,7 @@ label[for="layer-years-0"] {
         var filterYears = new Map();
         var cluster_route = `{!! $cluster ?? '' !!}`
         var features = [];
+        var allpolyginptn = [];
         var checkExisting = document.querySelector("#checkExisting");
         var zeroSolarData = document.querySelector("#zeroSolarData");
 
@@ -940,7 +988,30 @@ label[for="layer-years-0"] {
 
                   var ptsWithin = turf.pointsWithinPolygon(points, searchWithin);
 
+                  var ftms = ptsWithin.features;
+                  console.log(ftms);
+
                   totallength = totallength + ptsWithin.features.length;
+
+                  
+
+                  features.forEach(function(featuremain) {
+                    
+                      ftms.forEach(function(featuresingle) {
+                        
+                        
+                              if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
+
+                                  if(!allpolyginptn.includes(featuremain.properties.id)){
+                                    allpolyginptn.push(featuremain.properties.id);
+                                  }
+
+                              }
+                                                  
+                        
+                      });
+
+                  });
 
 
                 });
@@ -1101,6 +1172,35 @@ label[for="layer-years-0"] {
             $('#next-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(3000).fadeOut();
           });
         });
+
+        $('#modal-form-polygon').submit(function(event) {
+          event.preventDefault();
+          var visiblePoints = [];
+  
+          var formData = {
+            'name': $('input[name=namepoly]').val(),
+            '_token': $('input[name=_token]').val(),
+            'geopoints': JSON.stringify(allpolyginptn)
+          };
+          $.ajax({
+            type: 'POST',
+            url: '/clusters',
+            data: formData,
+            dataType: 'json',
+            encode: true
+          }).done(function(data) {
+            $('#modal-form-polygon').modal('hide')
+            $('#next-form').modal('show')
+            getClusters()
+            $('#next-response-status').text(data.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(3000).fadeOut();
+            $('#cluster-href').attr('href', data.cluster_link)
+          }).fail(function(data) {
+            $('#modal-form-polygon').modal('hide')
+            $('#next-form').modal('show')
+            $('#next-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(3000).fadeOut();
+          });
+        });
+
         $('#newClusterCheck').change(function(event) {
           $('input[name=new_name]').prop('disabled', !event.target.checked)
           $('#cluster-select').prop('disabled', event.target.checked)
