@@ -14,7 +14,39 @@
 {{-- <li class="breadcrumb-item active" aria-current="page">{{ __('Default') }}</li> --}}
 @endcomponent
 @endcomponent
+<style type="text/css">
+.mapboxgl-popup-close-button {outline: 0 !important;}
+span.text-nowrap.zero-solar-span {
+    position: relative;
+    top: -7px;
+}
 
+span.text-nowrap.active-solar {
+    position: relative;
+    top: -7px;
+}
+div#calculated-area {
+    padding-top: 4px;
+}
+#calculated-area-container{
+  display: none;
+}
+label[for="layer-years-0"] {
+    display: none !important;
+}
+div#calculated-area {
+    width: 50%;
+    float: left;
+}
+
+.create-new-pp {
+    width: 50%;
+    float: left;
+    text-align: right;
+}
+
+.card-inner-body::after {content: "";display: block;clear: both;}
+</style>
 <div class="modal fade" id="delete-form" tabindex="-1" role="dialog" aria-labelledby="delete-form" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
     <div class="modal-content">
@@ -63,6 +95,36 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="modal-form-polygon" tabindex="-1" role="dialog" aria-labelledby="modal-form-polygon" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <div class="card bg-secondary shadow border-0 mb-0">
+          <div class="card-header bg-white">
+            <div class="text-muted text-left mb-3">
+              <h2>Create project from polygon</h2>
+            </div>
+          </div>
+          <div class="card-body bg-white">
+            <form method="post" action="{{ route('invitation.store') }}" role="form">
+              @csrf
+              <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
+                <label class="form-control-label" for="input-name">{{ __('Name') }}</label>
+                <input maxlength="15" type="text" name="namepoly" id="input-name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Enter Name') }}" value="{{ old('name') }}" required autofocus>
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-default my-4">Create project</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="delete-next-form" tabindex="-1" role="dialog" aria-labelledby="delete-next-form" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
     <div class="modal-content">
@@ -270,12 +332,20 @@
 
   <div class="row">
     <div class="col text-left" style="margin-bottom: 10px;">
-      <span class="text-nowrap" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">Show active solar sites &nbsp;</span>
+      <span class="text-nowrap active-solar" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">Show active solar sites &nbsp;</span>
       <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
         <input id="checkExisting" type="checkbox">
         <span class="custom-toggle-slider rounded-circle" style=""></span>
       </label>
     </div>
+    <div class="col text-left" style="margin-bottom: 10px;">
+      <span class="text-nowrap zero-solar-span" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">0 Solar Data &nbsp;</span>
+      <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
+        <input id="zeroSolarData" name="zeroSolarData" type="checkbox">
+        <span class="custom-toggle-slider rounded-circle" style=""></span>
+      </label>
+    </div>
+
 
     <div class="col text-right" style="margin-bottom: 10px;">
       <span class="text-nowrap" style="font-size: .75rem; margin-right: .5rem;">
@@ -315,6 +385,20 @@
     </div>
   </div>
 
+  <div class="card" id="calculated-area-container">
+    <div class="card-body">
+      <div class="card-inner-body">
+        <div id="calculated-area">
+          
+        </div>
+        <div class="create-new-pp">
+          <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="modal" data-target="#modal-form-polygon" aria-haspopup="true" aria-expanded="false">
+              Create project from polygon
+         </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="card">
     <div class="card-body">
@@ -341,7 +425,7 @@
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Captive use." /></label>
-                <input type="number" step="any" name="captive_use" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['captive_use'] }}" value="{{ old('captive-use') }}"autofocus>
+                <input type="number" step="any" name="captive_use" max="100" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['captive_use'] }}" value="{{ old('captive-use') }}"autofocus>
                 @include('alerts.feedback', ['field' => 'captive_use'])
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
@@ -400,7 +484,7 @@
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }}<img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Here you can modify your projected captive use, as a percentage." /></label>
-                    <input type="number" step="any" name="captive_use" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder='{{ __("0.8") }}' value="{{ old('captive-use') }}"autofocus>
+                    <input type="number" step="any" name="captive_use" max="100" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder='{{ __("80") }}' value="{{ old('captive-use') }}"autofocus>
                     @include('alerts.feedback', ['field' => 'captive_use'])
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
@@ -473,6 +557,17 @@
         <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
         <script>
+
+        $(document).ready(function(){
+           $("input[name='captive_use']").change(function() {
+            number = $("input[name='captive_use']").val()
+             if( number <= 0 || number > 100 ) {
+                 $("input[name='captive_use']").val("");
+               }
+             });
+        });
+
+
         mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
         var map = new mapboxgl.Map({
           container: 'map',
@@ -528,7 +623,11 @@
         var filterYears = new Map();
         var cluster_route = `{!! $cluster ?? '' !!}`
         var features = [];
+        var allpolyginptn = [];
         var checkExisting = document.querySelector("#checkExisting");
+        var zeroSolarData = document.querySelector("#zeroSolarData");
+
+
         function renderMap() {
           var jsonString = `{!! $geodata ?? '
           ' !!}`;
@@ -563,41 +662,81 @@
                 </a>
                 `
               }
-              var feature = {
-                type: "Feature",
-                properties: {
-                  description: `
-                  <div class="card popup-card">
-                  <div id="cluster-header" class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:0;">
-                  ${header}
-                  </div>
-                  <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
-                  <p class="card-text">
-                  <strong>Break-even:</strong> ${dataArray[key].breakeven_years} years</br>
-                  <strong>System Size:</strong> ${numeral(dataArray[key].system_capacity_kWp).format('0,0.0a')} kWp<br/>
-                  <strong>System Cost:</strong> £ ${numeral(dataArray[key].system_cost_GBP).format('0,0.0a')}<br/>
-                  <strong>Lifetime Savings:</strong> £ ${numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')}<br/>
-                  <strong>Lifetime CO<sub>2</sub> saving:</strong> ${numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a')} kgs<br/>
-                  <strong>Lifetime RoI:</strong> ${numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a')}%<br/>
-                  </p>
-                  <a href="{{ route('page.reporting') }}?geopoint_id=${dataArray[key].id}" class="btn btn-primary"
-                  target="_blank">Generate Report</a>
-                  <a href="{{ route('page.building') }}" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
-                  target="_blank" title="Upgrade to view detailed building ownership information, and tenancy details for commercial and industrial buildings.">Building Info</a>
-                  </div>
-                  </div>`,
-                  years: dataArray[key].breakeven_years,
-                  id: dataArray[key].id,
-                  area: dataArray[key].area_sqm,
-                  panels: dataArray[key].numpanels,
-                  roi: dataArray[key].lifetime_return_on_investment_percent,
-                  existingSolar: dataArray[key].existingsolar
-                },
-                geometry: {
-                  type: dataArray[key].latLon.type,
-                  coordinates: dataArray[key].latLon.coordinates
-                }
-              };
+              
+              var feature = "";
+
+              if(dataArray[key].breakeven_years == 0){
+                 feature = {
+                    type: "Feature",
+                    properties: {
+                      description: `
+                      <div class="card popup-card">
+                      <div id="cluster-header" class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:0;">
+                      ${header}
+                      </div>
+                      <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
+                        <p class="card-text card-empty-error">
+                          There is no solar data for this location.
+                        </p>
+                      </div>
+                      </div>`,
+                      years: dataArray[key].breakeven_years,
+                      id: dataArray[key].id,
+                      area: dataArray[key].area_sqm,
+                      panels: dataArray[key].numpanels,
+                      roi: dataArray[key].lifetime_return_on_investment_percent,
+                      existingSolar: dataArray[key].existingsolar,
+                      solarData: 'Y'
+                    },
+                    geometry: {
+                      type: dataArray[key].latLon.type,
+                      coordinates: dataArray[key].latLon.coordinates
+                    }
+                  };
+              }
+              else{
+
+
+                 feature = {
+                    type: "Feature",
+                    properties: {
+                      description: `
+                      <div class="card popup-card">
+                      <div id="cluster-header" class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:0;">
+                      ${header}
+                      </div>
+                      <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
+                      <p class="card-text">
+                      <strong>Break-even:</strong> ${dataArray[key].breakeven_years} years</br>
+                      <strong>System Size:</strong> ${numeral(dataArray[key].system_capacity_kWp).format('0,0.0a')} kWp<br/>
+                      <strong>System Cost:</strong> £ ${numeral(dataArray[key].system_cost_GBP).format('0,0.0a')}<br/>
+                      <strong>Lifetime Savings:</strong> £ ${numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')}<br/>
+                      <strong>Lifetime CO<sub>2</sub> saving:</strong> ${numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a')} kgs<br/>
+                      <strong>Lifetime RoI:</strong> ${numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a')}%<br/>
+                      </p>
+                      <a href="{{ route('page.reporting') }}?geopoint_id=${dataArray[key].id}" class="btn btn-primary"
+                      target="_blank">Generate Report</a>
+                      <a href="{{ route('page.building') }}" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+                      target="_blank" title="Upgrade to view detailed building ownership information, and tenancy details for commercial and industrial buildings.">Building Info</a>
+                      </div>
+                      </div>`,
+                      years: dataArray[key].breakeven_years,
+                      id: dataArray[key].id,
+                      area: dataArray[key].area_sqm,
+                      panels: dataArray[key].numpanels,
+                      roi: dataArray[key].lifetime_return_on_investment_percent,
+                      existingSolar: dataArray[key].existingsolar,
+                      solarData : 'N'
+                    },
+                    geometry: {
+                      type: dataArray[key].latLon.type,
+                      coordinates: dataArray[key].latLon.coordinates
+                    }
+                  };
+
+
+              }
+
               features.push(feature);
               potential = potential + dataArray[key].system_capacity_kWp;
               savings = savings + dataArray[key].lifetime_gen_GBP;
@@ -660,7 +799,8 @@
                   'filter': [
                     "all",
                     ["==", "years", symbol],
-                    ["!=", "existingSolar", "Y"]
+                    ["!=", "existingSolar", "Y"],
+                    ["!=", "solarData", "Y"]
                   ],
                   'paint': {
                     'icon-color': [
@@ -813,10 +953,125 @@
                 }
               })
             }
+
+
+
+            map.on('draw.create', updateArea);
+            map.on('draw.delete', updateArea);
+            map.on('draw.update', updateArea);
+             
+            function updateArea(e) {
+
+                $("#calculated-area-container").slideDown();
+                var fttemp = [];
+                var totallength = 0;
+
+                var srchwithin = [];
+                var data = draw.getAll();
+                var answer = document.getElementById('calculated-area');
+                if (data.features.length > 0) {
+
+              
+                features.forEach(function(feature) {
+                  fttemp.push(feature.geometry.coordinates);
+                });
+
+                data.features.forEach(function(feature) {
+                  srchwithin.push(feature.geometry.coordinates);
+                });
+
+                var points = turf.points(fttemp);
+
+                srchwithin.forEach(function(srchin){
+                  
+                  var searchWithin = turf.polygon(srchin);
+
+                  var ptsWithin = turf.pointsWithinPolygon(points, searchWithin);
+
+                  var ftms = ptsWithin.features;
+                  console.log(ftms);
+
+                  totallength = totallength + ptsWithin.features.length;
+
+                  
+
+                  features.forEach(function(featuremain) {
+                    
+                      ftms.forEach(function(featuresingle) {
+                        
+                        
+                              if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
+
+                                  if(!allpolyginptn.includes(featuremain.properties.id)){
+                                    allpolyginptn.push(featuremain.properties.id);
+                                  }
+
+                              }
+                                                  
+                        
+                      });
+
+                  });
+
+
+                });
+                
+                $("#calculated-area").html("Polygon Selection " + numeral(totallength).format('0,0') + " of " + numeral(dataArray.length).format('0,0') + " sites.");
+
+
+                }
+
+            }
+
+
+            $(document).on('change', '[name="zeroSolarData"]', function() {
+                var checkbox = $(this), // Selected or current checkbox
+                    value = checkbox.val(); // Value of checkbox
+               layers.forEach(layer => {
+
+                if(layer.type === "symbol" && layer.id !== "cluster-count"){
+                  if (checkbox.is(':checked'))
+                  {
+  
+     
+                    var year = layer.filter[1][2]
+                    var include_existing =["==", "years", year];
+                    map.setFilter(layer.id, include_existing);
+
+
+                  }else
+                  {
+                  var filter_existing =[
+                        "all",
+                        ["==", "years", layer.filter[1][2]],
+                        ["!=", "solarData", "Y"]
+                      ];
+                      map.setFilter(layer.id, filter_existing);
+
+
+         
+
+                  }
+                }
+              });
+            });
+
+
             map.fitBounds(bounds);
+
+    
+
+
+        
+
+
+           // console.log(ptsWithin);
+
+
           });
         });
       }
+
 
 
 
@@ -917,6 +1172,35 @@
             $('#next-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(3000).fadeOut();
           });
         });
+
+        $('#modal-form-polygon').submit(function(event) {
+          event.preventDefault();
+          var visiblePoints = [];
+  
+          var formData = {
+            'name': $('input[name=namepoly]').val(),
+            '_token': $('input[name=_token]').val(),
+            'geopoints': JSON.stringify(allpolyginptn)
+          };
+          $.ajax({
+            type: 'POST',
+            url: '/clusters',
+            data: formData,
+            dataType: 'json',
+            encode: true
+          }).done(function(data) {
+            $('#modal-form-polygon').modal('hide')
+            $('#next-form').modal('show')
+            getClusters()
+            $('#next-response-status').text(data.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(3000).fadeOut();
+            $('#cluster-href').attr('href', data.cluster_link)
+          }).fail(function(data) {
+            $('#modal-form-polygon').modal('hide')
+            $('#next-form').modal('show')
+            $('#next-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(3000).fadeOut();
+          });
+        });
+
         $('#newClusterCheck').change(function(event) {
           $('input[name=new_name]').prop('disabled', !event.target.checked)
           $('#cluster-select').prop('disabled', event.target.checked)

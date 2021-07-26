@@ -40,9 +40,10 @@ class HomeController extends Controller
             return redirect('dashboard/Gloucestershire');
         }
         $org = $user->organization;
-        $my_clusters = DB::table('clusters')
-                    ->where('user_id', $user->id)
-                    ->get();
+        $clusters_get = DB::table('clusters')
+                    ->where('user_id', $user->id);
+
+        $my_clusters = $clusters_get::orderBy('created_at', 'ASC')->get();
 
         return view('pages.organization', [
             'org_name' => $org->name,
@@ -122,7 +123,10 @@ class HomeController extends Controller
         //-----------user input params-------------
         //----laravel blade input seems unable to pass input of type "number" as numeric values----
         //----so manually converting input fields from string to floats in controller, for now-----
-        $captive_use = $request->captive_use ?  floatval($request->captive_use) : 0.8;
+        $captive_use = 0.8;
+        if(!empty($request->captive_use)){
+            $captive_use = floatval($request->captive_use)/100;
+        }
         $export_tariff = $request->export_tariff ? floatval($request->export_tariff) : 0.055;
         //$domestic_tariff may have a different value if account is "PPS"
         if($request->domestic_tariff){
@@ -180,7 +184,11 @@ class HomeController extends Controller
         //-----------user input params-------------
         //----laravel blade input seems unable to pass input of type "number" as numeric values----
         //----so manually converting input fields from string to floats in controller, for now-----
-        $captive_use = $request->captive_use ?  floatval($request->captive_use) : 0.8;
+        $captive_use = 0.8;
+        if(!empty($request->captive_use)){
+            $captive_use = floatval($request->captive_use)/100;
+        }
+
         $export_tariff = $request->export_tariff ? floatval($request->export_tariff) : 0.055;
         //$domestic_tariff may have a different value if account is "PPS"
         if($request->domestic_tariff){
