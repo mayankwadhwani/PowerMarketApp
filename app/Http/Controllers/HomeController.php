@@ -40,10 +40,10 @@ class HomeController extends Controller
             return redirect('dashboard/Gloucestershire');
         }
         $org = $user->organization;
-        $clusters_get = DB::table('clusters')
-                    ->where('user_id', $user->id);
-
-        $my_clusters = $clusters_get::orderBy('created_at', 'ASC')->get();
+        $my_clusters = DB::table('clusters')
+                    ->where('user_id', $user->id)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
 
         return view('pages.organization', [
             'org_name' => $org->name,

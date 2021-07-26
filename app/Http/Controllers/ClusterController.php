@@ -57,7 +57,7 @@ class ClusterController extends Controller
             array_push($geopoint_data, [
                 'cluster_id'=>$cluster->id,
                 'geopoint_id' => $geopoint,
-                'captive_use'=>$pro_params->captive_use ?? 0.8,
+                'captive_use'=>$pro_params->captive_use ?? 80,
                 'export_tariff' => $pro_params->export_tariff ?? 0.055,
                 'domestic_tariff' => $pro_params->domestic_tariff ?? 0.146,
                 'commercial_tariff' => $pro_params->commercial_tariff ?? 0.12,
@@ -127,7 +127,7 @@ class ClusterController extends Controller
             $pro_params = json_decode($request->pro_params);
 
             $geopoint_params = [
-                'captive_use'=>$pro_params->captive_use ?? 0.8,
+                'captive_use'=>$pro_params->captive_use ?? 80,
                 'export_tariff' => $pro_params->export_tariff ?? 0.055,
                 'domestic_tariff' => $pro_params->domestic_tariff ?? 0.146,
                 'commercial_tariff' => $pro_params->commercial_tariff ?? 0.12,
