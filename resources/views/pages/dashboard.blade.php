@@ -425,7 +425,7 @@ div#calculated-area {
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Captive use." /></label>
-                <input type="number" step="any" name="captive_use" max="100" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['captive_use'] }}" value="{{ old('captive-use') }}"autofocus>
+                <input type="number" step="any" name="captive_use" max="100" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder="80" value="{{ old('captive-use') }}"autofocus>
                 @include('alerts.feedback', ['field' => 'captive_use'])
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
@@ -556,7 +556,11 @@ div#calculated-area {
         <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
         <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
+        <script src="{{ asset('js') }}/finance.js"></script>
+
         <script>
+
+        var finance = new Finance();
 
         $(document).ready(function(){
            $("input[name='captive_use']").change(function() {
@@ -626,7 +630,18 @@ div#calculated-area {
         var allpolyginptn = [];
         var checkExisting = document.querySelector("#checkExisting");
         var zeroSolarData = document.querySelector("#zeroSolarData");
-
+        var cashflow = [0, 26, 0];
+        var feature = "";
+        var discountedcashflow = [0, 25, 0];
+        var panel_lifetime = 25;
+        var annual_depreciation = 0.1;
+        var corporate_tax_rate = 0.21;
+        var panel_degradation = 0.99;
+        var annual_commercial_electric_price_increase = 1.05;
+        var annual_domestic_electric_price_increase = 1.03;
+        var wacc = 0.05;
+        var irrfinal = 0;  
+        var sys_cost_5kw = 1200;
 
         function renderMap() {
           var jsonString = `{!! $geodata ?? '
@@ -636,7 +651,7 @@ div#calculated-area {
           if (jsonString.length > 0) {
             dataArray = JSON.parse(jsonString);
 
-            console.log(dataArray)
+           // console.log(dataArray)
 
             dataArray.sort(function(a, b) {
               return a['breakeven_years'] - b['breakeven_years'];
@@ -664,6 +679,29 @@ div#calculated-area {
               }
               
               var feature = "";
+
+
+              var sys_cap = sys_cost_5kw;
+              var electric_price = 0;
+
+              if(sys_cap < 10){
+                  electric_price = 0.146; //default value is set in controller method
+              } else {
+                  electric_price = 0.12;  //default value is set in controller method
+              }
+
+              var export_tariff = 0.055;
+              var captive_use = 80;
+              var residential_threshold = 10;
+
+              var breakeven = -1;
+              var v = 0;
+              var c = 0;
+              var ag = sys_cap * 937;
+              var ep = electric_price; //came from either domestic tariff or commercial tariff
+              var ex = export_tariff;
+
+              sys_cost = sys_cost_5kw;
 
               if(dataArray[key].breakeven_years == 0){
                  feature = {
@@ -696,7 +734,34 @@ div#calculated-area {
               }
               else{
 
+                sys_cost = dataArray[key].system_cost_GBP;
 
+                  for(var k = 1; k <= panel_lifetime; k++){
+                      var tmpv = ag * ep * captive_use + ag * ex * (1 - captive_use); //value of elctricity use + export
+                      var dpt = 0;
+                      if(sys_cap > residential_threshold && k <= (1/annual_depreciation)){
+                          dpt = sys_cost * annual_depreciation * corporate_tax_rate; //depreciation tax benefits
+                      }
+                      tmpv += dpt;
+                      cashflow[k-1]=tmpv;
+                      discountedcashflow[k-1]=tmpv/(1+wacc)**(k-1)
+                      v += tmpv;
+                      if(v > sys_cost){
+                          breakeven = k;
+                          break;
+                      }
+                      ag *= panel_degradation;
+                      if(sys_cap > residential_threshold){
+                          ep *= annual_commercial_electric_price_increase;
+                      } else{
+                          ep *= annual_domestic_electric_price_increase;
+                      }
+                  }
+                  discountedcashflow.unshift((sys_cost)*(-1));
+//                  discountedcashflow = discountedcashflow.join();
+
+                  var finalirr = finance.IRR(discountedcashflow);
+                  finalirr = finalirr.toFixed(2);
                  feature = {
                     type: "Feature",
                     properties: {
@@ -712,7 +777,7 @@ div#calculated-area {
                       <strong>System Cost:</strong> £ ${numeral(dataArray[key].system_cost_GBP).format('0,0.0a')}<br/>
                       <strong>Lifetime Savings:</strong> £ ${numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')}<br/>
                       <strong>Lifetime CO<sub>2</sub> saving:</strong> ${numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a')} kgs<br/>
-                      <strong>Lifetime RoI:</strong> ${numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a')}%<br/>
+                      <strong>IRR: </strong> ${finalirr}<br/>
                       </p>
                       <a href="{{ route('page.reporting') }}?geopoint_id=${dataArray[key].id}" class="btn btn-primary"
                       target="_blank">Generate Report</a>
@@ -762,6 +827,10 @@ div#calculated-area {
             selectedCount = totalCount;
             $('#total-count').text(numeral(dataArray.length).format('0,0'));
             $('#selected-count').text(numeral(dataArray.length).format('0,0'));
+            $('.poly-ms').text(numeral(dataArray.length).format('0,0'));
+
+
+
           }
           map.on('load', function() {
             map.loadImage('../../svg/map-marker-alt-solid.png', function(error, image) {
@@ -838,6 +907,8 @@ div#calculated-area {
                   else
                   selectedCount = selectedCount - symbolCountMap[symbol];
                   $('#selected-count').text(numeral(selectedCount).format('0,0'));
+                  $('.poly-ms').text(numeral(selectedCount).format('0,0'));
+
                 });
                 map.on('click', layerID, function(e) {
                   if (e.originalEvent.cancelBubble) {
@@ -973,7 +1044,10 @@ div#calculated-area {
 
               
                 features.forEach(function(feature) {
-                  fttemp.push(feature.geometry.coordinates);
+                //  console.log(feature.solarData);
+                  if(feature.solarData != 'Y'){
+                    fttemp.push(feature.geometry.coordinates);
+                  }
                 });
 
                 data.features.forEach(function(feature) {
@@ -989,7 +1063,7 @@ div#calculated-area {
                   var ptsWithin = turf.pointsWithinPolygon(points, searchWithin);
 
                   var ftms = ptsWithin.features;
-                  console.log(ftms);
+                 
 
                   totallength = totallength + ptsWithin.features.length;
 
@@ -1002,10 +1076,12 @@ div#calculated-area {
                         
                               if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
 
+                                console.log(featuremain);
+                                if(featuremain.properties.solarData != 'Y'){
                                   if(!allpolyginptn.includes(featuremain.properties.id)){
                                     allpolyginptn.push(featuremain.properties.id);
                                   }
-
+                                }
                               }
                                                   
                         
@@ -1016,7 +1092,7 @@ div#calculated-area {
 
                 });
                 
-                $("#calculated-area").html("Polygon Selection " + numeral(totallength).format('0,0') + " of " + numeral(dataArray.length).format('0,0') + " sites.");
+                $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + numeral(dataArray.length).format('0,0') + "</span> sites.");
 
 
                 }
@@ -1126,6 +1202,8 @@ div#calculated-area {
             selectedCount -= 1
             $('#total-count').text(numeral(totalCount).format('0,0'));
             $('#selected-count').text(numeral(selectedCount).format('0,0'));
+            $('.poly-ms').text(numeral(selectedCount).format('0,0'));
+
             $('#total-sites').text(totalCount)
             map.getSource('places').setData({
               'type': 'FeatureCollection',

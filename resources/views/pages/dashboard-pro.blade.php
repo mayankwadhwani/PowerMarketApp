@@ -14,7 +14,39 @@
 {{-- <li class="breadcrumb-item active" aria-current="page">{{ __('Default') }}</li> --}}
 @endcomponent
 @endcomponent
+<style type="text/css">
+.mapboxgl-popup-close-button {outline: 0 !important;}
+span.text-nowrap.zero-solar-span {
+    position: relative;
+    top: -7px;
+}
 
+span.text-nowrap.active-solar {
+    position: relative;
+    top: -7px;
+}
+div#calculated-area {
+    padding-top: 4px;
+}
+#calculated-area-container{
+  display: none;
+}
+label[for="layer-years-0"] {
+    display: none !important;
+}
+div#calculated-area {
+    width: 50%;
+    float: left;
+}
+
+.create-new-pp {
+    width: 50%;
+    float: left;
+    text-align: right;
+}
+
+.card-inner-body::after {content: "";display: block;clear: both;}
+</style>
 <div class="modal fade" id="delete-form" tabindex="-1" role="dialog" aria-labelledby="delete-form" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
     <div class="modal-content">
@@ -271,14 +303,14 @@
   <div class="row">
 
     <div class="col text-left" style="margin-bottom: 10px;">
-      <span class="text-nowrap" style="font-size: .75rem; margin-right: .5rem;">Show active solar sites &nbsp;</span>
+      <span class="text-nowrap active-solar" style="font-size: .75rem; margin-right: .5rem;">Show active solar sites &nbsp;</span>
       <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
         <input id="checkExisting" type="checkbox">
         <span class="custom-toggle-slider rounded-circle" style=""></span>
       </label>
     </div>
     <div class="col text-left" style="margin-bottom: 10px;">
-      <span class="text-nowrap" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">0 Solar Data &nbsp;</span>
+      <span class="text-nowrap zero-solar-span" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">0 Solar Data &nbsp;</span>
       <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
         <input id="zeroSolarData" type="checkbox">
         <span class="custom-toggle-slider rounded-circle" style=""></span>
@@ -488,12 +520,27 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
         <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
-       <script>
+        <script src="{{ asset('js') }}/finance.js"></script>
+        <script>
+
+        var finance = new Finance();
+
+
+        $(document).ready(function(){
+           $("input[name='captive_use']").change(function() {
+            number = $("input[name='captive_use']").val()
+             if( number <= 0 || number > 100 ) {
+                 $("input[name='captive_use']").val("");
+               }
+             });
+        });
+
+
         mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
         var map = new mapboxgl.Map({
           container: 'map',
           style: 'mapbox://styles/mapbox/satellite-v9',
-          pitch: 45,
+          pitch: 10,
           bearing: -17.6,
           antialias: true
         });
@@ -544,8 +591,30 @@
         var filterYears = new Map();
         var cluster_route = `{!! $cluster ?? '' !!}`
         var features = [];
+        var allpolyginptn = [];
         var checkExisting = document.querySelector("#checkExisting");
+        var zeroSolarData = document.querySelector("#zeroSolarData");
+        var cashflow = [0, 26, 0];
+        var feature = "";
+        var discountedcashflow = [0, 25, 0];
+        var panel_lifetime = 25;
+        var annual_depreciation = 0.1;
+        var corporate_tax_rate = 0.21;
+        var panel_degradation = 0.99;
+        var annual_commercial_electric_price_increase = 1.05;
+        var annual_domestic_electric_price_increase = 1.03;
+        var wacc = 0.05;
+        var irrfinal = 0;
+
+        
+        @php 
+          echo "var sys_cost_5kw = ".$prev_inputs['cost_of_small_system']/$prev_inputs['system_size_kwp'];
+        @endphp
+
+
+
         function renderMap() {
+
           var jsonString = `{!! $geodata ?? '
           ' !!}`;
           var bounds = new mapboxgl.LngLatBounds();
@@ -553,7 +622,7 @@
           if (jsonString.length > 0) {
             dataArray = JSON.parse(jsonString);
 
-            console.log(dataArray)
+           // console.log(dataArray)
 
             dataArray.sort(function(a, b) {
               return a['breakeven_years'] - b['breakeven_years'];
@@ -579,80 +648,128 @@
                 </a>
                 `
               }
+              
+              var sys_cap = sys_cost_5kw;
+              var electric_price = 0;
 
-              var feature = "";
+              if(sys_cap < 10){
+                  electric_price = "{{ $prev_inputs['domestic_tariff'] }}"; //default value is set in controller method
+              } else {
+                  electric_price = "{{ $prev_inputs['commercial_tariff'] }}";  //default value is set in controller method
+              }
 
-              if(dataArray[key].breakeven_years == 0 && dataArray[key].area_sqm == 0 && dataArray[key].numpanels == 0 && dataArray[key].lifetime_return_on_investment_percent == 0 && dataArray[key].existingsolar == 0){
-                feature = {
-                  type: "Feature",
-                  properties: {
-                    description: `
-                    <div class="card popup-card">
-                    <div id="cluster-header" class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:0;">
-                    ${header}
-                    </div>
-                    <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
-                    <p class="card-text">
-                      There is no solar data for this location.
-                    </p>
-                    <a href="{{ route('page.reporting') }}?geopoint_id=${dataArray[key].id}" class="btn btn-primary"
-                    target="_blank">Generate Report</a>
-                    <a href="{{ route('page.building') }}" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
-                    target="_blank" title="Upgrade to view detailed building ownership information, and tenancy details for commercial and industrial buildings.">Building Info</a>
-                    </div>
-                    </div>`,
-                    years: dataArray[key].breakeven_years,
-                    id: dataArray[key].id,
-                    area: dataArray[key].area_sqm,
-                    panels: dataArray[key].numpanels,
-                    roi: dataArray[key].lifetime_return_on_investment_percent,
-                    existingSolar: dataArray[key].existingsolar
-                  },
-                  geometry: {
-                    type: dataArray[key].latLon.type,
-                    coordinates: dataArray[key].latLon.coordinates
-                  }
-                };
+              var export_tariff = "{{ $prev_inputs['export_tariff'] }}";
+              var captive_use = "{{ $prev_inputs['captive_use'] }}";
+              var residential_threshold = 10;
+
+              var breakeven = -1;
+              var v = 0;
+              var c = 0;
+              var ag = sys_cap * 937;
+              var ep = electric_price; //came from either domestic tariff or commercial tariff
+              var ex = export_tariff;
+
+              sys_cost = sys_cost_5kw;
+
+              if(dataArray[key].breakeven_years == 0){
+                 feature = {
+                    type: "Feature",
+                    properties: {
+                      description: `
+                      <div class="card popup-card">
+                      <div id="cluster-header" class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:0;">
+                      ${header}
+                      </div>
+                      <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
+                        <p class="card-text card-empty-error">
+                          There is no solar data for this location.
+                        </p>
+                      </div>
+                      </div>`,
+                      years: dataArray[key].breakeven_years,
+                      id: dataArray[key].id,
+                      area: dataArray[key].area_sqm,
+                      panels: dataArray[key].numpanels,
+                      roi: dataArray[key].lifetime_return_on_investment_percent,
+                      existingSolar: dataArray[key].existingsolar,
+                      solarData: 'Y'
+                    },
+                    geometry: {
+                      type: dataArray[key].latLon.type,
+                      coordinates: dataArray[key].latLon.coordinates
+                    }
+                  };
               }
               else{
-                feature = {
-                  type: "Feature",
-                  properties: {
-                    description: `
-                    <div class="card popup-card">
-                    <div id="cluster-header" class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:0;">
-                    ${header}
-                    </div>
-                    <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
-                    <p class="card-text">
-                    <strong>Break-even:</strong> ${dataArray[key].breakeven_years} years</br>
-                    <strong>System Size:</strong> ${numeral(dataArray[key].system_capacity_kWp).format('0,0.0a')} kWp<br/>
-                    <strong>System Cost:</strong> £ ${numeral(dataArray[key].system_cost_GBP).format('0,0.0a')}<br/>
-                    <strong>Lifetime Savings:</strong> £ ${numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')}<br/>
-                    <strong>Lifetime CO<sub>2</sub> saving:</strong> ${numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a')} kgs<br/>
-                    <strong>Lifetime RoI:</strong> ${numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a')}%<br/>
-                    </p>
-                    <a href="{{ route('page.reporting') }}?geopoint_id=${dataArray[key].id}" class="btn btn-primary"
-                    target="_blank">Generate Report</a>
-                    <a href="{{ route('page.building') }}" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
-                    target="_blank" title="Upgrade to view detailed building ownership information, and tenancy details for commercial and industrial buildings.">Building Info</a>
-                    </div>
-                    </div>`,
-                    years: dataArray[key].breakeven_years,
-                    id: dataArray[key].id,
-                    area: dataArray[key].area_sqm,
-                    panels: dataArray[key].numpanels,
-                    roi: dataArray[key].lifetime_return_on_investment_percent,
-                    existingSolar: dataArray[key].existingsolar
-                  },
-                  geometry: {
-                    type: dataArray[key].latLon.type,
-                    coordinates: dataArray[key].latLon.coordinates
+
+
+                  for(var k = 1; k <= panel_lifetime; k++){
+                      var tmpv = ag * ep * captive_use + ag * ex * (1 - captive_use); //value of elctricity use + export
+                      var dpt = 0;
+                      if(sys_cap > residential_threshold && k <= (1/annual_depreciation)){
+                          dpt = sys_cost * annual_depreciation * corporate_tax_rate; //depreciation tax benefits
+                      }
+                      tmpv += dpt;
+                      cashflow[k-1]=tmpv;
+                      discountedcashflow[k-1]=tmpv/(1+wacc)**(k-1)
+                      v += tmpv;
+                      if(v > sys_cost){
+                          breakeven = k;
+                          break;
+                      }
+                      ag *= panel_degradation;
+                      if(sys_cap > residential_threshold){
+                          ep *= annual_commercial_electric_price_increase;
+                      } else{
+                          ep *= annual_domestic_electric_price_increase;
+                      }
                   }
-                };
+                  discountedcashflow.unshift((sys_cost)*(-1));
+//                  discountedcashflow = discountedcashflow.join();
+
+                  var finalirr = finance.IRR(discountedcashflow);
+                  finalirr = finalirr.toFixed(2);
+
+                  
+                 feature = {
+                    type: "Feature",
+                    properties: {
+                      description: `
+                      <div class="card popup-card">
+                      <div id="cluster-header" class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:0;">
+                      ${header}
+                      </div>
+                      <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
+                      <p class="card-text">
+                      <strong>Break-even:</strong> ${dataArray[key].breakeven_years} years</br>
+                      <strong>System Size:</strong> ${numeral(dataArray[key].system_capacity_kWp).format('0,0.0a')} kWp<br/>
+                      <strong>System Cost:</strong> £ ${numeral(dataArray[key].system_cost_GBP).format('0,0.0a')}<br/>
+                      <strong>Lifetime Savings:</strong> £ ${numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')}<br/>
+                      <strong>Lifetime CO<sub>2</sub> saving:</strong> ${numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a')} kgs<br/>
+                      <strong>IRR: </strong> ${finalirr}<br/>
+                      </p>
+                      <a href="{{ route('page.reporting') }}?geopoint_id=${dataArray[key].id}" class="btn btn-primary"
+                      target="_blank">Generate Report</a>
+                      <a href="{{ route('page.building') }}" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+                      target="_blank" title="Upgrade to view detailed building ownership information, and tenancy details for commercial and industrial buildings.">Building Info</a>
+                      </div>
+                      </div>`,
+                      years: dataArray[key].breakeven_years,
+                      id: dataArray[key].id,
+                      area: dataArray[key].area_sqm,
+                      panels: dataArray[key].numpanels,
+                      roi: dataArray[key].lifetime_return_on_investment_percent,
+                      existingSolar: dataArray[key].existingsolar,
+                      solarData : 'N'
+                    },
+                    geometry: {
+                      type: dataArray[key].latLon.type,
+                      coordinates: dataArray[key].latLon.coordinates
+                    }
+                  };
+
+
               }
-
-
 
               features.push(feature);
               potential = potential + dataArray[key].system_capacity_kWp;
@@ -679,6 +796,10 @@
             selectedCount = totalCount;
             $('#total-count').text(numeral(dataArray.length).format('0,0'));
             $('#selected-count').text(numeral(dataArray.length).format('0,0'));
+            $('.poly-ms').text(numeral(dataArray.length).format('0,0'));
+
+
+
           }
           map.on('load', function() {
             map.loadImage('../../svg/map-marker-alt-solid.png', function(error, image) {
@@ -693,7 +814,7 @@
                   'features': features
                 },
                 cluster: true,
-                clusterMaxZoom: 12, // Max zoom to cluster points on
+                clusterMaxZoom: 16, // Max zoom to cluster points on
                 clusterRadius: 50
               });
               features.forEach(function(feature) {
@@ -709,14 +830,14 @@
                     'layout': {
                       'icon-image': 'marker-icon',
                       'icon-allow-overlap': true,
-                      "icon-size": ['interpolate', ['linear'],
-                      ['zoom'], 10, 0.1, 15, 1
-                    ]
+                      "icon-size": ['interpolate', ['linear'], ['zoom'], 10, 1, 15, 0.5]
+                    
                   },
                   'filter': [
                     "all",
                     ["==", "years", symbol],
-                    ["!=", "existingSolar", "Y"]
+                    ["!=", "existingSolar", "Y"],
+                    ["!=", "solarData", "Y"]
                   ],
                   'paint': {
                     'icon-color': [
@@ -754,6 +875,8 @@
                   else
                   selectedCount = selectedCount - symbolCountMap[symbol];
                   $('#selected-count').text(numeral(selectedCount).format('0,0'));
+                  $('.poly-ms').text(numeral(selectedCount).format('0,0'));
+
                 });
                 map.on('click', layerID, function(e) {
                   if (e.originalEvent.cancelBubble) {
@@ -869,10 +992,130 @@
                 }
               })
             }
+
+
+
+            map.on('draw.create', updateArea);
+            map.on('draw.delete', updateArea);
+            map.on('draw.update', updateArea);
+             
+            function updateArea(e) {
+
+                $("#calculated-area-container").slideDown();
+                var fttemp = [];
+                var totallength = 0;
+
+                var srchwithin = [];
+                var data = draw.getAll();
+                var answer = document.getElementById('calculated-area');
+                if (data.features.length > 0) {
+
+              
+                features.forEach(function(feature) {
+                //  console.log(feature.solarData);
+                  if(feature.solarData != 'Y'){
+                    fttemp.push(feature.geometry.coordinates);
+                  }
+                });
+
+                data.features.forEach(function(feature) {
+                  srchwithin.push(feature.geometry.coordinates);
+                });
+
+                var points = turf.points(fttemp);
+
+                srchwithin.forEach(function(srchin){
+                  
+                  var searchWithin = turf.polygon(srchin);
+
+                  var ptsWithin = turf.pointsWithinPolygon(points, searchWithin);
+
+                  var ftms = ptsWithin.features;
+                 
+
+                  totallength = totallength + ptsWithin.features.length;
+
+                  
+
+                  features.forEach(function(featuremain) {
+                    
+                      ftms.forEach(function(featuresingle) {
+                        
+                        
+                              if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
+
+                                console.log(featuremain);
+                                if(featuremain.properties.solarData != 'Y'){
+                                  if(!allpolyginptn.includes(featuremain.properties.id)){
+                                    allpolyginptn.push(featuremain.properties.id);
+                                  }
+                                }
+                              }
+                                                  
+                        
+                      });
+
+                  });
+
+
+                });
+                
+                $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + numeral(dataArray.length).format('0,0') + "</span> sites.");
+
+
+                }
+
+            }
+
+
+            $(document).on('change', '[name="zeroSolarData"]', function() {
+                var checkbox = $(this), // Selected or current checkbox
+                    value = checkbox.val(); // Value of checkbox
+               layers.forEach(layer => {
+
+                if(layer.type === "symbol" && layer.id !== "cluster-count"){
+                  if (checkbox.is(':checked'))
+                  {
+  
+     
+                    var year = layer.filter[1][2]
+                    var include_existing =["==", "years", year];
+                    map.setFilter(layer.id, include_existing);
+
+
+                  }else
+                  {
+                  var filter_existing =[
+                        "all",
+                        ["==", "years", layer.filter[1][2]],
+                        ["!=", "solarData", "Y"]
+                      ];
+                      map.setFilter(layer.id, filter_existing);
+
+
+         
+
+                  }
+                }
+              });
+            });
+
+
             map.fitBounds(bounds);
+
+    
+
+
+        
+
+
+           // console.log(ptsWithin);
+
+
           });
         });
       }
+
 
 
 
@@ -892,44 +1135,6 @@
       }
       $(document).ready(function() {
         renderMap();
-
-        //grab the current input values for pro params:
-        var proParams = {
-          captive_use: $("#input-captive-use").val(),
-          export_tariff: $("#input-export-tariff").val(),
-          domestic_tariff: $("#input-domestic-tariff").val(),
-          commercial_tariff: $("#input-commercial-tariff").val(),
-          system_cost: $("#input-cost-of-small-system").val(),
-          system_size: $("#input-system-size-kwp").val()
-        }
-        console.log(proParams);
-
-        //check if account name is PPS:
-        var default_domestic = 0.146;
-        var input_account = $("#input-domestic-tariff").attr("data-account");
-        console.log(input_account);
-        if (input_account=== 'Gloucestershire | PPS'){
-          default_domestic = 0.095;
-        }
-        //default form values:
-        const pro_inputs = {
-          captive_use: 0.8,
-          export_tariff: 0.055,
-          domestic_tariff: default_domestic,
-          commercial_tariff: 0.12,
-          cost_of_small_system: 6000,
-          system_size_kwp: 5
-        }
-        //attach event handler to each of the pro input fields
-        $(".pro-form").find(".pro-input").each(function(input){
-          //->input gives the index number;  $this gives the actual element
-          //reset pro-form values to original:
-          const inputName = $(this).attr("name")
-          $("#reset-btn").click((evt) => {
-            $(this).val(pro_inputs[inputName]);
-          })
-        })
-
         $('[data-toggle="tooltip"]').tooltip();
         getClusters();
         $('#map').on('click', '#add_cluster', function(event) {
@@ -965,6 +1170,8 @@
             selectedCount -= 1
             $('#total-count').text(numeral(totalCount).format('0,0'));
             $('#selected-count').text(numeral(selectedCount).format('0,0'));
+            $('.poly-ms').text(numeral(selectedCount).format('0,0'));
+
             $('#total-sites').text(totalCount)
             map.getSource('places').setData({
               'type': 'FeatureCollection',
@@ -991,8 +1198,7 @@
           var formData = {
             'name': $('input[name=name]').val(),
             '_token': $('input[name=_token]').val(),
-            'geopoints': JSON.stringify(visiblePoints),
-            'pro_params': JSON.stringify(proParams)
+            'geopoints': JSON.stringify(visiblePoints)
           };
           $.ajax({
             type: 'POST',
@@ -1012,6 +1218,35 @@
             $('#next-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(3000).fadeOut();
           });
         });
+
+        $('#modal-form-polygon').submit(function(event) {
+          event.preventDefault();
+          var visiblePoints = [];
+  
+          var formData = {
+            'name': $('input[name=namepoly]').val(),
+            '_token': $('input[name=_token]').val(),
+            'geopoints': JSON.stringify(allpolyginptn)
+          };
+          $.ajax({
+            type: 'POST',
+            url: '/clusters',
+            data: formData,
+            dataType: 'json',
+            encode: true
+          }).done(function(data) {
+            $('#modal-form-polygon').modal('hide')
+            $('#next-form').modal('show')
+            getClusters()
+            $('#next-response-status').text(data.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(3000).fadeOut();
+            $('#cluster-href').attr('href', data.cluster_link)
+          }).fail(function(data) {
+            $('#modal-form-polygon').modal('hide')
+            $('#next-form').modal('show')
+            $('#next-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(3000).fadeOut();
+          });
+        });
+
         $('#newClusterCheck').change(function(event) {
           $('input[name=new_name]').prop('disabled', !event.target.checked)
           $('#cluster-select').prop('disabled', event.target.checked)
@@ -1020,8 +1255,7 @@
           event.preventDefault();
           var formData = {
             geopoint_id: clicked_geopoint_id,
-            '_token': $('input[name=_token]').val(),
-            'pro_params': JSON.stringify(proParams)
+            '_token': $('input[name=_token]').val()
           }
           if ($('#newClusterCheck').is(":checked")) {
             formData['new_name'] = $('input[name=new_name]').val()
