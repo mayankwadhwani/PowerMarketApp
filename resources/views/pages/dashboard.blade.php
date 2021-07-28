@@ -389,7 +389,7 @@ div#calculated-area {
     <div class="card-body">
       <div class="card-inner-body">
         <div id="calculated-area">
-          
+
         </div>
         <div class="create-new-pp">
           <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="modal" data-target="#modal-form-polygon" aria-haspopup="true" aria-expanded="false">
@@ -640,7 +640,7 @@ div#calculated-area {
         var annual_commercial_electric_price_increase = 1.05;
         var annual_domestic_electric_price_increase = 1.03;
         var wacc = 0.05;
-        var irrfinal = 0;  
+        var irrfinal = 0;
         var sys_cost_5kw = 1200;
 
         function renderMap() {
@@ -677,7 +677,7 @@ div#calculated-area {
                 </a>
                 `
               }
-              
+
               var feature = "";
 
 
@@ -1030,7 +1030,7 @@ div#calculated-area {
             map.on('draw.create', updateArea);
             map.on('draw.delete', updateArea);
             map.on('draw.update', updateArea);
-             
+
             function updateArea(e) {
 
                 $("#calculated-area-container").slideDown();
@@ -1042,7 +1042,7 @@ div#calculated-area {
                 var answer = document.getElementById('calculated-area');
                 if (data.features.length > 0) {
 
-              
+
                 features.forEach(function(feature) {
                 //  console.log(feature.solarData);
                   if(feature.solarData != 'Y'){
@@ -1057,23 +1057,23 @@ div#calculated-area {
                 var points = turf.points(fttemp);
 
                 srchwithin.forEach(function(srchin){
-                  
+
                   var searchWithin = turf.polygon(srchin);
 
                   var ptsWithin = turf.pointsWithinPolygon(points, searchWithin);
 
                   var ftms = ptsWithin.features;
-                 
+
 
                   totallength = totallength + ptsWithin.features.length;
 
-                  
+
 
                   features.forEach(function(featuremain) {
-                    
+
                       ftms.forEach(function(featuresingle) {
-                        
-                        
+
+
                               if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
 
                                 console.log(featuremain);
@@ -1083,15 +1083,15 @@ div#calculated-area {
                                   }
                                 }
                               }
-                                                  
-                        
+
+
                       });
 
                   });
 
 
                 });
-                
+
                 $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + numeral(dataArray.length).format('0,0') + "</span> sites.");
 
 
@@ -1108,8 +1108,8 @@ div#calculated-area {
                 if(layer.type === "symbol" && layer.id !== "cluster-count"){
                   if (checkbox.is(':checked'))
                   {
-  
-     
+
+
                     var year = layer.filter[1][2]
                     var include_existing =["==", "years", year];
                     map.setFilter(layer.id, include_existing);
@@ -1125,7 +1125,7 @@ div#calculated-area {
                       map.setFilter(layer.id, filter_existing);
 
 
-         
+
 
                   }
                 }
@@ -1135,10 +1135,10 @@ div#calculated-area {
 
             map.fitBounds(bounds);
 
-    
 
 
-        
+
+
 
 
            // console.log(ptsWithin);
@@ -1254,7 +1254,7 @@ div#calculated-area {
         $('#modal-form-polygon').submit(function(event) {
           event.preventDefault();
           var visiblePoints = [];
-  
+
           var formData = {
             'name': $('input[name=namepoly]').val(),
             '_token': $('input[name=_token]').val(),
@@ -1328,7 +1328,7 @@ div#calculated-area {
         z-index: 1;
         border-radius: .375rem;
         overflow: hidden;
-        width: 120px;
+        width: 100px;
         color: #d9dbdf;
       }
 

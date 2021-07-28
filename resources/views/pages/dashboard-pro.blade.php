@@ -316,7 +316,7 @@ div#calculated-area {
         <span class="custom-toggle-slider rounded-circle" style=""></span>
       </label>
     </div>
-    
+
 
     <div class="col text-right" style="margin-bottom: 10px;">
       <span class="text-nowrap" style="font-size: .75rem; margin-right: .5rem;">
@@ -606,8 +606,8 @@ div#calculated-area {
         var wacc = 0.05;
         var irrfinal = 0;
 
-        
-        @php 
+
+        @php
           echo "var sys_cost_5kw = ".$prev_inputs['cost_of_small_system']/$prev_inputs['system_size_kwp'];
         @endphp
 
@@ -648,7 +648,7 @@ div#calculated-area {
                 </a>
                 `
               }
-              
+
               var sys_cap = sys_cost_5kw;
               var electric_price = 0;
 
@@ -730,7 +730,7 @@ div#calculated-area {
                   var finalirr = finance.IRR(discountedcashflow);
                   finalirr = finalirr.toFixed(2);
 
-                  
+
                  feature = {
                     type: "Feature",
                     properties: {
@@ -831,7 +831,7 @@ div#calculated-area {
                       'icon-image': 'marker-icon',
                       'icon-allow-overlap': true,
                       "icon-size": ['interpolate', ['linear'], ['zoom'], 10, 1, 15, 0.5]
-                    
+
                   },
                   'filter': [
                     "all",
@@ -998,7 +998,7 @@ div#calculated-area {
             map.on('draw.create', updateArea);
             map.on('draw.delete', updateArea);
             map.on('draw.update', updateArea);
-             
+
             function updateArea(e) {
 
                 $("#calculated-area-container").slideDown();
@@ -1010,7 +1010,7 @@ div#calculated-area {
                 var answer = document.getElementById('calculated-area');
                 if (data.features.length > 0) {
 
-              
+
                 features.forEach(function(feature) {
                 //  console.log(feature.solarData);
                   if(feature.solarData != 'Y'){
@@ -1025,23 +1025,23 @@ div#calculated-area {
                 var points = turf.points(fttemp);
 
                 srchwithin.forEach(function(srchin){
-                  
+
                   var searchWithin = turf.polygon(srchin);
 
                   var ptsWithin = turf.pointsWithinPolygon(points, searchWithin);
 
                   var ftms = ptsWithin.features;
-                 
+
 
                   totallength = totallength + ptsWithin.features.length;
 
-                  
+
 
                   features.forEach(function(featuremain) {
-                    
+
                       ftms.forEach(function(featuresingle) {
-                        
-                        
+
+
                               if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
 
                                 console.log(featuremain);
@@ -1051,15 +1051,15 @@ div#calculated-area {
                                   }
                                 }
                               }
-                                                  
-                        
+
+
                       });
 
                   });
 
 
                 });
-                
+
                 $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + numeral(dataArray.length).format('0,0') + "</span> sites.");
 
 
@@ -1076,8 +1076,8 @@ div#calculated-area {
                 if(layer.type === "symbol" && layer.id !== "cluster-count"){
                   if (checkbox.is(':checked'))
                   {
-  
-     
+
+
                     var year = layer.filter[1][2]
                     var include_existing =["==", "years", year];
                     map.setFilter(layer.id, include_existing);
@@ -1093,7 +1093,7 @@ div#calculated-area {
                       map.setFilter(layer.id, filter_existing);
 
 
-         
+
 
                   }
                 }
@@ -1103,10 +1103,10 @@ div#calculated-area {
 
             map.fitBounds(bounds);
 
-    
 
 
-        
+
+
 
 
            // console.log(ptsWithin);
@@ -1222,7 +1222,7 @@ div#calculated-area {
         $('#modal-form-polygon').submit(function(event) {
           event.preventDefault();
           var visiblePoints = [];
-  
+
           var formData = {
             'name': $('input[name=namepoly]').val(),
             '_token': $('input[name=_token]').val(),
@@ -1288,7 +1288,7 @@ div#calculated-area {
       }
 
       .filter-group {
-        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        font: 10px/8px 'Helvetica Neue', Arial, Helvetica, sans-serif;
         font-weight: 600;
         position: absolute;
         top: 10px;
@@ -1296,7 +1296,7 @@ div#calculated-area {
         z-index: 1;
         border-radius: .375rem;
         overflow: hidden;
-        width: 120px;
+        width: 100px;
         color: #fff;
       }
 
