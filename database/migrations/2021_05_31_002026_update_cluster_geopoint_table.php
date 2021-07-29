@@ -20,6 +20,9 @@ class UpdateClusterGeopointTable extends Migration
             $table->float('commercial_tariff', 5, 4)->default(0.12);
             $table->decimal('system_cost')->default(6000);
             $table->decimal('system_size')->default(5);
+
+            $table->bigInteger('captive_use')->change();
+
         });
     }
 

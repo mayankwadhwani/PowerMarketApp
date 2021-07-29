@@ -68,6 +68,35 @@ div#calculated-area {
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="modal-form-polygon" tabindex="-1" role="dialog" aria-labelledby="modal-form-polygon" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <div class="card bg-secondary shadow border-0 mb-0">
+          <div class="card-header bg-white">
+            <div class="text-muted text-left mb-3">
+              <h2>Create project from polygon</h2>
+            </div>
+          </div>
+          <div class="card-body bg-white">
+            <form method="post" action="{{ route('invitation.store') }}" role="form">
+              @csrf
+              <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
+                <label class="form-control-label" for="input-name">{{ __('Name') }}</label>
+                <input maxlength="15" type="text" name="namepoly" id="input-name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Enter Name') }}" value="{{ old('name') }}" required autofocus>
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-default my-4">Create project</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
     <div class="modal-content">
@@ -355,6 +384,22 @@ div#calculated-area {
       </div>
     </div>
   </div>
+
+  <div class="card" id="calculated-area-container">
+    <div class="card-body">
+      <div class="card-inner-body">
+        <div id="calculated-area">
+
+        </div>
+        <div class="create-new-pp">
+          <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="modal" data-target="#modal-form-polygon" aria-haspopup="true" aria-expanded="false">
+              Create project from polygon
+         </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-body">
 

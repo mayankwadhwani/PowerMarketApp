@@ -646,9 +646,11 @@ div#calculated-area {
         function renderMap() {
           var jsonString = `{!! $geodata ?? '
           ' !!}`;
+          jsonString = jsonString.replace('"Lu Colciu Rocchi"',"'Lu Colciu Rocchi'");
           var bounds = new mapboxgl.LngLatBounds();
           var filterGroup = document.getElementById('filter-group');
           if (jsonString.length > 0) {
+            console.log(jsonString);
             dataArray = JSON.parse(jsonString);
 
            // console.log(dataArray)
