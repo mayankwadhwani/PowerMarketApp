@@ -40,7 +40,11 @@ class OrganizationController extends Controller
     public function store(Request $request)
     {
         $organization = Organization::create([
-            'name' => $request->name
+            'name' => $request->name,
+            'captiveuse' => $request->captiveuse,
+            'exporttariff' => $request->exporttariff,
+            'residentialtariff' => $request->residentialtariff,
+            'nonresidentialtariff' => $request->nonresidentialtariff
         ]);
         $organization->accounts()->attach($request->accounts);
         return redirect()->route('organization.index')->withStatus(__('Organization successfully created.'));
@@ -75,6 +79,21 @@ class OrganizationController extends Controller
         if ($request->filled('name')) {
             $organization->name = $request->name;
         }
+        if ($request->filled('captiveuse')) {
+            $organization->captiveuse = $request->captiveuse;
+        }
+        if ($request->filled('exporttariff')) {
+            $organization->exporttariff = $request->exporttariff;
+        }
+        if ($request->filled('residentialtariff')) {
+            $organization->residentialtariff = $request->residentialtariff;
+        }
+        if ($request->filled('nonresidentialtariff')) {
+            $organization->nonresidentialtariff = $request->nonresidentialtariff;
+        }
+
+        $organization->save();
+
         $organization->accounts()->sync($request->accounts);
         return redirect()->route('organization.index')->withStatus(__('Organization successfully updated.'));
     }

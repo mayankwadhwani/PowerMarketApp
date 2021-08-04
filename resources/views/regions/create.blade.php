@@ -65,6 +65,11 @@
 
                                 @include('alerts.feedback', ['field' => 'lon'])
                             </div>
+
+    
+
+
+
                             <div class="form-group{{ $errors->has('geodata') ? ' has-danger' : '' }}">
                                 <label class="form-control-label" for="input-name">{{ __('Json geodata') }}</label>
                                 <textarea class="form-control" type="text" name="geodata" id="exampleFormControlTextarea1" rows="13" placeholder="Input JSON data here">{{ old('geodata') }}</textarea>

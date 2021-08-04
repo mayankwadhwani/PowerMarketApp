@@ -70,11 +70,19 @@ class HomeController extends Controller
             $account = $user->accounts()->where('name', $account_name)->first();
             if ($account == null) return abort(404);
         }
+
         $region_ids = $account->regions()->pluck('id')->toArray();
+
+        if (($key = array_search(30, $region_ids)) !== false) {
+            unset($region_ids[$key]);
+        }
+
+
         $geopoints = Geopoint::whereIn('region_id', $region_ids)->get();
         return view('pages.dashboard', [
             'geodata' => $geopoints,
-            'account' => $account_name
+            'account' => $account_name,
+            'orgdata' => $user->organization->toArray()
         ]);
     }
     public function region($account_name, $region_name)
@@ -142,7 +150,7 @@ class HomeController extends Controller
         $cost_of_small_system = $request->cost_of_small_system ? floatval($request->cost_of_small_system) : 6000;
         $system_size_kwp = $request->system_size_kwp ? floatval($request->system_size_kwp) : 5;
         $test_geopoint = $geopoints->where("id", 19483);
-        $pro_geopoints = pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, $geopoints);
+        $pro_geopoints = pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp , $geopoints);
         //dd($geopoints->where('id', 17499));
         $prev_inputs = [
             "captive_use" => $captive_use,
@@ -247,28 +255,12 @@ class HomeController extends Controller
                 return abort(404);
             }
         }
-
+        
         $currentDBParams = $this->getClusterParams($cluster);
 
         $geopoints = $cluster->geopoints;
-
-        $pro_geopoints = [];
-        //call pro calc to calculate each geopoint based on the custom params
-        foreach($geopoints as $geopoint){
-            $captive_use = $geopoint->pivot->captive_use;
-            $export_tariff = $geopoint->pivot->export_tariff;
-            $domestic_tariff = $geopoint->pivot->domestic_tariff;
-            $commercial_tariff = $geopoint -> pivot -> commercial_tariff;
-            $cost_of_small_system = $geopoint->pivot -> system_cost;
-            $system_size_kwp = $geopoint->pivot->system_size;
-            $pro_geopoint = pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, [$geopoint]);
-            //dd($pro_geopoint);
-            //dd(array_values($pro_geopoint)[0]);
-            array_push($pro_geopoints, array_values($pro_geopoint)[0]);
-        };
-
         return view('pages.dashboard', [
-        'geodata' => collect($pro_geopoints),
+        'geodata' => $geopoints,
         'cluster' => $cluster->name,
         'currentDBParams' => $currentDBParams
         ]);
