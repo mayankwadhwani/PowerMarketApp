@@ -22,7 +22,7 @@ class RegionController extends Controller
             'name' => 'required',
             'lat' => 'required|numeric|min:-90|max:90',
             'lon' => 'required|numeric|min:-180|max:180',
-            'account_id' => 'required|exists:accounts,id'
+            'account_id' => 'required|exists:accounts,id',
         ]);
         $region = Region::create([
             'name' => $request->name,

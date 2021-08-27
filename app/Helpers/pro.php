@@ -5,7 +5,7 @@ function geodata_process_irr($geodata){
 }
 
 if(!function_exists('pro_params')){
-    function pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, $geopoints)
+    function pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp,$geopoints)
     {
         //echo("Using helper!");
         // echo("using default values: $captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, \n ");
@@ -179,7 +179,7 @@ if(!function_exists('pro_params')){
             $geopoint -> lifetime_gen_GBP = $lifetime_value;
             $geopoint -> lifetime_return_on_investment_percent = $return_on_investment * 100;
             $geopoint -> annualized_return_on_investment_percent = $annual_roi * 100;
-            $geopoint -> breakeven_years = $breakeven;
+            $geopoint ->breakeven_years = $breakeven;
         }
         $pro_geopoints = $geopoints;
         return $pro_geopoints;

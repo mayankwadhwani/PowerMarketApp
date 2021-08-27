@@ -121,6 +121,7 @@ class PageController extends Controller
 
     public function pdf(Request $request)
     {
+        $user = auth()->user();
         $geopoint = Geopoint::find($request->geopoint_id);
         if (is_null($geopoint)) {
             return view('pages.reporting');
@@ -144,6 +145,7 @@ class PageController extends Controller
             'trees' => round($geopoint->annual_gen_kWh * 0.0117),
             'oil' => round($geopoint->annual_gen_kWh * 0.2174),
             'lat' => $lat,
+            'orgdata' => $user->organization->toArray(),
             'lon' => $lon,
             'address' => $address,
             'geodata' => json_encode([$geopoint]),
@@ -177,6 +179,8 @@ class PageController extends Controller
      */
     public function reporting(Request $request)
     {
+        $user = auth()->user();
+
         $request->validate([
             'geopoint_id' => 'required|integer'
         ]);
@@ -205,6 +209,7 @@ class PageController extends Controller
             'oil' => round($geopoint->annual_gen_kWh * 0.2174),
             'lat' => $lat,
             'lon' => $lon,
+            'orgdata' => $user->organization->toArray(),
             'address' => $address,
             'geodata' => json_encode([$geopoint]),
             'monthly_savings' => json_encode($geopoint->monthly_gen_saving_value_GBP),
