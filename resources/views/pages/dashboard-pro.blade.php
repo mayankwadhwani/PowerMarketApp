@@ -509,7 +509,7 @@ div#calculated-area {
                   <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Captive use." /></label>
 
-                    <input type="number" step="any" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="<?php echo $orgdata['captiveuse']; ?>" value="{{ ($prev_inputs['captive_use'] < 1 ? $prev_inputs['captive_use']*100 : $prev_inputs['captive_use'] ) }}">
+                    <input type="number" step="any" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="<?php echo $orgdata['captiveuse']; ?>" value="{{ ($prev_inputs['captive_use'] <= 1 ? $prev_inputs['captive_use']*100 : $prev_inputs['captive_use'] ) }}">
                     @include('alerts.feedback', ['field' => 'captive_use'])
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
