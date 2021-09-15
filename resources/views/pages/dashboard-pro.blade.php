@@ -497,7 +497,7 @@ div#calculated-area {
                 <div class="input-group" id="input-system-cost-per-kwp">
                   {{-- <div class="form-group{{ $errors->has('cost_of_small_system') ? ' has-danger' : '' }}"> --}}
                     {{-- <label class="form-control-label" for="input-cost-of-small-system">{{ __('cost_of_small_system') }}</label> --}}
-                    <input type="number" step="any" name="cost_of_small_system" id="input-cost-of-small-system" class="pro-input form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}" placeholder = "6000" value="{{ $prev_inputs['cost_of_small_system'] }}">
+                    <input type="number" step="any" name="cost_of_small_system" id="input-cost-of-small-system" class="pro-input form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}"  placeholder="{{ trans('Total Cost: :currencysymbol6000', ['currencysymbol' => $orgdata['currencysymbol']]) }}" value="{{ $prev_inputs['cost_of_small_system'] }}">
                     @include('alerts.feedback', ['field' => 'cost_of_small_system'])
                     {{-- </div> --}}
                     {{-- <div class="form-group{{ $errors->has('system_size_kwp') ? ' has-danger' : '' }}"> --}}

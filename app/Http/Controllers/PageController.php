@@ -319,7 +319,10 @@ class PageController extends Controller
         $data_array= $this->getGeopointData($geopoints);
 
         $currentDBParams = $this->getClusterParams($cluster);
-
+        $orgData = $user->organization->toArray();
+        if (empty($orgData['currencysymbol'])) {
+            $orgData['currencysymbol'] = "£";
+        }
         $geopoints = $cluster->geopoints;
         $data_array= $this->getGeopointData($geopoints);
         // $monthly_savings = array_fill(0, 12, 0);
@@ -372,7 +375,8 @@ class PageController extends Controller
             'yearly_gen_captive' => json_encode($data_array['yearly_gen_captive']),
             'yearly_gen_exports' => json_encode($data_array['yearly_gen_exports']),
             'saved_co2' => json_encode($data_array['yearly_co2']),
-            'currentDBParams' => $currentDBParams
+            'currentDBParams' => $currentDBParams,
+            'orgdata' => $orgData,
         ]);
     }
     /**
