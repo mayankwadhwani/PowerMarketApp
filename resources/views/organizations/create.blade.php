@@ -80,7 +80,6 @@
                                 @include('alerts.feedback', ['field' => 'nonresidentialtariff'])
                             </div>
 
-
                             <div class="form-group{{ $errors->has('currencysymbol') ? ' has-danger' : '' }}">
                                 <label class="form-control-label" for="input-currencysymbol">{{ __('Currency Symbol') }}</label>
                                 <input type="text" name="currencysymbol" id="input-currencysymbol" class="form-control{{ $errors->has('currencysymbol') ? ' is-invalid' : '' }}" placeholder="{{ __('£') }}" value="{{ old('currencysymbol') }}" autofocus>
