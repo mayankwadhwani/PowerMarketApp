@@ -14,15 +14,19 @@
 {{-- <li class="breadcrumb-item active" aria-current="page">{{ __('Default') }}</li> --}}
 @endcomponent
 @endcomponent
+<<<<<<< Updated upstream
 <?php 
 $remd = request()->segment(count(request()->segments()));
 ?>
+=======
+>>>>>>> Stashed changes
 <style type="text/css">
 .mapboxgl-popup-close-button {outline: 0 !important;}
 span.text-nowrap.zero-solar-span {
     position: relative;
     top: -7px;
 }
+<<<<<<< Updated upstream
 button#reset-btn {
     position: absolute;
     right: 0;
@@ -46,6 +50,27 @@ div#calculated-area {
     float: left;
 }
 
+=======
+
+span.text-nowrap.active-solar {
+    position: relative;
+    top: -7px;
+}
+div#calculated-area {
+    padding-top: 4px;
+}
+#calculated-area-container{
+  display: none;
+}
+label[for="layer-years-0"] {
+    display: none !important;
+}
+div#calculated-area {
+    width: 50%;
+    float: left;
+}
+
+>>>>>>> Stashed changes
 .create-new-pp {
     width: 50%;
     float: left;
@@ -338,21 +363,33 @@ div#calculated-area {
   </div>
   <div class="row">
 
+<<<<<<< Updated upstream
     <div class="col text-left" style="margin-bottom: 10px;" id="active_sites_data_wrp">
+=======
+    <div class="col text-left" style="margin-bottom: 10px;">
+>>>>>>> Stashed changes
       <span class="text-nowrap active-solar" style="font-size: .75rem; margin-right: .5rem;">Show active solar sites &nbsp;</span>
       <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
         <input id="checkExisting" type="checkbox">
         <span class="custom-toggle-slider rounded-circle" style=""></span>
       </label>
     </div>
+<<<<<<< Updated upstream
     <div class="col text-left" style="margin-bottom: 10px;" id="zero_solar_data_wrp">
+=======
+    <div class="col text-left" style="margin-bottom: 10px;">
+>>>>>>> Stashed changes
       <span class="text-nowrap zero-solar-span" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">0 Solar Data &nbsp;</span>
       <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
         <input id="zeroSolarData" type="checkbox">
         <span class="custom-toggle-slider rounded-circle" style=""></span>
       </label>
     </div>
+<<<<<<< Updated upstream
 
+=======
+    
+>>>>>>> Stashed changes
 
     <div class="col text-right" style="margin-bottom: 10px;">
       <span class="text-nowrap" style="font-size: .75rem; margin-right: .5rem;">
@@ -431,7 +468,11 @@ div#calculated-area {
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Captive Use." /></label>
+<<<<<<< Updated upstream
                 <input type="number" step="any" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="<?php echo $orgdata['captiveuse']; ?>" value="{{ $prev_inputs['captive_use'] }}">
+=======
+                <input type="number" step="any" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="80" value="{{ $prev_inputs['captive_use']*100 }}">
+>>>>>>> Stashed changes
                 @include('alerts.feedback', ['field' => 'captive_use'])
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
@@ -485,7 +526,11 @@ div#calculated-area {
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Captive use." /></label>
+<<<<<<< Updated upstream
                     <input type="number" step="any" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="<?php echo $orgdata['captiveuse']; ?>" value="{{ $prev_inputs['captive_use'] }}">
+=======
+                    <input type="number" step="any" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="80" value="{{ $prev_inputs['captive_use']*100 }}">
+>>>>>>> Stashed changes
                     @include('alerts.feedback', ['field' => 'captive_use'])
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
@@ -509,12 +554,21 @@ div#calculated-area {
                   </div>
                   <div class="col-sm-2 text-left">
                     <button type="submit" class="btn btn-default my-4 my-2-2">Run</button>
+<<<<<<< Updated upstream
                   </div>
 
                   <div class="col-sm-2 text-left">
                     <a href="#" class="btn btn-default my-4 my-2-2" data-toggle="modal" data-target="#modal-form" aria-haspopup="true" aria-expanded="false">Save as new project</a>
                   </div>
 
+=======
+                  </div>
+
+                  <div class="col-sm-2 text-left">
+                    <a href="#" class="btn btn-default my-4 my-2-2" data-toggle="modal" data-target="#modal-form" aria-haspopup="true" aria-expanded="false">Save as new project</a>
+                  </div>
+
+>>>>>>> Stashed changes
 
                   <div class="col-sm-2 offset-sm-8 text-right">
                     <button id="reset-btn" name="reset" value="reset" class="btn btn-default-outline my-4">Reset</button>
@@ -569,6 +623,10 @@ div#calculated-area {
 
         var finance = new Finance();
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         $(document).ready(function(){
            $("input[name='captive_use']").change(function() {
             number = $("input[name='captive_use']").val()
@@ -647,11 +705,24 @@ div#calculated-area {
         var annual_commercial_electric_price_increase = 1.05;
         var annual_domestic_electric_price_increase = 1.03;
         var wacc = 0.05;
+<<<<<<< Updated upstream
         var showactivesites = 0;
         var irrfinal = 0;
         var sys_cost_5kw = 1200;
         var totalshowingval  = 0;
+=======
+        var irrfinal = 0;
+
+        
+        @php 
+          echo "var sys_cost_5kw = ".$prev_inputs['cost_of_small_system']/$prev_inputs['system_size_kwp'];
+        @endphp
+
+
+
+>>>>>>> Stashed changes
         function renderMap() {
+
           var jsonString = `{!! $geodata ?? '
           ' !!}`;
           jsonString = jsonString.replace('"Lu Colciu Rocchi"',"'Lu Colciu Rocchi'");
@@ -686,6 +757,7 @@ div#calculated-area {
                 </a>
                 `
               }
+<<<<<<< Updated upstream
 
               var feature = "";
 
@@ -694,10 +766,14 @@ div#calculated-area {
               }
 
 
+=======
+              
+>>>>>>> Stashed changes
               var sys_cap = sys_cost_5kw;
               var electric_price = 0;
 
               if(sys_cap < 10){
+<<<<<<< Updated upstream
                   electric_price = 0.146; //default value is set in controller method
               } else {
                   electric_price = 0.12;  //default value is set in controller method
@@ -705,6 +781,15 @@ div#calculated-area {
 
               var export_tariff = 0.055;
               var captive_use = 80;
+=======
+                  electric_price = "{{ $prev_inputs['domestic_tariff'] }}"; //default value is set in controller method
+              } else {
+                  electric_price = "{{ $prev_inputs['commercial_tariff'] }}";  //default value is set in controller method
+              }
+
+              var export_tariff = "{{ $prev_inputs['export_tariff'] }}";
+              var captive_use = "{{ $prev_inputs['captive_use'] }}";
+>>>>>>> Stashed changes
               var residential_threshold = 10;
 
               var breakeven = -1;
@@ -744,14 +829,20 @@ div#calculated-area {
                       coordinates: dataArray[key].latLon.coordinates
                     }
                   };
+<<<<<<< Updated upstream
                   totalshowingval++;
+=======
+>>>>>>> Stashed changes
               }
               else{
 
 
+<<<<<<< Updated upstream
 
                 sys_cost = dataArray[key].system_cost_GBP;
 
+=======
+>>>>>>> Stashed changes
                   for(var k = 1; k <= panel_lifetime; k++){
                       var tmpv = ag * ep * captive_use + ag * ex * (1 - captive_use); //value of elctricity use + export
                       var dpt = 0;
@@ -777,8 +868,14 @@ div#calculated-area {
 //                  discountedcashflow = discountedcashflow.join();
 
                   var finalirr = finance.IRR(discountedcashflow);
+<<<<<<< Updated upstream
                   finalirr = finalirr/100;
                   finalirr = finalirr.toFixed(2);
+=======
+                  finalirr = finalirr.toFixed(2);
+
+                  
+>>>>>>> Stashed changes
                  feature = {
                     type: "Feature",
                     properties: {
@@ -794,7 +891,11 @@ div#calculated-area {
                       <strong>System Cost:</strong> £ ${numeral(dataArray[key].system_cost_GBP).format('0,0.0a')}<br/>
                       <strong>Lifetime Savings:</strong> £ ${numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')}<br/>
                       <strong>Lifetime CO<sub>2</sub> saving:</strong> ${numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a')} kgs<br/>
+<<<<<<< Updated upstream
                       <strong>IRR: </strong> ${finalirr}%<br/>
+=======
+                      <strong>IRR: </strong> ${finalirr}<br/>
+>>>>>>> Stashed changes
                       </p>
                       <a href="{{ route('page.reporting') }}?geopoint_id=${dataArray[key].id}" class="btn btn-primary"
                       target="_blank">Generate Report</a>
@@ -846,8 +947,13 @@ div#calculated-area {
             $('#co2-card').text(numeral(co2).format('0,0.0a') + " kgs");
             totalCount = dataArray.length;
             selectedCount = totalCount;
+<<<<<<< Updated upstream
             $('#total-count').text(numeral(dataArray.length - totalshowingval).format('0,0'));
             $('#selected-count').text(numeral(dataArray.length - totalshowingval).format('0,0'));
+=======
+            $('#total-count').text(numeral(dataArray.length).format('0,0'));
+            $('#selected-count').text(numeral(dataArray.length).format('0,0'));
+>>>>>>> Stashed changes
             $('.poly-ms').text(numeral(dataArray.length).format('0,0'));
 
 
@@ -882,6 +988,7 @@ div#calculated-area {
                     'layout': {
                       'icon-image': 'marker-icon',
                       'icon-allow-overlap': true,
+<<<<<<< Updated upstream
                       "icon-size": ['interpolate', ['linear'],
                       ['zoom'], 1, 0.5, 10, 1
                     ]
@@ -889,6 +996,16 @@ div#calculated-area {
                   'filter': [
                     "all",
                     ["==", "years", symbol]
+=======
+                      "icon-size": ['interpolate', ['linear'], ['zoom'], 10, 1, 15, 0.5]
+                    
+                  },
+                  'filter': [
+                    "all",
+                    ["==", "years", symbol],
+                    ["!=", "existingSolar", "Y"],
+                    ["!=", "solarData", "Y"]
+>>>>>>> Stashed changes
                   ],
                   'paint': {
                     'icon-color': [
@@ -967,6 +1084,7 @@ div#calculated-area {
                   $('#selected-count').text(numeral(selectedCount).format('0,0'));
                   $('.poly-ms').text(numeral(selectedCount).format('0,0'));
 
+<<<<<<< Updated upstream
 
 
 
@@ -1050,6 +1168,8 @@ div#calculated-area {
 
 
 
+=======
+>>>>>>> Stashed changes
                 });
                 map.on('click', layerID, function(e) {
                   if (e.originalEvent.cancelBubble) {
@@ -1171,12 +1291,19 @@ div#calculated-area {
             map.on('draw.create', updateArea);
             map.on('draw.delete', updateArea);
             map.on('draw.update', updateArea);
+<<<<<<< Updated upstream
 
+=======
+             
+>>>>>>> Stashed changes
             function updateArea(e) {
 
                 $("#calculated-area-container").slideDown();
                 var fttemp = [];
+<<<<<<< Updated upstream
                 var allpolyginptn = [];
+=======
+>>>>>>> Stashed changes
                 var totallength = 0;
 
                 var srchwithin = [];
@@ -1184,6 +1311,7 @@ div#calculated-area {
                 var answer = document.getElementById('calculated-area');
                 if (data.features.length > 0) {
 
+<<<<<<< Updated upstream
 
                 var features_temp = [];
                 var selectecheckboxes = [];
@@ -1215,6 +1343,10 @@ div#calculated-area {
 
 
                 features_temp.forEach(function(feature) {
+=======
+              
+                features.forEach(function(feature) {
+>>>>>>> Stashed changes
                 //  console.log(feature.solarData);
                   if(feature.solarData != 'Y'){
                     fttemp.push(feature.geometry.coordinates);
@@ -1228,12 +1360,17 @@ div#calculated-area {
                 var points = turf.points(fttemp);
 
                 srchwithin.forEach(function(srchin){
+<<<<<<< Updated upstream
 
+=======
+                  
+>>>>>>> Stashed changes
                   var searchWithin = turf.polygon(srchin);
 
                   var ptsWithin = turf.pointsWithinPolygon(points, searchWithin);
 
                   var ftms = ptsWithin.features;
+<<<<<<< Updated upstream
 
 
                   totallength = totallength + ptsWithin.features.length;
@@ -1245,6 +1382,19 @@ div#calculated-area {
                       ftms.forEach(function(featuresingle) {
 
 
+=======
+                 
+
+                  totallength = totallength + ptsWithin.features.length;
+
+                  
+
+                  features.forEach(function(featuremain) {
+                    
+                      ftms.forEach(function(featuresingle) {
+                        
+                        
+>>>>>>> Stashed changes
                               if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
 
                                 console.log(featuremain);
@@ -1254,16 +1404,26 @@ div#calculated-area {
                                   }
                                 }
                               }
+<<<<<<< Updated upstream
 
 
+=======
+                                                  
+                        
+>>>>>>> Stashed changes
                       });
 
                   });
 
 
                 });
+<<<<<<< Updated upstream
 
                 $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + $("#total-count").html() + "</span> sites.");
+=======
+                
+                $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + numeral(dataArray.length).format('0,0') + "</span> sites.");
+>>>>>>> Stashed changes
 
 
                 }
@@ -1272,6 +1432,7 @@ div#calculated-area {
 
 
             $(document).on('change', '[name="zeroSolarData"]', function() {
+<<<<<<< Updated upstream
                 var features_temp = [];
                 var selectecheckboxes = [];
                 var checkbox = $(this), // Selected or current checkbox
@@ -1339,6 +1500,46 @@ div#calculated-area {
 
 
 
+=======
+                var checkbox = $(this), // Selected or current checkbox
+                    value = checkbox.val(); // Value of checkbox
+               layers.forEach(layer => {
+
+                if(layer.type === "symbol" && layer.id !== "cluster-count"){
+                  if (checkbox.is(':checked'))
+                  {
+  
+     
+                    var year = layer.filter[1][2]
+                    var include_existing =["==", "years", year];
+                    map.setFilter(layer.id, include_existing);
+
+
+                  }else
+                  {
+                  var filter_existing =[
+                        "all",
+                        ["==", "years", layer.filter[1][2]],
+                        ["!=", "solarData", "Y"]
+                      ];
+                      map.setFilter(layer.id, filter_existing);
+
+
+         
+
+                  }
+                }
+              });
+            });
+
+
+            map.fitBounds(bounds);
+
+    
+
+
+        
+>>>>>>> Stashed changes
 
 
            // console.log(ptsWithin);
@@ -1402,7 +1603,11 @@ div#calculated-area {
             selectedCount -= 1
             $('#total-count').text(numeral(totalCount).format('0,0'));
             $('#selected-count').text(numeral(selectedCount).format('0,0'));
+<<<<<<< Updated upstream
             $('.poly-ms').text($("#total-count").html());
+=======
+            $('.poly-ms').text(numeral(selectedCount).format('0,0'));
+>>>>>>> Stashed changes
 
             $('#total-sites').text(totalCount)
             map.getSource('places').setData({
@@ -1454,7 +1659,11 @@ div#calculated-area {
         $('#modal-form-polygon').submit(function(event) {
           event.preventDefault();
           var visiblePoints = [];
+<<<<<<< Updated upstream
 
+=======
+  
+>>>>>>> Stashed changes
           var formData = {
             'name': $('input[name=namepoly]').val(),
             '_token': $('input[name=_token]').val(),
@@ -1479,6 +1688,7 @@ div#calculated-area {
           });
         });
 
+<<<<<<< Updated upstream
         if(totalshowingval == 0){
           $("#zero_solar_data_wrp").append('<div class="block-ui-toggle"></div>');
         }
@@ -1490,6 +1700,8 @@ div#calculated-area {
 
         
 
+=======
+>>>>>>> Stashed changes
         $('#newClusterCheck').change(function(event) {
           $('input[name=new_name]').prop('disabled', !event.target.checked)
           $('#cluster-select').prop('disabled', event.target.checked)

@@ -136,6 +136,7 @@ class HomeController extends Controller
         //-----------user input params-------------
         //----laravel blade input seems unable to pass input of type "number" as numeric values----
         //----so manually converting input fields from string to floats in controller, for now-----
+<<<<<<< Updated upstream
         $captive_use = $orgmaindata['captiveuse'];
         if(!empty($request->captive_use)){
             $captive_use = floatval($request->captive_use)/100;
@@ -145,6 +146,13 @@ class HomeController extends Controller
             $export_tariff_tmp = $orgmaindata['export_tariff'];
         }
         $export_tariff = $request->export_tariff ? floatval($request->export_tariff) : $export_tariff_tmp;
+=======
+        $captive_use = 0.8;
+        if(!empty($request->captive_use)){
+            $captive_use = floatval($request->captive_use)/100;
+        }
+        $export_tariff = $request->export_tariff ? floatval($request->export_tariff) : 0.055;
+>>>>>>> Stashed changes
         //$domestic_tariff may have a different value if account is "PPS"
         if($request->domestic_tariff){
             $domestic_tariff = floatval($request->domestic_tariff);
