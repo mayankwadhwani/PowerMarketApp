@@ -14,23 +14,16 @@
 {{-- <li class="breadcrumb-item active" aria-current="page">{{ __('Default') }}</li> --}}
 @endcomponent
 @endcomponent
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<?php 
+<?php
 $remd = request()->segment(count(request()->segments()));
 ?>
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 <style type="text/css">
 .mapboxgl-popup-close-button {outline: 0 !important;}
 span.text-nowrap.zero-solar-span {
     position: relative;
     top: -7px;
 }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
 .block-ui-toggle {
     background: rgb(248 249 254 / 55%);
     position: absolute;
@@ -43,12 +36,7 @@ span.text-nowrap.zero-solar-span {
 div#zero_solar_data_wrp {
     position: relative;
 }
-=======
 
->>>>>>> Stashed changes
-=======
-
->>>>>>> Stashed changes
 span.text-nowrap.active-solar {
     position: relative;
     top: -7px;
@@ -359,29 +347,15 @@ div#calculated-area {
   </div>
 
   <div class="row">
-<<<<<<< Updated upstream
     <div class="col text-left" style="margin-bottom: 10px;" id="active_sites_data_wrp">
-=======
-    <div class="col text-left" style="margin-bottom: 10px;">
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
       <span class="text-nowrap active-solar" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">Show active solar sites &nbsp;</span>
       <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
         <input id="checkExisting" type="checkbox">
         <span class="custom-toggle-slider rounded-circle" style=""></span>
       </label>
     </div>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
     <div class="col text-left" style="margin-bottom: 10px;" id="zero_solar_data_wrp" >
-=======
-    <div class="col text-left" style="margin-bottom: 10px;">
->>>>>>> Stashed changes
-=======
-    <div class="col text-left" style="margin-bottom: 10px;">
->>>>>>> Stashed changes
       <span class="text-nowrap zero-solar-span" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">0 Solar Data &nbsp;</span>
       <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
         <input id="zeroSolarData" name="zeroSolarData" type="checkbox">
@@ -432,15 +406,6 @@ div#calculated-area {
     <div class="card-body">
       <div class="card-inner-body">
         <div id="calculated-area">
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
-=======
-          
->>>>>>> Stashed changes
-=======
-          
->>>>>>> Stashed changes
         </div>
         <div class="create-new-pp">
           <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="modal" data-target="#modal-form-polygon" aria-haspopup="true" aria-expanded="false">
@@ -476,15 +441,7 @@ div#calculated-area {
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Captive use." /></label>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                 <input type="number" step="any" name="captive_use" max="100" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder="<?php if($remd == "Italy") { echo "100"; } else{ echo "80"; } ?>" value="{{ old('captive-use') }}"autofocus>
-=======
-                <input type="number" step="any" name="captive_use" max="100" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder="80" value="{{ old('captive-use') }}"autofocus>
->>>>>>> Stashed changes
-=======
-                <input type="number" step="any" name="captive_use" max="100" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder="80" value="{{ old('captive-use') }}"autofocus>
->>>>>>> Stashed changes
                 @include('alerts.feedback', ['field' => 'captive_use'])
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
@@ -540,15 +497,7 @@ div#calculated-area {
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }}<img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Here you can modify your projected captive use, as a percentage." /></label>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                     <input type="number" step="any" name="captive_use" max="100" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder='<?php if($remd == "Italy") { echo "100"; } else{ echo "80"; } ?>' value="{{ old('captive-use') }}"autofocus>
-=======
-                    <input type="number" step="any" name="captive_use" max="100" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder='{{ __("80") }}' value="{{ old('captive-use') }}"autofocus>
->>>>>>> Stashed changes
-=======
-                    <input type="number" step="any" name="captive_use" max="100" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder='{{ __("80") }}' value="{{ old('captive-use') }}"autofocus>
->>>>>>> Stashed changes
                     @include('alerts.feedback', ['field' => 'captive_use'])
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
@@ -704,22 +653,13 @@ div#calculated-area {
         var annual_commercial_electric_price_increase = 1.05;
         var annual_domestic_electric_price_increase = 1.03;
         var wacc = 0.05;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
         var showactivesites = 0;
         var irrfinal = 0;
         var sys_cost_5kw = 1200;
         var totalshowingval  = 0;
-=======
-        var irrfinal = 0;  
+        var irrfinal = 0;
         var sys_cost_5kw = 1200;
 
->>>>>>> Stashed changes
-=======
-        var irrfinal = 0;  
-        var sys_cost_5kw = 1200;
-
->>>>>>> Stashed changes
         function renderMap() {
           var jsonString = `{!! $geodata ?? '
           ' !!}`;
@@ -755,8 +695,6 @@ div#calculated-area {
                 </a>
                 `
               }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 
               var feature = "";
 
@@ -764,16 +702,7 @@ div#calculated-area {
                 showactivesites++;
               }
 
-=======
-              
               var feature = "";
-
->>>>>>> Stashed changes
-=======
-              
-              var feature = "";
-
->>>>>>> Stashed changes
 
               var sys_cap = sys_cost_5kw;
               var electric_price = 0;
@@ -825,24 +754,11 @@ div#calculated-area {
                       coordinates: dataArray[key].latLon.coordinates
                     }
                   };
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
                   totalshowingval++;
               }
               else{
 
-
-
-=======
-              }
-              else{
-
->>>>>>> Stashed changes
-=======
-              }
-              else{
-
->>>>>>> Stashed changes
                 sys_cost = dataArray[key].system_cost_GBP;
 
                   for(var k = 1; k <= panel_lifetime; k++){
@@ -870,13 +786,7 @@ div#calculated-area {
 //                  discountedcashflow = discountedcashflow.join();
 
                   var finalirr = finance.IRR(discountedcashflow);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                   finalirr = finalirr/100;
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
                   finalirr = finalirr.toFixed(2);
                  feature = {
                     type: "Feature",
@@ -893,15 +803,7 @@ div#calculated-area {
                       <strong>System Cost:</strong> £ ${numeral(dataArray[key].system_cost_GBP).format('0,0.0a')}<br/>
                       <strong>Lifetime Savings:</strong> £ ${numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')}<br/>
                       <strong>Lifetime CO<sub>2</sub> saving:</strong> ${numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a')} kgs<br/>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                       <strong>IRR: </strong> ${finalirr}%<br/>
-=======
-                      <strong>IRR: </strong> ${finalirr}<br/>
->>>>>>> Stashed changes
-=======
-                      <strong>IRR: </strong> ${finalirr}<br/>
->>>>>>> Stashed changes
                       </p>
                       <a href="{{ route('page.reporting') }}?geopoint_id=${dataArray[key].id}" class="btn btn-primary"
                       target="_blank">Generate Report</a>
@@ -953,16 +855,12 @@ div#calculated-area {
             $('#co2-card').text(numeral(co2).format('0,0.0a') + " kgs");
             totalCount = dataArray.length;
             selectedCount = totalCount;
-<<<<<<< Updated upstream
+
             $('#total-count').text(numeral(dataArray.length - totalshowingval).format('0,0'));
             $('#selected-count').text(numeral(dataArray.length - totalshowingval).format('0,0'));
-=======
-            $('#total-count').text(numeral(dataArray.length).format('0,0'));
-            $('#selected-count').text(numeral(dataArray.length).format('0,0'));
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+           // $('#total-count').text(numeral(dataArray.length).format('0,0'));
+           // $('#selected-count').text(numeral(dataArray.length).format('0,0'));
+
             $('.poly-ms').text(numeral(dataArray.length).format('0,0'));
 
 
@@ -1003,16 +901,12 @@ div#calculated-area {
                   },
                   'filter': [
                     "all",
-<<<<<<< Updated upstream
                     ["==", "years", symbol]
-=======
-                    ["==", "years", symbol],
-                    ["!=", "existingSolar", "Y"],
-                    ["!=", "solarData", "Y"]
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+
+                    // ["==", "years", symbol],
+                    // ["!=", "existingSolar", "Y"],
+                    // ["!=", "solarData", "Y"]
+
                   ],
                   'paint': {
                     'icon-color': [
@@ -1052,8 +946,8 @@ div#calculated-area {
                   $("#filter-group input:checkbox:checked").each(function(){
                       var slchec = $(this).attr("id");
                       var templayersl = slchec.split("layer-years-");
-                      var yeartempsl = templayersl[1];   
-                      yeartempsl = parseInt(yeartempsl);                   
+                      var yeartempsl = templayersl[1];
+                      yeartempsl = parseInt(yeartempsl);
                       selectecheckboxes.push(yeartempsl);
                   });
 
@@ -1068,7 +962,7 @@ div#calculated-area {
                           features_temp.push(feature);
                         }
                       }
-                      
+
                     }
                   });
 
@@ -1091,13 +985,6 @@ div#calculated-area {
                   $('#selected-count').text(numeral(selectedCount).format('0,0'));
                   $('.poly-ms').text(numeral(selectedCount).format('0,0'));
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
-
-
-
-
                 $("#calculated-area-container").slideDown();
                 var fttemp = [];
                 var totallength = 0;
@@ -1107,7 +994,7 @@ div#calculated-area {
 
                 var data = draw.getAll();
 
-                console.log(features_temp);
+                //console.log(features_temp);
 
 
                 var answer = document.getElementById('calculated-area');
@@ -1141,7 +1028,7 @@ div#calculated-area {
                   totallength = totallength + ptsWithin.features.length;
 
 
-                  console.log('data22');
+                  //console.log('data22');
 
                   features_temp.forEach(function(featuremain) {
 
@@ -1166,20 +1053,14 @@ div#calculated-area {
 
                 });
 
-                console.log("All polygon--");
-                console.log(allpolyginptn);
+                //console.log("All polygon--");
+                //console.log(allpolyginptn);
 
                 $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + $("#total-count").html() + "</span> sites.");
 
 
                 }
 
-
-
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
                 });
                 map.on('click', layerID, function(e) {
                   if (e.originalEvent.cancelBubble) {
@@ -1301,35 +1182,20 @@ div#calculated-area {
             map.on('draw.create', updateArea);
             map.on('draw.delete', updateArea);
             map.on('draw.update', updateArea);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 
-=======
-             
->>>>>>> Stashed changes
-=======
-             
->>>>>>> Stashed changes
             function updateArea(e) {
 
                 $("#calculated-area-container").slideDown();
                 var fttemp = [];
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
                 var allpolyginptn = [];
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+
                 var totallength = 0;
 
                 var srchwithin = [];
                 var data = draw.getAll();
                 var answer = document.getElementById('calculated-area');
                 if (data.features.length > 0) {
-
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 
                 var features_temp = [];
                 var selectecheckboxes = [];
@@ -1339,8 +1205,8 @@ div#calculated-area {
                 $("#filter-group input:checkbox:checked").each(function(){
                     var slchec = $(this).attr("id");
                     var templayersl = slchec.split("layer-years-");
-                    var yeartempsl = templayersl[1];   
-                    yeartempsl = parseInt(yeartempsl);                   
+                    var yeartempsl = templayersl[1];
+                    yeartempsl = parseInt(yeartempsl);
                     selectecheckboxes.push(yeartempsl);
                 });
 
@@ -1355,20 +1221,12 @@ div#calculated-area {
                         features_temp.push(feature);
                       }
                     }
-                    
+
                   }
                 });
 
-
                 features_temp.forEach(function(feature) {
-=======
-              
-                features.forEach(function(feature) {
->>>>>>> Stashed changes
-=======
-              
-                features.forEach(function(feature) {
->>>>>>> Stashed changes
+
                 //  console.log(feature.solarData);
                   if(feature.solarData != 'Y'){
                     fttemp.push(feature.geometry.coordinates);
@@ -1382,91 +1240,38 @@ div#calculated-area {
                 var points = turf.points(fttemp);
 
                 srchwithin.forEach(function(srchin){
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 
-=======
-                  
->>>>>>> Stashed changes
-=======
-                  
->>>>>>> Stashed changes
                   var searchWithin = turf.polygon(srchin);
 
                   var ptsWithin = turf.pointsWithinPolygon(points, searchWithin);
 
                   var ftms = ptsWithin.features;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
 
                   totallength = totallength + ptsWithin.features.length;
-
-
 
                   features_temp.forEach(function(featuremain) {
 
                       ftms.forEach(function(featuresingle) {
 
-
-=======
-=======
->>>>>>> Stashed changes
-                 
-
-                  totallength = totallength + ptsWithin.features.length;
-
-                  
-
-                  features.forEach(function(featuremain) {
-                    
-                      ftms.forEach(function(featuresingle) {
-                        
-                        
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
                               if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
 
-                                console.log(featuremain);
+                                //console.log(featuremain);
                                 if(featuremain.properties.solarData != 'Y'){
                                   if(!allpolyginptn.includes(featuremain.properties.id)){
                                     allpolyginptn.push(featuremain.properties.id);
                                   }
                                 }
                               }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 
-
-=======
-                                                  
-                        
->>>>>>> Stashed changes
-=======
-                                                  
-                        
->>>>>>> Stashed changes
                       });
 
                   });
 
 
                 });
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 
                 $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + $("#total-count").html() + "</span> sites.");
-=======
-                
-                $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + numeral(dataArray.length).format('0,0') + "</span> sites.");
->>>>>>> Stashed changes
-=======
-                
-                $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + numeral(dataArray.length).format('0,0') + "</span> sites.");
->>>>>>> Stashed changes
-
+                //$("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + numeral(dataArray.length).format('0,0') + "</span> sites.");
 
                 }
 
@@ -1474,8 +1279,7 @@ div#calculated-area {
 
 
             $(document).on('change', '[name="zeroSolarData"]', function() {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
                 var features_temp = [];
                 var selectecheckboxes = [];
                 var checkbox = $(this), // Selected or current checkbox
@@ -1484,8 +1288,8 @@ div#calculated-area {
                   $("#filter-group input:checkbox:checked").each(function(){
                       var slchec = $(this).attr("id");
                       var templayersl = slchec.split("layer-years-");
-                      var yeartempsl = templayersl[1];   
-                      yeartempsl = parseInt(yeartempsl);                   
+                      var yeartempsl = templayersl[1];
+                      yeartempsl = parseInt(yeartempsl);
                       selectecheckboxes.push(yeartempsl);
                   });
 
@@ -1504,7 +1308,7 @@ div#calculated-area {
                       'type': 'FeatureCollection',
                       'features': features_temp
                     });
-                    
+
                     $('#total-count').text(numeral(dataArray.length).format('0,0'));
                     $('#selected-count').text(numeral(dataArray.length).format('0,0'));
                     $('.poly-ms').text($("#total-count").html());
@@ -1543,85 +1347,39 @@ div#calculated-area {
 
 
 
-=======
-                var checkbox = $(this), // Selected or current checkbox
-                    value = checkbox.val(); // Value of checkbox
-               layers.forEach(layer => {
-
-                if(layer.type === "symbol" && layer.id !== "cluster-count"){
-                  if (checkbox.is(':checked'))
-                  {
-  
-     
-                    var year = layer.filter[1][2]
-                    var include_existing =["==", "years", year];
-                    map.setFilter(layer.id, include_existing);
-
-
-                  }else
-                  {
-                  var filter_existing =[
-                        "all",
-                        ["==", "years", layer.filter[1][2]],
-                        ["!=", "solarData", "Y"]
-                      ];
-                      map.setFilter(layer.id, filter_existing);
-
-
-         
-
-                  }
-                }
-              });
-            });
-
-
-            map.fitBounds(bounds);
-
-=======
-                var checkbox = $(this), // Selected or current checkbox
-                    value = checkbox.val(); // Value of checkbox
-               layers.forEach(layer => {
-
-                if(layer.type === "symbol" && layer.id !== "cluster-count"){
-                  if (checkbox.is(':checked'))
-                  {
-  
-     
-                    var year = layer.filter[1][2]
-                    var include_existing =["==", "years", year];
-                    map.setFilter(layer.id, include_existing);
-
-
-                  }else
-                  {
-                  var filter_existing =[
-                        "all",
-                        ["==", "years", layer.filter[1][2]],
-                        ["!=", "solarData", "Y"]
-                      ];
-                      map.setFilter(layer.id, filter_existing);
-
-
-         
-
-                  }
-                }
-              });
-            });
-
-
-            map.fitBounds(bounds);
-
->>>>>>> Stashed changes
-    
-
-
-        
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+            //     var checkbox = $(this), // Selected or current checkbox
+            //         value = checkbox.val(); // Value of checkbox
+            //    layers.forEach(layer => {
+            //
+            //     if(layer.type === "symbol" && layer.id !== "cluster-count"){
+            //       if (checkbox.is(':checked'))
+            //       {
+            //
+            //
+            //         var year = layer.filter[1][2]
+            //         var include_existing =["==", "years", year];
+            //         map.setFilter(layer.id, include_existing);
+            //
+            //
+            //       }else
+            //       {
+            //       var filter_existing =[
+            //             "all",
+            //             ["==", "years", layer.filter[1][2]],
+            //             ["!=", "solarData", "Y"]
+            //           ];
+            //           map.setFilter(layer.id, filter_existing);
+            //
+            //
+            //
+            //
+            //       }
+            //     }
+            //   });
+            // });
+            //
+            //
+            // map.fitBounds(bounds);
 
 
            // console.log(ptsWithin);
@@ -1630,9 +1388,6 @@ div#calculated-area {
           });
         });
       }
-
-
-
 
 
       function getClusters() {
@@ -1685,15 +1440,9 @@ div#calculated-area {
             selectedCount -= 1
             $('#total-count').text(numeral(totalCount).format('0,0'));
             $('#selected-count').text(numeral(selectedCount).format('0,0'));
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
             $('.poly-ms').text($("#total-count").html());
-=======
-            $('.poly-ms').text(numeral(selectedCount).format('0,0'));
->>>>>>> Stashed changes
-=======
-            $('.poly-ms').text(numeral(selectedCount).format('0,0'));
->>>>>>> Stashed changes
+            //$('.poly-ms').text(numeral(selectedCount).format('0,0'));
 
             $('#total-sites').text(totalCount)
             map.getSource('places').setData({
@@ -1745,8 +1494,8 @@ div#calculated-area {
         $('#modal-form-polygon').submit(function(event) {
           event.preventDefault();
           var visiblePoints = [];
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
+
           $("#calculated-area-container").slideDown();
           var fttemp = [];
           var allpolyginptn = [];
@@ -1766,8 +1515,8 @@ div#calculated-area {
           $("#filter-group input:checkbox:checked").each(function(){
               var slchec = $(this).attr("id");
               var templayersl = slchec.split("layer-years-");
-              var yeartempsl = templayersl[1];   
-              yeartempsl = parseInt(yeartempsl);                   
+              var yeartempsl = templayersl[1];
+              yeartempsl = parseInt(yeartempsl);
               selectecheckboxes.push(yeartempsl);
           });
 
@@ -1782,7 +1531,7 @@ div#calculated-area {
                   features_temp.push(feature);
                 }
               }
-              
+
             }
           });
 
@@ -1820,7 +1569,7 @@ div#calculated-area {
 
                         if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
 
-                          console.log(featuremain);
+                          //console.log(featuremain);
                           if(featuremain.properties.solarData != 'Y'){
                             if(!allpolyginptn.includes(featuremain.properties.id)){
                               allpolyginptn.push(featuremain.properties.id);
@@ -1839,13 +1588,6 @@ div#calculated-area {
 
           }
 
-
-=======
-  
->>>>>>> Stashed changes
-=======
-  
->>>>>>> Stashed changes
           var formData = {
             'name': $('input[name=namepoly]').val(),
             '_token': $('input[name=_token]').val(),
@@ -1870,8 +1612,6 @@ div#calculated-area {
           });
         });
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
         if(totalshowingval == 0){
           $("#zero_solar_data_wrp").append('<div class="block-ui-toggle"></div>');
         }
@@ -1880,13 +1620,6 @@ div#calculated-area {
           $("#active_sites_data_wrp").append('<div class="block-ui-toggle"></div>');
         }
 
-
-        
-
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         $('#newClusterCheck').change(function(event) {
           $('input[name=new_name]').prop('disabled', !event.target.checked)
           $('#cluster-select').prop('disabled', event.target.checked)
