@@ -58,7 +58,7 @@
                       <div class="row">
                         <div class="col">
                           <h5 class="card-title text-muted mb-0">Total System Cost</h5>
-                          <span class="h2 font-weight-bold mb-0" id="savings-card">&#163;{{ isset($cost) ? number_format($cost) : ''}}</span>
+                          <span class="h2 font-weight-bold mb-0" id="savings-card">{{ $orgdata['currencysymbol'] }}{{ isset($cost) ? number_format($cost) : ''}}</span>
                         </div>
                         <div class="col-auto">
                           <div class="row">
@@ -77,7 +77,7 @@
                       <div class="row">
                         <div class="col">
                           <h5 class="card-title text-muted mb-0">Total Lifetime Savings</h5>
-                          <span class="h2 font-weight-bold mb-0">&#163;{{ isset($savings) ? number_format($savings) : ''}}</span>
+                          <span class="h2 font-weight-bold mb-0">{{ $orgdata['currencysymbol'] }}{{ isset($savings) ? number_format($savings) : ''}}</span>
                         </div>
                         <div class="col-auto">
                           <div class="row">
@@ -116,7 +116,7 @@
                     <!-- Card header -->
                     <div class="card-header">
                       <!-- Title -->
-                      <h5 class="h3 mb-0">Monthly Savings (£)</h5>
+                      <h5 class="h3 mb-0">Monthly Savings ({{ $orgdata['currencysymbol'] }})</h5>
                     </div>
                     <!-- Card body -->
                     <div class="card-body">
@@ -297,10 +297,10 @@
                         <tr>
                           <th>Id</th>
                           <th>System Size (kWp)</th>
-                          <th>System Cost (£)</th>
+                          <th>System Cost ({{ $orgdata['currencysymbol'] }})</th>
                           <th>Annual Generation (kWh)</th>
-                          <th>Annual Savings (£)</th>
-                          <th>Lifetime Savings (£) </th>
+                          <th>Annual Savings ({{ $orgdata['currencysymbol'] }})</th>
+                          <th>Lifetime Savings ({{ $orgdata['currencysymbol'] }}) </th>
                           <th>Breakeven (Years)</th>
                           <th>ROI (%)</th>
                           <th>Annual CO<sub>2</sub> Savings (kgs)</th>
