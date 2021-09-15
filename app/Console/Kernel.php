@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
         //fix geocoding errors
         $schedule->call(function () {
             //regions that need fixing
-            $region_ids = [];
+            $region_ids = [12, 13];
 
             $geopoints = Geopoint::whereIn('region_id', $region_ids)->get();
             $key = config('services.google_maps.key');

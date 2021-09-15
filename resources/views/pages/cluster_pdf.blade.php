@@ -309,6 +309,7 @@
                                                             <th>Lifetime Savings (£) </th>
                                                             <th>Breakeven (Years)</th>
                                                             <th>ROI (%)</th>
+                                                            <th>IRR (%)</th>
                                                             <th>Annual CO<sub>2</sub> Savings (kgs)</th>
                                                             <th>Lifetime CO<sub>2</sub> Savings (kgs) </th>
                                                             <!-- <th>Address</th> -->

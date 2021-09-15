@@ -31,6 +31,8 @@ class Geopoint extends Model
         'monthly_gen_export_value_GBP',
         'monthly_gen_saving_value_GBP',
         'existingsolar',
+        'irr_simple_percent',
+        'irr_discounted_percent',
         'yearly_gen_captive_kWh',
         'yearly_gen_export_kWh',
         'monthly_gen_captive_kWh',

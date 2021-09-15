@@ -218,52 +218,7 @@
         </div>
         @endforeach
     </div>
-    @foreach($accounts as $account)
-    <div class="row pt-5" id="account-{{ $account->id }}" style="display: none; margin-right: 15px; margin-left: 15px;">
-        <div class="col-12 pb-4">
-            <p class="h2">Data Sets</p>
-        </div>
-        @foreach($account->regions as $region)
-        <div class="col-lg-4 col-sm-6 col-12">
-            <div class="card region" id="{{ $region->id }}">
-                <!-- Card header -->
-                <div class="card-header">
-                    <!-- Title -->
-                    <h5 class="h3 mb-0 account-header">{{ $region->name }}</h5>
-                    <a href="/dashboard/{{ $account->name }}/{{ $region->name }}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black" style="width:20px" data-toggle="tooltip" data-placement="top" title="Explore Map"></a>
-                </div>
-                <!-- Card body -->
-                <div class="card-body" style="height:300px;">
-                    <div id="map-region-{{ $region->id }}" class="map-border" style="height: 250px;"></div>
-                </div>
-                <script>
-                    mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
-                    var lat = '{!! $region->lat ?? '
-                    ' !!}';
-                    var lon = '{!! $region->lon ?? '
-                    ' !!}';
-                    var id = '{!! $region->id ?? '
-                    ' !!}';
-                    var map = new mapboxgl.Map({
-                        container: 'map-region-' + id,
-                        style: 'mapbox://styles/mapbox/satellite-streets-v11',
-                        bearing: -17.6,
-                        antialias: true,
-                        zoom: 10,
-                        center: [lon, lat],
-                        attributionControl: false
-                    });
-                    var marker = new mapboxgl.Marker({
-                            color: '#F6A22B'
-                        })
-                        .setLngLat([lon, lat])
-                        .addTo(map);
-                </script>
-            </div>
-        </div>
-        @endforeach
-    </div>
-    @endforeach
+
     @if(!auth()->user()->isMember())
     <div class="row pt-5" style="margin-right: 15px; margin-left: 15px;" id="cluster-row">
         <div class="col-12 pb-4">

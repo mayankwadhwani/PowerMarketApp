@@ -70,11 +70,19 @@ class HomeController extends Controller
             $account = $user->accounts()->where('name', $account_name)->first();
             if ($account == null) return abort(404);
         }
+
         $region_ids = $account->regions()->pluck('id')->toArray();
+
+        if (($key = array_search(30, $region_ids)) !== false) {
+            unset($region_ids[$key]);
+        }
+
+
         $geopoints = Geopoint::whereIn('region_id', $region_ids)->get();
         return view('pages.dashboard', [
             'geodata' => $geopoints,
-            'account' => $account_name
+            'account' => $account_name,
+            'orgdata' => $user->organization->toArray()
         ]);
     }
     public function region($account_name, $region_name)
@@ -99,6 +107,7 @@ class HomeController extends Controller
         $geopoints = Geopoint::where('region_id', $region->id)->get();
         return view('pages.dashboard', [
             'geodata' => $geopoints,
+            'orgdata' => $user->organization->toArray(),
             'account' => $account_name,
             'region' => $region_name
         ]);
@@ -106,6 +115,10 @@ class HomeController extends Controller
 
     public function region_pro(Request $request){
         $account_name = $request->account;
+        $user = auth()->user();
+
+        $orgmaindata = $user->organization->toArray();
+
         $account = Account::where('name', $account_name)->first();
         $region_name = $request->region;
         //region may or may not be passed through the request:
@@ -123,29 +136,36 @@ class HomeController extends Controller
         //-----------user input params-------------
         //----laravel blade input seems unable to pass input of type "number" as numeric values----
         //----so manually converting input fields from string to floats in controller, for now-----
-        $captive_use = 0.8;
+        $captive_use = $orgmaindata['captiveuse'];
         if(!empty($request->captive_use)){
             $captive_use = floatval($request->captive_use)/100;
         }
-        $export_tariff = $request->export_tariff ? floatval($request->export_tariff) : 0.055;
+        $export_tariff_tmp = 0;
+        if(!empty($orgmaindata['export_tariff'])){
+            $export_tariff_tmp = $orgmaindata['export_tariff'];
+        }
+        $export_tariff = $request->export_tariff ? floatval($request->export_tariff) : $export_tariff_tmp;
         //$domestic_tariff may have a different value if account is "PPS"
         if($request->domestic_tariff){
             $domestic_tariff = floatval($request->domestic_tariff);
         } else{
-            if($account_name == "Gloucestershire | PPS"){
-                $domestic_tariff = 0.095;
-            }else{
-                $domestic_tariff = 0.146;
-            }
+            $domestic_tariff = $orgmaindata['residentialtariff'];
         }
-        $commercial_tariff = $request->commercial_tariff ? floatval($request->commercial_tariff) : 0.12;
+
+        $commercial_tariff_tmp = 0;
+        if(!empty($orgmaindata['commercial_tariff'])){
+            $commercial_tariff_tmp = $orgmaindata['commercial_tariff'];
+        }
+
+
+        $commercial_tariff = $request->commercial_tariff ? floatval($request->commercial_tariff) : $commercial_tariff_tmp;
         $cost_of_small_system = $request->cost_of_small_system ? floatval($request->cost_of_small_system) : 6000;
         $system_size_kwp = $request->system_size_kwp ? floatval($request->system_size_kwp) : 5;
         $test_geopoint = $geopoints->where("id", 19483);
-        $pro_geopoints = pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, $geopoints);
+        $pro_geopoints = pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp , $geopoints);
         //dd($geopoints->where('id', 17499));
         $prev_inputs = [
-            "captive_use" => $captive_use,
+            "captive_use" => $request->captive_use,
             "export_tariff" => $export_tariff,
             "domestic_tariff" => $domestic_tariff,
             "commercial_tariff" => $commercial_tariff,
@@ -155,6 +175,7 @@ class HomeController extends Controller
         return view('pages.dashboard-pro', [
             'geodata' => $pro_geopoints,
             'account' => $account_name,
+            'orgdata' => $user->organization->toArray(),
             'region' => $region_name,
             'cluster' => "",
             "captive_use" => $captive_use,
@@ -177,7 +198,7 @@ class HomeController extends Controller
             }
         }
 
-        $currentDBParams = $this->getClusterParams($cluster);
+       // $currentDBParams = $this->getClusterParams($cluster);
 
         $geopoints = $cluster->geopoints;
         if($geopoints == null) return abort(404);
@@ -217,16 +238,28 @@ class HomeController extends Controller
             'cluster' => $cluster->name,
             'region'=>'',
             'account' => '',
+            'orgdata' => $user->organization->toArray(),
             "captive_use" => $captive_use,
             "export_tariff" => $export_tariff,
             "prev_inputs" => $prev_inputs,
-            "test_geopoint" => $test_geopoint,
-            'currentDBParams' => $currentDBParams
+            "test_geopoint" => $test_geopoint
         ]);
     }
 
     private function getClusterParams($cluster){
         $firstPoint = $cluster->geopoints->first();
+     //   print_r($firstPoint);
+
+        $currentParams = [
+            "captive_use" => 0,
+            "export_tariff" => $firstPoint->pivot->export_tariff,
+            "domestic_tariff" => $firstPoint->pivot->domestic_tariff,
+            "commercial_tariff" => 0,
+            "cost_of_small_system" => 0,
+            "system_size_kwp" => 0
+        ];
+
+        /*
         $currentParams = [
             "captive_use" => $firstPoint->pivot->captive_use,
             "export_tariff" => $firstPoint->pivot->export_tariff,
@@ -235,6 +268,7 @@ class HomeController extends Controller
             "cost_of_small_system" => $firstPoint->pivot -> system_cost,
             "system_size_kwp" => $firstPoint->pivot->system_size
         ];
+        */
         return $currentParams;
     }
 
@@ -247,30 +281,14 @@ class HomeController extends Controller
                 return abort(404);
             }
         }
-
-        $currentDBParams = $this->getClusterParams($cluster);
+        
+     //   $currentDBParams = $this->getClusterParams($cluster);
 
         $geopoints = $cluster->geopoints;
-
-        $pro_geopoints = [];
-        //call pro calc to calculate each geopoint based on the custom params
-        foreach($geopoints as $geopoint){
-            $captive_use = $geopoint->pivot->captive_use;
-            $export_tariff = $geopoint->pivot->export_tariff;
-            $domestic_tariff = $geopoint->pivot->domestic_tariff;
-            $commercial_tariff = $geopoint -> pivot -> commercial_tariff;
-            $cost_of_small_system = $geopoint->pivot -> system_cost;
-            $system_size_kwp = $geopoint->pivot->system_size;
-            $pro_geopoint = pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, [$geopoint]);
-            //dd($pro_geopoint);
-            //dd(array_values($pro_geopoint)[0]);
-            array_push($pro_geopoints, array_values($pro_geopoint)[0]);
-        };
-
         return view('pages.dashboard', [
-        'geodata' => collect($pro_geopoints),
+        'geodata' => $geopoints,
         'cluster' => $cluster->name,
-        'currentDBParams' => $currentDBParams
+        'orgdata' => $user->organization->toArray(),
         ]);
 
 

@@ -14,13 +14,27 @@
 {{-- <li class="breadcrumb-item active" aria-current="page">{{ __('Default') }}</li> --}}
 @endcomponent
 @endcomponent
+<?php 
+$remd = request()->segment(count(request()->segments()));
+?>
 <style type="text/css">
 .mapboxgl-popup-close-button {outline: 0 !important;}
 span.text-nowrap.zero-solar-span {
     position: relative;
     top: -7px;
 }
+.block-ui-toggle {
+    background: rgb(248 249 254 / 55%);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
 
+div#zero_solar_data_wrp {
+    position: relative;
+}
 span.text-nowrap.active-solar {
     position: relative;
     top: -7px;
@@ -331,14 +345,14 @@ div#calculated-area {
   </div>
 
   <div class="row">
-    <div class="col text-left" style="margin-bottom: 10px;">
+    <div class="col text-left" style="margin-bottom: 10px;" id="active_sites_data_wrp">
       <span class="text-nowrap active-solar" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">Show active solar sites &nbsp;</span>
       <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
         <input id="checkExisting" type="checkbox">
         <span class="custom-toggle-slider rounded-circle" style=""></span>
       </label>
     </div>
-    <div class="col text-left" style="margin-bottom: 10px;">
+    <div class="col text-left" style="margin-bottom: 10px;" id="zero_solar_data_wrp" >
       <span class="text-nowrap zero-solar-span" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">0 Solar Data &nbsp;</span>
       <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
         <input id="zeroSolarData" name="zeroSolarData" type="checkbox">
@@ -414,37 +428,37 @@ div#calculated-area {
             <div class="input-group" id="input-system-cost-per-kwp">
               {{-- <div class="form-group{{ $errors->has('cost_of_small_system') ? ' has-danger' : '' }}"> --}}
                 {{-- <label class="form-control-label" for="input-cost-of-small-system">{{ __('cost_of_small_system') }}</label> --}}
-                <input type="number" step="any" class="form-control" name="cost_of_small_system" id="input-cost-of-small-system" class="form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['cost_of_small_system'] }}" value="{{ old('cost_of_small_system') }}">
+                <input type="number" step="any" class="form-control" name="cost_of_small_system" id="input-cost-of-small-system" class="form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}" placeholder="" value="{{ old('cost_of_small_system') }}">
                 @include('alerts.feedback', ['field' => 'cost_of_small_system'])
                 {{-- </div> --}}
                 {{-- <div class="form-group{{ $errors->has('system_size_kwp') ? ' has-danger' : '' }}"> --}}
-                  <input type="number" step="any" class="form-control" name="system_size_kwp" id="input-system-size-kwp" class="form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['system_size_kwp'] }}" value="{{ old('system_size_kwp') }}">
+                  <input type="number" step="any" class="form-control" name="system_size_kwp" id="input-system-size-kwp" class="form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder="" value="{{ old('system_size_kwp') }}">
                   @include('alerts.feedback', ['field' => 'system_size_kwp'])
                   {{-- </div> --}}
                 </div>
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Captive use." /></label>
-                <input type="number" step="any" name="captive_use" max="100" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder="80" value="{{ old('captive-use') }}"autofocus>
+                <input type="number" step="any" name="captive_use" max="100" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder="<?php echo $orgdata['captiveuse']; ?>" value="{{ old('captive-use') }}"autofocus>
                 @include('alerts.feedback', ['field' => 'captive_use'])
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-export-tariff">{{ __('Export Tariff') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Export tariff." /></label>
-                <input type="number" step="any" name="export_tariff" id="input-export-tariff" class="form-control{{ $errors->has('export-tariff') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['export_tariff'] }}" value="{{ old('export-tariff') }}">
+                <input type="number" step="any" name="export_tariff" id="input-export-tariff" class="form-control{{ $errors->has('export-tariff') ? ' is-invalid' : '' }}" placeholder="<?php echo $orgdata['exporttariff']; ?>" value="{{ old('export-tariff') }}">
                 @include('alerts.feedback', ['field' => 'export_tariff'])
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('domestic-tariff') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-domestic-tariff">{{ __('Residential Tariff') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Residential tariff." /></label>
                 @if(!empty($account))
-                <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder='default: {{ ($account == 'Gloucestershire | PPS') ? 0.095 : 0.146 }}' value="{{ old('domestic-tariff') }}">
+                <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder='<?php echo $orgdata['residentialtariff']; ?>' value="{{ old('domestic-tariff') }}">
                 @else
-                <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['domestic_tariff'] }}"  value="{{ old('domestic-tariff') }}">
+                <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder="<?php echo $orgdata['residentialtariff']; ?>"  value="{{ old('domestic-tariff') }}">
                 @endif
                 @include('alerts.feedback', ['field' => 'domestic_tariff'])
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('commercial-tariff') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-commercial-tariff">{{ __('Non-Residential Tariff') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Non-residential tariff." /></label>
-                <input type="number" step="any" name="commercial_tariff" id="input-commercial-tariff" class="form-control{{ $errors->has('commercial-tariff') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['commercial_tariff'] }}" value="{{ old('commercial-tariff') }}">
+                <input type="number" step="any" name="commercial_tariff" id="input-commercial-tariff" class="form-control{{ $errors->has('commercial-tariff') ? ' is-invalid' : '' }}" placeholder="<?php echo $orgdata['nonresidentialtariff']; ?>" value="{{ old('commercial-tariff') }}">
                 @include('alerts.feedback', ['field' => 'commercial_tariff'])
               </div>
               <div class="col-sm-2 text-left">
@@ -456,12 +470,9 @@ div#calculated-area {
           <br>
           <div>
             <h4>The data above has been premised on the following core assumptions:</h4>
-            <span>Total cost for system: {{ $currentDBParams['cost_of_small_system'] }} | </span>
-            <span>System size in kWp: {{ $currentDBParams['system_size_kwp'] }} | </span>
-            <span>Captive Use: {{ $currentDBParams['captive_use'] }} | </span>
-            <span>Export Tariff: {{ $currentDBParams['export_tariff'] }} | </span>
-            <span>Residential Tariff: {{ $currentDBParams['domestic_tariff'] }} | </span>
-            <span>Non-Residential Tariff: {{ $currentDBParams['commercial_tariff'] }}</span>
+            <!--
+
+          -->
           </div>
           @else
           <form class="mt-5" method="get" action="{{ route('home.region_pro', ['account' => $account, 'region' => $region ?? '']) }}" role="form">
@@ -484,26 +495,26 @@ div#calculated-area {
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }}<img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Here you can modify your projected captive use, as a percentage." /></label>
-                    <input type="number" step="any" name="captive_use" max="100" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder='{{ __("80") }}' value="{{ old('captive-use') }}"autofocus>
+                    <input type="number" step="any" name="captive_use" max="100" id="input-captive-use" class="form-control{{ $errors->has('captive-use') ? ' is-invalid' : '' }}" placeholder='<?php echo $orgdata['captiveuse']; ?>' value="{{ old('captive-use') }}"autofocus>
                     @include('alerts.feedback', ['field' => 'captive_use'])
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-export-tariff">{{ __('Export Tariff') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Export tariff." /></label>
-                    <input type="number" step="any" name="export_tariff" id="input-export-tariff" class="form-control{{ $errors->has('export-tariff') ? ' is-invalid' : '' }}" placeholder="{{ __('0.055') }}" value="{{ old('export-tariff') }}">
+                    <input type="number" step="any" name="export_tariff" id="input-export-tariff" class="form-control{{ $errors->has('export-tariff') ? ' is-invalid' : '' }}" placeholder="<?php echo $orgdata['exporttariff']; ?>" value="{{ old('export-tariff') }}">
                     @include('alerts.feedback', ['field' => 'export_tariff'])
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('domestic-tariff') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-domestic-tariff">{{ __('Residential Tariff') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Residential tariff." /></label>
                     @if(!empty($account))
-                    <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder='{{ ($account == 'Gloucestershire | PPS') ? 0.095 : 0.146 }}' value="{{ old('domestic-tariff') }}">
+                    <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder='<?php echo $orgdata['residentialtariff']; ?>' value="{{ old('domestic-tariff') }}">
                     @else
-                    <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder="{{ __('0.146') }}"  value="{{ old('domestic-tariff') }}">
+                    <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder="<?php echo $orgdata['residentialtariff']; ?>"  value="{{ old('domestic-tariff') }}">
                     @endif
                     @include('alerts.feedback', ['field' => 'domestic_tariff'])
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('commercial-tariff') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-commercial-tariff">{{ __('Non-Residential Tariff') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Non-residential tariff." /></label>
-                    <input type="number" step="any" name="commercial_tariff" id="input-commercial-tariff" class="form-control{{ $errors->has('commercial-tariff') ? ' is-invalid' : '' }}" placeholder="{{ __('0.12') }}" value="{{ old('commercial-tariff') }}">
+                    <input type="number" step="any" name="commercial_tariff" id="input-commercial-tariff" class="form-control{{ $errors->has('commercial-tariff') ? ' is-invalid' : '' }}" placeholder="<?php echo $orgdata['nonresidentialtariff']; ?>" value="{{ old('commercial-tariff') }}">
                     @include('alerts.feedback', ['field' => 'commercial_tariff'])
                   </div>
                   <div class="col-sm-2 text-left">
@@ -640,18 +651,20 @@ div#calculated-area {
         var annual_commercial_electric_price_increase = 1.05;
         var annual_domestic_electric_price_increase = 1.03;
         var wacc = 0.05;
+        var showactivesites = 0;
         var irrfinal = 0;
         var sys_cost_5kw = 1200;
-
+        var totalshowingval  = 0;
         function renderMap() {
           var jsonString = `{!! $geodata ?? '
           ' !!}`;
+          jsonString = jsonString.replace('"Lu Colciu Rocchi"',"'Lu Colciu Rocchi'");
           var bounds = new mapboxgl.LngLatBounds();
           var filterGroup = document.getElementById('filter-group');
           if (jsonString.length > 0) {
             dataArray = JSON.parse(jsonString);
 
-           // console.log(dataArray)
+            console.log(dataArray)
 
             dataArray.sort(function(a, b) {
               return a['breakeven_years'] - b['breakeven_years'];
@@ -679,6 +692,10 @@ div#calculated-area {
               }
 
               var feature = "";
+
+              if(dataArray[key].existingsolar == 'Y'){
+                showactivesites++;
+              }
 
 
               var sys_cap = sys_cost_5kw;
@@ -731,8 +748,11 @@ div#calculated-area {
                       coordinates: dataArray[key].latLon.coordinates
                     }
                   };
+                  totalshowingval++;
               }
               else{
+
+
 
                 sys_cost = dataArray[key].system_cost_GBP;
 
@@ -761,6 +781,7 @@ div#calculated-area {
 //                  discountedcashflow = discountedcashflow.join();
 
                   var finalirr = finance.IRR(discountedcashflow);
+                  finalirr = finalirr/100;
                   finalirr = finalirr.toFixed(2);
                  feature = {
                     type: "Feature",
@@ -777,7 +798,7 @@ div#calculated-area {
                       <strong>System Cost:</strong> £ ${numeral(dataArray[key].system_cost_GBP).format('0,0.0a')}<br/>
                       <strong>Lifetime Savings:</strong> £ ${numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')}<br/>
                       <strong>Lifetime CO<sub>2</sub> saving:</strong> ${numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a')} kgs<br/>
-                      <strong>IRR: </strong> ${finalirr}<br/>
+                      <strong>IRR: </strong> ${numeral(dataArray[key].irr_discounted_percent).format('0,0.0a')}%<br/>
                       </p>
                       <a href="{{ route('page.reporting') }}?geopoint_id=${dataArray[key].id}" class="btn btn-primary"
                       target="_blank">Generate Report</a>
@@ -813,6 +834,10 @@ div#calculated-area {
             features.forEach(function(feature) {
               bounds.extend(feature.geometry.coordinates);
             });
+
+
+
+
             if (potential / 1000000 >= 1) {
               potential = potential / 1000000;
               $('#potential-card').text(numeral(potential).format('0,0.0a') + " GWp");
@@ -821,12 +846,12 @@ div#calculated-area {
               $('#potential-card').text(numeral(potential).format('0,0.0a') + " MWp");
             } else
             $('#potential-card').text(numeral(potential).format('0,0.0a') + " kWp");
-            $('#savings-card').text('£ ' + numeral(savings).format('(0.00a)'));
+            $('#savings-card').text('<?php if(!empty($orgdata['currencysymbol'])) { echo $orgdata['currencysymbol']; } else { echo "£"; } ?> ' + numeral(savings).format('(0.00a)'));
             $('#co2-card').text(numeral(co2).format('0,0.0a') + " kgs");
             totalCount = dataArray.length;
             selectedCount = totalCount;
-            $('#total-count').text(numeral(dataArray.length).format('0,0'));
-            $('#selected-count').text(numeral(dataArray.length).format('0,0'));
+            $('#total-count').text(numeral(dataArray.length - totalshowingval).format('0,0'));
+            $('#selected-count').text(numeral(dataArray.length - totalshowingval).format('0,0'));
             $('.poly-ms').text(numeral(dataArray.length).format('0,0'));
 
 
@@ -867,9 +892,7 @@ div#calculated-area {
                   },
                   'filter': [
                     "all",
-                    ["==", "years", symbol],
-                    ["!=", "existingSolar", "Y"],
-                    ["!=", "solarData", "Y"]
+                    ["==", "years", symbol]
                   ],
                   'paint': {
                     'icon-color': [
@@ -896,11 +919,50 @@ div#calculated-area {
 
                 // When the checkbox changes, update the visibility of the layer.
                 input.addEventListener('change', function(e) {
-                  map.setLayoutProperty(
+                  var features_temp = [];
+                  var selectecheckboxes = [];
+
+                  var templayer = layerID.split("layer-years-");
+                  var yeartemp = templayer[1];
+
+                  yeartemp = parseInt(yeartemp);
+
+
+
+                  $("#filter-group input:checkbox:checked").each(function(){
+                      var slchec = $(this).attr("id");
+                      var templayersl = slchec.split("layer-years-");
+                      var yeartempsl = templayersl[1];   
+                      yeartempsl = parseInt(yeartempsl);                   
+                      selectecheckboxes.push(yeartempsl);
+                  });
+
+
+                  features.forEach(function(feature) {
+                   // console.log(feature.properties.years);
+                    if(selectecheckboxes.includes(feature.properties.years)){
+                      if($("#zeroSolarData").is(':checked')){
+                           features_temp.push(feature);
+                      } else {
+                         if(feature.properties.solarData == 'N'){
+                          features_temp.push(feature);
+                        }
+                      }
+                      
+                    }
+                  });
+
+                  map.getSource('places').setData({
+                    'type': 'FeatureCollection',
+                    'features': features_temp
+                  });
+
+                 /* map.setLayoutProperty(
                     layerID,
                     'visibility',
                     e.target.checked ? 'visible' : 'none'
                   );
+                  */
                   filterYears[symbol] = e.target.checked ? true : false;
                   if (e.target.checked)
                   selectedCount = selectedCount + symbolCountMap[symbol];
@@ -908,6 +970,89 @@ div#calculated-area {
                   selectedCount = selectedCount - symbolCountMap[symbol];
                   $('#selected-count').text(numeral(selectedCount).format('0,0'));
                   $('.poly-ms').text(numeral(selectedCount).format('0,0'));
+
+
+
+
+
+
+                $("#calculated-area-container").slideDown();
+                var fttemp = [];
+                var totallength = 0;
+
+                var srchwithin = [];
+                var allpolyginptn = [];
+
+                var data = draw.getAll();
+
+                console.log(features_temp);
+
+
+                var answer = document.getElementById('calculated-area');
+                if (data.features.length > 0) {
+
+
+                //console.log(data)
+
+                features_temp.forEach(function(feature) {
+                //  console.log(feature.solarData);
+                  if(feature.solarData != 'Y'){
+                    fttemp.push(feature.geometry.coordinates);
+                  }
+                });
+
+                data.features.forEach(function(feature) {
+                  srchwithin.push(feature.geometry.coordinates);
+                });
+
+                var points = turf.points(fttemp);
+
+                srchwithin.forEach(function(srchin){
+
+                  var searchWithin = turf.polygon(srchin);
+
+                  var ptsWithin = turf.pointsWithinPolygon(points, searchWithin);
+
+                  var ftms = ptsWithin.features;
+
+
+                  totallength = totallength + ptsWithin.features.length;
+
+
+                  console.log('data22');
+
+                  features_temp.forEach(function(featuremain) {
+
+                      ftms.forEach(function(featuresingle) {
+
+
+                              if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
+
+                                console.log(featuremain);
+                                if(featuremain.properties.solarData != 'Y'){
+                                  if(!allpolyginptn.includes(featuremain.properties.id)){
+                                    allpolyginptn.push(featuremain.properties.id);
+                                  }
+                                }
+                              }
+
+
+                      });
+
+                  });
+
+
+                });
+
+                console.log("All polygon--");
+                console.log(allpolyginptn);
+
+                $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + $("#total-count").html() + "</span> sites.");
+
+
+                }
+
+
 
                 });
                 map.on('click', layerID, function(e) {
@@ -1035,6 +1180,7 @@ div#calculated-area {
 
                 $("#calculated-area-container").slideDown();
                 var fttemp = [];
+                var allpolyginptn = [];
                 var totallength = 0;
 
                 var srchwithin = [];
@@ -1043,7 +1189,36 @@ div#calculated-area {
                 if (data.features.length > 0) {
 
 
+                var features_temp = [];
+                var selectecheckboxes = [];
+
+
+
+                $("#filter-group input:checkbox:checked").each(function(){
+                    var slchec = $(this).attr("id");
+                    var templayersl = slchec.split("layer-years-");
+                    var yeartempsl = templayersl[1];   
+                    yeartempsl = parseInt(yeartempsl);                   
+                    selectecheckboxes.push(yeartempsl);
+                });
+
+
                 features.forEach(function(feature) {
+                 // console.log(feature.properties.years);
+                  if(selectecheckboxes.includes(feature.properties.years)){
+                    if($("#zeroSolarData").is(':checked')){
+                         features_temp.push(feature);
+                    } else {
+                       if(feature.properties.solarData == 'N'){
+                        features_temp.push(feature);
+                      }
+                    }
+                    
+                  }
+                });
+
+
+                features_temp.forEach(function(feature) {
                 //  console.log(feature.solarData);
                   if(feature.solarData != 'Y'){
                     fttemp.push(feature.geometry.coordinates);
@@ -1069,7 +1244,7 @@ div#calculated-area {
 
 
 
-                  features.forEach(function(featuremain) {
+                  features_temp.forEach(function(featuremain) {
 
                       ftms.forEach(function(featuresingle) {
 
@@ -1092,7 +1267,7 @@ div#calculated-area {
 
                 });
 
-                $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + numeral(dataArray.length).format('0,0') + "</span> sites.");
+                $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + $("#total-count").html() + "</span> sites.");
 
 
                 }
@@ -1101,37 +1276,66 @@ div#calculated-area {
 
 
             $(document).on('change', '[name="zeroSolarData"]', function() {
+                var features_temp = [];
+                var selectecheckboxes = [];
                 var checkbox = $(this), // Selected or current checkbox
                     value = checkbox.val(); // Value of checkbox
-               layers.forEach(layer => {
 
-                if(layer.type === "symbol" && layer.id !== "cluster-count"){
-                  if (checkbox.is(':checked'))
-                  {
+                  $("#filter-group input:checkbox:checked").each(function(){
+                      var slchec = $(this).attr("id");
+                      var templayersl = slchec.split("layer-years-");
+                      var yeartempsl = templayersl[1];   
+                      yeartempsl = parseInt(yeartempsl);                   
+                      selectecheckboxes.push(yeartempsl);
+                  });
 
+                 if (checkbox.is(':checked')){
 
-                    var year = layer.filter[1][2]
-                    var include_existing =["==", "years", year];
-                    map.setFilter(layer.id, include_existing);
+                    features.forEach(function(feature) {
+                     // console.log(feature.properties.years);
+                        if(selectecheckboxes.includes(feature.properties.years)){
+                            if(feature.properties.solarData == 'Y' || feature.properties.solarData == 'N'){
+                              features_temp.push(feature);
+                            }
+                        }
+                    });
 
-
-                  }else
-                  {
-                  var filter_existing =[
-                        "all",
-                        ["==", "years", layer.filter[1][2]],
-                        ["!=", "solarData", "Y"]
-                      ];
-                      map.setFilter(layer.id, filter_existing);
-
-
-
+                    map.getSource('places').setData({
+                      'type': 'FeatureCollection',
+                      'features': features_temp
+                    });
+                    
+                    $('#total-count').text(numeral(dataArray.length).format('0,0'));
+                    $('#selected-count').text(numeral(dataArray.length).format('0,0'));
+                    $('.poly-ms').text($("#total-count").html());
 
                   }
-                }
-              });
+                  else{
+
+                    $('#total-count').text(numeral(dataArray.length - totalshowingval).format('0,0'));
+                    $('#selected-count').text(numeral(dataArray.length - totalshowingval).format('0,0'));
+                    $('.poly-ms').text($("#total-count").html());
+
+                    features.forEach(function(feature) {
+                     // console.log(feature.properties.years);
+                        if(selectecheckboxes.includes(feature.properties.years)){
+                            if(feature.properties.solarData == 'N'){
+                              features_temp.push(feature);
+                            }
+                        }
+                    });
+
+                    map.getSource('places').setData({
+                      'type': 'FeatureCollection',
+                      'features': features_temp
+                    });
+
+                  }
+
             });
 
+
+            jQuery("input#zeroSolarData").trigger("change");
 
             map.fitBounds(bounds);
 
@@ -1202,7 +1406,7 @@ div#calculated-area {
             selectedCount -= 1
             $('#total-count').text(numeral(totalCount).format('0,0'));
             $('#selected-count').text(numeral(selectedCount).format('0,0'));
-            $('.poly-ms').text(numeral(selectedCount).format('0,0'));
+            $('.poly-ms').text($("#total-count").html());
 
             $('#total-sites').text(totalCount)
             map.getSource('places').setData({
@@ -1254,6 +1458,98 @@ div#calculated-area {
         $('#modal-form-polygon').submit(function(event) {
           event.preventDefault();
           var visiblePoints = [];
+          $("#calculated-area-container").slideDown();
+          var fttemp = [];
+          var allpolyginptn = [];
+          var totallength = 0;
+
+          var srchwithin = [];
+          var data = draw.getAll();
+          var answer = document.getElementById('calculated-area');
+          if (data.features.length > 0) {
+
+
+          var features_temp = [];
+          var selectecheckboxes = [];
+
+
+
+          $("#filter-group input:checkbox:checked").each(function(){
+              var slchec = $(this).attr("id");
+              var templayersl = slchec.split("layer-years-");
+              var yeartempsl = templayersl[1];   
+              yeartempsl = parseInt(yeartempsl);                   
+              selectecheckboxes.push(yeartempsl);
+          });
+
+
+          features.forEach(function(feature) {
+           // console.log(feature.properties.years);
+            if(selectecheckboxes.includes(feature.properties.years)){
+              if($("#zeroSolarData").is(':checked')){
+                   features_temp.push(feature);
+              } else {
+                 if(feature.properties.solarData == 'N'){
+                  features_temp.push(feature);
+                }
+              }
+              
+            }
+          });
+
+
+          features_temp.forEach(function(feature) {
+          //  console.log(feature.solarData);
+            if(feature.solarData != 'Y'){
+              fttemp.push(feature.geometry.coordinates);
+            }
+          });
+
+          data.features.forEach(function(feature) {
+            srchwithin.push(feature.geometry.coordinates);
+          });
+
+          var points = turf.points(fttemp);
+
+          srchwithin.forEach(function(srchin){
+
+            var searchWithin = turf.polygon(srchin);
+
+            var ptsWithin = turf.pointsWithinPolygon(points, searchWithin);
+
+            var ftms = ptsWithin.features;
+
+
+            totallength = totallength + ptsWithin.features.length;
+
+
+
+            features_temp.forEach(function(featuremain) {
+
+                ftms.forEach(function(featuresingle) {
+
+
+                        if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
+
+                          console.log(featuremain);
+                          if(featuremain.properties.solarData != 'Y'){
+                            if(!allpolyginptn.includes(featuremain.properties.id)){
+                              allpolyginptn.push(featuremain.properties.id);
+                            }
+                          }
+                        }
+
+
+                });
+
+            });
+
+
+          });
+
+
+          }
+
 
           var formData = {
             'name': $('input[name=namepoly]').val(),
@@ -1278,6 +1574,17 @@ div#calculated-area {
             $('#next-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(3000).fadeOut();
           });
         });
+
+        if(totalshowingval == 0){
+          $("#zero_solar_data_wrp").append('<div class="block-ui-toggle"></div>');
+        }
+
+        if(showactivesites == 0){
+          $("#active_sites_data_wrp").append('<div class="block-ui-toggle"></div>');
+        }
+
+
+        
 
         $('#newClusterCheck').change(function(event) {
           $('input[name=new_name]').prop('disabled', !event.target.checked)

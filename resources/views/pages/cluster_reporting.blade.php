@@ -355,6 +355,7 @@
 <script src="{{ asset('argon') }}/vendor/datatables.net-select/js/dataTables.select.min.js"></script>
 <script src="{{ asset('argon') }}/vendor/list.js/dist/list.min.js"></script>
 <script src="{{ asset('js') }}/numeral.min.js"></script>
+<script src="{{ asset('js') }}/finance.js"></script>
 <script>
 var monthly_savings = JSON.parse('{!! $monthly_savings ?? '
 ' !!}');
@@ -378,6 +379,30 @@ var map;
 var dataArray = JSON.parse(jsonString);
 
 function renderTable() {
+
+
+  var sys_cap = sys_cost_5kw;
+  var electric_price = 0;
+
+  if(sys_cap < 10){
+      electric_price = 0.146; //default value is set in controller method
+  } else {
+      electric_price = 0.12;  //default value is set in controller method
+  }
+
+  var export_tariff = 0.055;
+  var captive_use = 80;
+  var residential_threshold = 10;
+
+  var breakeven = -1;
+  var v = 0;
+  var c = 0;
+  var ag = sys_cap * 937;
+  var ep = electric_price; //came from either domestic tariff or commercial tariff
+  var ex = export_tariff;
+
+  sys_cost = sys_cost_5kw;
+
   var layerPrefix = 'layer-years-';
   var table = $('#datatable-report').DataTable({
     // paging: false,
@@ -400,6 +425,38 @@ function renderTable() {
   if (jsonString.length > 0) {
     $('#count').append(dataArray.length);
     for (key = 0; key < dataArray.length; key++) {
+
+
+      sys_cost = dataArray[key].system_cost_GBP;
+
+        for(var k = 1; k <= panel_lifetime; k++){
+            var tmpv = ag * ep * captive_use + ag * ex * (1 - captive_use); //value of elctricity use + export
+            var dpt = 0;
+            if(sys_cap > residential_threshold && k <= (1/annual_depreciation)){
+                dpt = sys_cost * annual_depreciation * corporate_tax_rate; //depreciation tax benefits
+            }
+            tmpv += dpt;
+            cashflow[k-1]=tmpv;
+            discountedcashflow[k-1]=tmpv/(1+wacc)**(k-1)
+            v += tmpv;
+            if(v > sys_cost){
+                breakeven = k;
+                break;
+            }
+            ag *= panel_degradation;
+            if(sys_cap > residential_threshold){
+                ep *= annual_commercial_electric_price_increase;
+            } else{
+                ep *= annual_domestic_electric_price_increase;
+            }
+        }
+        discountedcashflow.unshift((sys_cost)*(-1));
+
+        var finalirr = finance.IRR(discountedcashflow);
+        finalirr = finalirr/100;
+        finalirr = finalirr.toFixed(2);
+
+
       $('#datatable-report').dataTable().fnAddData([
         dataArray[key].id,
         numeral(dataArray[key].system_capacity_kWp).format('0,0.0a'),
@@ -409,6 +466,7 @@ function renderTable() {
         numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a'),
         dataArray[key].breakeven_years,
         numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a'),
+        numeral(finalirr).format('0,0.0a'),
         numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a'),
         numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a'),
         dataArray[key].address
