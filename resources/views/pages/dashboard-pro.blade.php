@@ -15,9 +15,12 @@
 @endcomponent
 @endcomponent
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <?php 
 $remd = request()->segment(count(request()->segments()));
 ?>
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 <style type="text/css">
@@ -26,6 +29,7 @@ span.text-nowrap.zero-solar-span {
     position: relative;
     top: -7px;
 }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 button#reset-btn {
     position: absolute;
@@ -52,6 +56,9 @@ div#calculated-area {
 
 =======
 
+=======
+
+>>>>>>> Stashed changes
 span.text-nowrap.active-solar {
     position: relative;
     top: -7px;
@@ -70,6 +77,9 @@ div#calculated-area {
     float: left;
 }
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 .create-new-pp {
     width: 50%;
@@ -367,6 +377,9 @@ div#calculated-area {
     <div class="col text-left" style="margin-bottom: 10px;" id="active_sites_data_wrp">
 =======
     <div class="col text-left" style="margin-bottom: 10px;">
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
       <span class="text-nowrap active-solar" style="font-size: .75rem; margin-right: .5rem;">Show active solar sites &nbsp;</span>
       <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
@@ -375,7 +388,11 @@ div#calculated-area {
       </label>
     </div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <div class="col text-left" style="margin-bottom: 10px;" id="zero_solar_data_wrp">
+=======
+    <div class="col text-left" style="margin-bottom: 10px;">
+>>>>>>> Stashed changes
 =======
     <div class="col text-left" style="margin-bottom: 10px;">
 >>>>>>> Stashed changes
@@ -386,7 +403,11 @@ div#calculated-area {
       </label>
     </div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+    
+>>>>>>> Stashed changes
 =======
     
 >>>>>>> Stashed changes
@@ -469,7 +490,11 @@ div#calculated-area {
               <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Captive Use." /></label>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 <input type="number" step="any" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="<?php echo $orgdata['captiveuse']; ?>" value="{{ $prev_inputs['captive_use'] }}">
+=======
+                <input type="number" step="any" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="80" value="{{ $prev_inputs['captive_use']*100 }}">
+>>>>>>> Stashed changes
 =======
                 <input type="number" step="any" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="80" value="{{ $prev_inputs['captive_use']*100 }}">
 >>>>>>> Stashed changes
@@ -527,7 +552,11 @@ div#calculated-area {
                   <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Captive use." /></label>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                     <input type="number" step="any" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="<?php echo $orgdata['captiveuse']; ?>" value="{{ $prev_inputs['captive_use'] }}">
+=======
+                    <input type="number" step="any" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="80" value="{{ $prev_inputs['captive_use']*100 }}">
+>>>>>>> Stashed changes
 =======
                     <input type="number" step="any" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="80" value="{{ $prev_inputs['captive_use']*100 }}">
 >>>>>>> Stashed changes
@@ -555,12 +584,16 @@ div#calculated-area {
                   <div class="col-sm-2 text-left">
                     <button type="submit" class="btn btn-default my-4 my-2-2">Run</button>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
                   </div>
 
                   <div class="col-sm-2 text-left">
                     <a href="#" class="btn btn-default my-4 my-2-2" data-toggle="modal" data-target="#modal-form" aria-haspopup="true" aria-expanded="false">Save as new project</a>
                   </div>
 
+<<<<<<< Updated upstream
 =======
                   </div>
 
@@ -568,6 +601,8 @@ div#calculated-area {
                     <a href="#" class="btn btn-default my-4 my-2-2" data-toggle="modal" data-target="#modal-form" aria-haspopup="true" aria-expanded="false">Save as new project</a>
                   </div>
 
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
                   <div class="col-sm-2 offset-sm-8 text-right">
@@ -624,6 +659,10 @@ div#calculated-area {
         var finance = new Finance();
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes
@@ -706,11 +745,14 @@ div#calculated-area {
         var annual_domestic_electric_price_increase = 1.03;
         var wacc = 0.05;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         var showactivesites = 0;
         var irrfinal = 0;
         var sys_cost_5kw = 1200;
         var totalshowingval  = 0;
 =======
+=======
+>>>>>>> Stashed changes
         var irrfinal = 0;
 
         
@@ -720,6 +762,9 @@ div#calculated-area {
 
 
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         function renderMap() {
 
@@ -758,6 +803,7 @@ div#calculated-area {
                 `
               }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
               var feature = "";
 
@@ -769,10 +815,14 @@ div#calculated-area {
 =======
               
 >>>>>>> Stashed changes
+=======
+              
+>>>>>>> Stashed changes
               var sys_cap = sys_cost_5kw;
               var electric_price = 0;
 
               if(sys_cap < 10){
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
                   electric_price = 0.146; //default value is set in controller method
               } else {
@@ -782,6 +832,8 @@ div#calculated-area {
               var export_tariff = 0.055;
               var captive_use = 80;
 =======
+=======
+>>>>>>> Stashed changes
                   electric_price = "{{ $prev_inputs['domestic_tariff'] }}"; //default value is set in controller method
               } else {
                   electric_price = "{{ $prev_inputs['commercial_tariff'] }}";  //default value is set in controller method
@@ -789,6 +841,9 @@ div#calculated-area {
 
               var export_tariff = "{{ $prev_inputs['export_tariff'] }}";
               var captive_use = "{{ $prev_inputs['captive_use'] }}";
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
               var residential_threshold = 10;
 
@@ -830,7 +885,10 @@ div#calculated-area {
                     }
                   };
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                   totalshowingval++;
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
               }
@@ -838,9 +896,12 @@ div#calculated-area {
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
                 sys_cost = dataArray[key].system_cost_GBP;
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                   for(var k = 1; k <= panel_lifetime; k++){
@@ -869,8 +930,14 @@ div#calculated-area {
 
                   var finalirr = finance.IRR(discountedcashflow);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                   finalirr = finalirr/100;
                   finalirr = finalirr.toFixed(2);
+=======
+                  finalirr = finalirr.toFixed(2);
+
+                  
+>>>>>>> Stashed changes
 =======
                   finalirr = finalirr.toFixed(2);
 
@@ -892,7 +959,11 @@ div#calculated-area {
                       <strong>Lifetime Savings:</strong> £ ${numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')}<br/>
                       <strong>Lifetime CO<sub>2</sub> saving:</strong> ${numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a')} kgs<br/>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                       <strong>IRR: </strong> ${finalirr}%<br/>
+=======
+                      <strong>IRR: </strong> ${finalirr}<br/>
+>>>>>>> Stashed changes
 =======
                       <strong>IRR: </strong> ${finalirr}<br/>
 >>>>>>> Stashed changes
@@ -953,6 +1024,9 @@ div#calculated-area {
 =======
             $('#total-count').text(numeral(dataArray.length).format('0,0'));
             $('#selected-count').text(numeral(dataArray.length).format('0,0'));
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             $('.poly-ms').text(numeral(dataArray.length).format('0,0'));
 
@@ -989,9 +1063,14 @@ div#calculated-area {
                       'icon-image': 'marker-icon',
                       'icon-allow-overlap': true,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                       "icon-size": ['interpolate', ['linear'],
                       ['zoom'], 1, 0.5, 10, 1
                     ]
+=======
+                      "icon-size": ['interpolate', ['linear'], ['zoom'], 10, 1, 15, 0.5]
+                    
+>>>>>>> Stashed changes
                   },
                   'filter': [
                     "all",
@@ -1005,6 +1084,9 @@ div#calculated-area {
                     ["==", "years", symbol],
                     ["!=", "existingSolar", "Y"],
                     ["!=", "solarData", "Y"]
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                   ],
                   'paint': {
@@ -1084,6 +1166,7 @@ div#calculated-area {
                   $('#selected-count').text(numeral(selectedCount).format('0,0'));
                   $('.poly-ms').text(numeral(selectedCount).format('0,0'));
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
 
@@ -1168,6 +1251,8 @@ div#calculated-area {
 
 
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                 });
@@ -1292,7 +1377,11 @@ div#calculated-area {
             map.on('draw.delete', updateArea);
             map.on('draw.update', updateArea);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+             
+>>>>>>> Stashed changes
 =======
              
 >>>>>>> Stashed changes
@@ -1301,7 +1390,10 @@ div#calculated-area {
                 $("#calculated-area-container").slideDown();
                 var fttemp = [];
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 var allpolyginptn = [];
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                 var totallength = 0;
@@ -1311,6 +1403,7 @@ div#calculated-area {
                 var answer = document.getElementById('calculated-area');
                 if (data.features.length > 0) {
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
                 var features_temp = [];
@@ -1347,6 +1440,10 @@ div#calculated-area {
               
                 features.forEach(function(feature) {
 >>>>>>> Stashed changes
+=======
+              
+                features.forEach(function(feature) {
+>>>>>>> Stashed changes
                 //  console.log(feature.solarData);
                   if(feature.solarData != 'Y'){
                     fttemp.push(feature.geometry.coordinates);
@@ -1361,7 +1458,11 @@ div#calculated-area {
 
                 srchwithin.forEach(function(srchin){
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+                  
+>>>>>>> Stashed changes
 =======
                   
 >>>>>>> Stashed changes
@@ -1370,6 +1471,7 @@ div#calculated-area {
                   var ptsWithin = turf.pointsWithinPolygon(points, searchWithin);
 
                   var ftms = ptsWithin.features;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
 
@@ -1383,6 +1485,8 @@ div#calculated-area {
 
 
 =======
+=======
+>>>>>>> Stashed changes
                  
 
                   totallength = totallength + ptsWithin.features.length;
@@ -1394,6 +1498,9 @@ div#calculated-area {
                       ftms.forEach(function(featuresingle) {
                         
                         
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                               if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
 
@@ -1405,8 +1512,13 @@ div#calculated-area {
                                 }
                               }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 
+=======
+                                                  
+                        
+>>>>>>> Stashed changes
 =======
                                                   
                         
@@ -1418,8 +1530,13 @@ div#calculated-area {
 
                 });
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
                 $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + $("#total-count").html() + "</span> sites.");
+=======
+                
+                $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + numeral(dataArray.length).format('0,0') + "</span> sites.");
+>>>>>>> Stashed changes
 =======
                 
                 $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + numeral(dataArray.length).format('0,0') + "</span> sites.");
@@ -1432,6 +1549,7 @@ div#calculated-area {
 
 
             $(document).on('change', '[name="zeroSolarData"]', function() {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
                 var features_temp = [];
                 var selectecheckboxes = [];
@@ -1535,10 +1653,49 @@ div#calculated-area {
 
             map.fitBounds(bounds);
 
+=======
+                var checkbox = $(this), // Selected or current checkbox
+                    value = checkbox.val(); // Value of checkbox
+               layers.forEach(layer => {
+
+                if(layer.type === "symbol" && layer.id !== "cluster-count"){
+                  if (checkbox.is(':checked'))
+                  {
+  
+     
+                    var year = layer.filter[1][2]
+                    var include_existing =["==", "years", year];
+                    map.setFilter(layer.id, include_existing);
+
+
+                  }else
+                  {
+                  var filter_existing =[
+                        "all",
+                        ["==", "years", layer.filter[1][2]],
+                        ["!=", "solarData", "Y"]
+                      ];
+                      map.setFilter(layer.id, filter_existing);
+
+
+         
+
+                  }
+                }
+              });
+            });
+
+
+            map.fitBounds(bounds);
+
+>>>>>>> Stashed changes
     
 
 
         
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 
@@ -1604,7 +1761,11 @@ div#calculated-area {
             $('#total-count').text(numeral(totalCount).format('0,0'));
             $('#selected-count').text(numeral(selectedCount).format('0,0'));
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             $('.poly-ms').text($("#total-count").html());
+=======
+            $('.poly-ms').text(numeral(selectedCount).format('0,0'));
+>>>>>>> Stashed changes
 =======
             $('.poly-ms').text(numeral(selectedCount).format('0,0'));
 >>>>>>> Stashed changes
@@ -1660,7 +1821,11 @@ div#calculated-area {
           event.preventDefault();
           var visiblePoints = [];
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+  
+>>>>>>> Stashed changes
 =======
   
 >>>>>>> Stashed changes
@@ -1689,6 +1854,7 @@ div#calculated-area {
         });
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         if(totalshowingval == 0){
           $("#zero_solar_data_wrp").append('<div class="block-ui-toggle"></div>');
         }
@@ -1700,6 +1866,8 @@ div#calculated-area {
 
         
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         $('#newClusterCheck').change(function(event) {
