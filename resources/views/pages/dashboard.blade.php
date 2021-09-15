@@ -14,7 +14,7 @@
 {{-- <li class="breadcrumb-item active" aria-current="page">{{ __('Default') }}</li> --}}
 @endcomponent
 @endcomponent
-<?php 
+<?php
 $remd = request()->segment(count(request()->segments()));
 ?>
 <style type="text/css">
@@ -23,6 +23,7 @@ span.text-nowrap.zero-solar-span {
     position: relative;
     top: -7px;
 }
+
 .block-ui-toggle {
     background: rgb(248 249 254 / 55%);
     position: absolute;
@@ -35,6 +36,7 @@ span.text-nowrap.zero-solar-span {
 div#zero_solar_data_wrp {
     position: relative;
 }
+
 span.text-nowrap.active-solar {
     position: relative;
     top: -7px;
@@ -352,6 +354,7 @@ div#calculated-area {
         <span class="custom-toggle-slider rounded-circle" style=""></span>
       </label>
     </div>
+
     <div class="col text-left" style="margin-bottom: 10px;" id="zero_solar_data_wrp" >
       <span class="text-nowrap zero-solar-span" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">0 Solar Data &nbsp;</span>
       <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
@@ -403,7 +406,6 @@ div#calculated-area {
     <div class="card-body">
       <div class="card-inner-body">
         <div id="calculated-area">
-
         </div>
         <div class="create-new-pp">
           <button type="button" class="btn btn-sm btn-neutral mr-0" data-toggle="modal" data-target="#modal-form-polygon" aria-haspopup="true" aria-expanded="false">
@@ -655,6 +657,9 @@ div#calculated-area {
         var irrfinal = 0;
         var sys_cost_5kw = 1200;
         var totalshowingval  = 0;
+        var irrfinal = 0;
+        var sys_cost_5kw = 1200;
+
         function renderMap() {
           var jsonString = `{!! $geodata ?? '
           ' !!}`;
@@ -664,7 +669,7 @@ div#calculated-area {
           if (jsonString.length > 0) {
             dataArray = JSON.parse(jsonString);
 
-            console.log(dataArray)
+           // console.log(dataArray)
 
             dataArray.sort(function(a, b) {
               return a['breakeven_years'] - b['breakeven_years'];
@@ -697,6 +702,7 @@ div#calculated-area {
                 showactivesites++;
               }
 
+              var feature = "";
 
               var sys_cap = sys_cost_5kw;
               var electric_price = 0;
@@ -748,11 +754,10 @@ div#calculated-area {
                       coordinates: dataArray[key].latLon.coordinates
                     }
                   };
+
                   totalshowingval++;
               }
               else{
-
-
 
                 sys_cost = dataArray[key].system_cost_GBP;
 
@@ -850,8 +855,12 @@ div#calculated-area {
             $('#co2-card').text(numeral(co2).format('0,0.0a') + " kgs");
             totalCount = dataArray.length;
             selectedCount = totalCount;
+
             $('#total-count').text(numeral(dataArray.length - totalshowingval).format('0,0'));
             $('#selected-count').text(numeral(dataArray.length - totalshowingval).format('0,0'));
+           // $('#total-count').text(numeral(dataArray.length).format('0,0'));
+           // $('#selected-count').text(numeral(dataArray.length).format('0,0'));
+
             $('.poly-ms').text(numeral(dataArray.length).format('0,0'));
 
 
@@ -893,6 +902,11 @@ div#calculated-area {
                   'filter': [
                     "all",
                     ["==", "years", symbol]
+
+                    // ["==", "years", symbol],
+                    // ["!=", "existingSolar", "Y"],
+                    // ["!=", "solarData", "Y"]
+
                   ],
                   'paint': {
                     'icon-color': [
@@ -932,8 +946,8 @@ div#calculated-area {
                   $("#filter-group input:checkbox:checked").each(function(){
                       var slchec = $(this).attr("id");
                       var templayersl = slchec.split("layer-years-");
-                      var yeartempsl = templayersl[1];   
-                      yeartempsl = parseInt(yeartempsl);                   
+                      var yeartempsl = templayersl[1];
+                      yeartempsl = parseInt(yeartempsl);
                       selectecheckboxes.push(yeartempsl);
                   });
 
@@ -948,7 +962,7 @@ div#calculated-area {
                           features_temp.push(feature);
                         }
                       }
-                      
+
                     }
                   });
 
@@ -971,11 +985,6 @@ div#calculated-area {
                   $('#selected-count').text(numeral(selectedCount).format('0,0'));
                   $('.poly-ms').text(numeral(selectedCount).format('0,0'));
 
-
-
-
-
-
                 $("#calculated-area-container").slideDown();
                 var fttemp = [];
                 var totallength = 0;
@@ -985,7 +994,7 @@ div#calculated-area {
 
                 var data = draw.getAll();
 
-                console.log(features_temp);
+                //console.log(features_temp);
 
 
                 var answer = document.getElementById('calculated-area');
@@ -1019,7 +1028,7 @@ div#calculated-area {
                   totallength = totallength + ptsWithin.features.length;
 
 
-                  console.log('data22');
+                  //console.log('data22');
 
                   features_temp.forEach(function(featuremain) {
 
@@ -1044,15 +1053,13 @@ div#calculated-area {
 
                 });
 
-                console.log("All polygon--");
-                console.log(allpolyginptn);
+                //console.log("All polygon--");
+                //console.log(allpolyginptn);
 
                 $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + $("#total-count").html() + "</span> sites.");
 
 
                 }
-
-
 
                 });
                 map.on('click', layerID, function(e) {
@@ -1180,14 +1187,15 @@ div#calculated-area {
 
                 $("#calculated-area-container").slideDown();
                 var fttemp = [];
+
                 var allpolyginptn = [];
+
                 var totallength = 0;
 
                 var srchwithin = [];
                 var data = draw.getAll();
                 var answer = document.getElementById('calculated-area');
                 if (data.features.length > 0) {
-
 
                 var features_temp = [];
                 var selectecheckboxes = [];
@@ -1197,8 +1205,8 @@ div#calculated-area {
                 $("#filter-group input:checkbox:checked").each(function(){
                     var slchec = $(this).attr("id");
                     var templayersl = slchec.split("layer-years-");
-                    var yeartempsl = templayersl[1];   
-                    yeartempsl = parseInt(yeartempsl);                   
+                    var yeartempsl = templayersl[1];
+                    yeartempsl = parseInt(yeartempsl);
                     selectecheckboxes.push(yeartempsl);
                 });
 
@@ -1213,12 +1221,12 @@ div#calculated-area {
                         features_temp.push(feature);
                       }
                     }
-                    
+
                   }
                 });
 
-
                 features_temp.forEach(function(feature) {
+
                 //  console.log(feature.solarData);
                   if(feature.solarData != 'Y'){
                     fttemp.push(feature.geometry.coordinates);
@@ -1239,26 +1247,21 @@ div#calculated-area {
 
                   var ftms = ptsWithin.features;
 
-
                   totallength = totallength + ptsWithin.features.length;
-
-
 
                   features_temp.forEach(function(featuremain) {
 
                       ftms.forEach(function(featuresingle) {
 
-
                               if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
 
-                                console.log(featuremain);
+                                //console.log(featuremain);
                                 if(featuremain.properties.solarData != 'Y'){
                                   if(!allpolyginptn.includes(featuremain.properties.id)){
                                     allpolyginptn.push(featuremain.properties.id);
                                   }
                                 }
                               }
-
 
                       });
 
@@ -1268,7 +1271,7 @@ div#calculated-area {
                 });
 
                 $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + $("#total-count").html() + "</span> sites.");
-
+                //$("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + numeral(dataArray.length).format('0,0') + "</span> sites.");
 
                 }
 
@@ -1276,6 +1279,7 @@ div#calculated-area {
 
 
             $(document).on('change', '[name="zeroSolarData"]', function() {
+
                 var features_temp = [];
                 var selectecheckboxes = [];
                 var checkbox = $(this), // Selected or current checkbox
@@ -1284,8 +1288,8 @@ div#calculated-area {
                   $("#filter-group input:checkbox:checked").each(function(){
                       var slchec = $(this).attr("id");
                       var templayersl = slchec.split("layer-years-");
-                      var yeartempsl = templayersl[1];   
-                      yeartempsl = parseInt(yeartempsl);                   
+                      var yeartempsl = templayersl[1];
+                      yeartempsl = parseInt(yeartempsl);
                       selectecheckboxes.push(yeartempsl);
                   });
 
@@ -1304,7 +1308,7 @@ div#calculated-area {
                       'type': 'FeatureCollection',
                       'features': features_temp
                     });
-                    
+
                     $('#total-count').text(numeral(dataArray.length).format('0,0'));
                     $('#selected-count').text(numeral(dataArray.length).format('0,0'));
                     $('.poly-ms').text($("#total-count").html());
@@ -1343,6 +1347,39 @@ div#calculated-area {
 
 
 
+            //     var checkbox = $(this), // Selected or current checkbox
+            //         value = checkbox.val(); // Value of checkbox
+            //    layers.forEach(layer => {
+            //
+            //     if(layer.type === "symbol" && layer.id !== "cluster-count"){
+            //       if (checkbox.is(':checked'))
+            //       {
+            //
+            //
+            //         var year = layer.filter[1][2]
+            //         var include_existing =["==", "years", year];
+            //         map.setFilter(layer.id, include_existing);
+            //
+            //
+            //       }else
+            //       {
+            //       var filter_existing =[
+            //             "all",
+            //             ["==", "years", layer.filter[1][2]],
+            //             ["!=", "solarData", "Y"]
+            //           ];
+            //           map.setFilter(layer.id, filter_existing);
+            //
+            //
+            //
+            //
+            //       }
+            //     }
+            //   });
+            // });
+            //
+            //
+            // map.fitBounds(bounds);
 
 
            // console.log(ptsWithin);
@@ -1351,9 +1388,6 @@ div#calculated-area {
           });
         });
       }
-
-
-
 
 
       function getClusters() {
@@ -1406,7 +1440,9 @@ div#calculated-area {
             selectedCount -= 1
             $('#total-count').text(numeral(totalCount).format('0,0'));
             $('#selected-count').text(numeral(selectedCount).format('0,0'));
+
             $('.poly-ms').text($("#total-count").html());
+            //$('.poly-ms').text(numeral(selectedCount).format('0,0'));
 
             $('#total-sites').text(totalCount)
             map.getSource('places').setData({
@@ -1458,6 +1494,8 @@ div#calculated-area {
         $('#modal-form-polygon').submit(function(event) {
           event.preventDefault();
           var visiblePoints = [];
+
+
           $("#calculated-area-container").slideDown();
           var fttemp = [];
           var allpolyginptn = [];
@@ -1477,8 +1515,8 @@ div#calculated-area {
           $("#filter-group input:checkbox:checked").each(function(){
               var slchec = $(this).attr("id");
               var templayersl = slchec.split("layer-years-");
-              var yeartempsl = templayersl[1];   
-              yeartempsl = parseInt(yeartempsl);                   
+              var yeartempsl = templayersl[1];
+              yeartempsl = parseInt(yeartempsl);
               selectecheckboxes.push(yeartempsl);
           });
 
@@ -1493,7 +1531,7 @@ div#calculated-area {
                   features_temp.push(feature);
                 }
               }
-              
+
             }
           });
 
@@ -1531,7 +1569,7 @@ div#calculated-area {
 
                         if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
 
-                          console.log(featuremain);
+                          //console.log(featuremain);
                           if(featuremain.properties.solarData != 'Y'){
                             if(!allpolyginptn.includes(featuremain.properties.id)){
                               allpolyginptn.push(featuremain.properties.id);
@@ -1549,7 +1587,6 @@ div#calculated-area {
 
 
           }
-
 
           var formData = {
             'name': $('input[name=namepoly]').val(),
@@ -1582,9 +1619,6 @@ div#calculated-area {
         if(showactivesites == 0){
           $("#active_sites_data_wrp").append('<div class="block-ui-toggle"></div>');
         }
-
-
-        
 
         $('#newClusterCheck').change(function(event) {
           $('input[name=new_name]').prop('disabled', !event.target.checked)

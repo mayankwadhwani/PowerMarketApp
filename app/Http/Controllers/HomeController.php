@@ -136,15 +136,19 @@ class HomeController extends Controller
         //-----------user input params-------------
         //----laravel blade input seems unable to pass input of type "number" as numeric values----
         //----so manually converting input fields from string to floats in controller, for now-----
-        $captive_use = $orgmaindata['captiveuse'];
+        $captive_use = floatval($orgmaindata['captiveuse'])/100;
         if(!empty($request->captive_use)){
             $captive_use = floatval($request->captive_use)/100;
         }
         $export_tariff_tmp = 0;
-        if(!empty($orgmaindata['export_tariff'])){
-            $export_tariff_tmp = $orgmaindata['export_tariff'];
+        //if(!empty($orgmaindata['export_tariff'])){
+        //    $export_tariff_tmp = $orgmaindata['export_tariff'];
+        //}
+        if(!empty($orgmaindata['exporttariff'])){
+            $export_tariff_tmp = $orgmaindata['exporttariff'];
         }
         $export_tariff = $request->export_tariff ? floatval($request->export_tariff) : $export_tariff_tmp;
+
         //$domestic_tariff may have a different value if account is "PPS"
         if($request->domestic_tariff){
             $domestic_tariff = floatval($request->domestic_tariff);
@@ -153,9 +157,12 @@ class HomeController extends Controller
         }
 
         $commercial_tariff_tmp = 0;
-        if(!empty($orgmaindata['commercial_tariff'])){
-            $commercial_tariff_tmp = $orgmaindata['commercial_tariff'];
+        if(!empty($orgmaindata['nonresidentialtariff'])){
+            $commercial_tariff_tmp = $orgmaindata['nonresidentialtariff'];
         }
+        //if(!empty($orgmaindata['commercial_tariff'])){
+        //    $commercial_tariff_tmp = $orgmaindata['commercial_tariff'];
+        //}
 
 
         $commercial_tariff = $request->commercial_tariff ? floatval($request->commercial_tariff) : $commercial_tariff_tmp;
@@ -165,17 +172,33 @@ class HomeController extends Controller
         $pro_geopoints = pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp , $geopoints);
         //dd($geopoints->where('id', 17499));
         $prev_inputs = [
-            "captive_use" => $request->captive_use,
+            "captive_use" => $captive_use,
             "export_tariff" => $export_tariff,
             "domestic_tariff" => $domestic_tariff,
             "commercial_tariff" => $commercial_tariff,
             "cost_of_small_system" => $cost_of_small_system,
             "system_size_kwp" => $system_size_kwp
         ];
+        $orgData = $user->organization->toArray();
+         if (empty($orgData['currencysymbol'])) {
+             $orgData['currencysymbol'] = "£";
+         }
+
+//    dd('View: ', [
+//        'geodata' => $pro_geopoints,
+//        'account' => $account_name,
+//        'orgdata' => $user->organization->toArray(),
+//        'region' => $region_name,
+//        'cluster' => "",
+//        "captive_use" => $captive_use,
+//        "export_tariff" => $export_tariff,
+//        "prev_inputs" => $prev_inputs,
+//        "test_geopoint" => $test_geopoint
+//    ], 'Prev input: ', $prev_inputs, 'Org: ', $orgmaindata);
         return view('pages.dashboard-pro', [
             'geodata' => $pro_geopoints,
             'account' => $account_name,
-            'orgdata' => $user->organization->toArray(),
+            'orgdata' => $orgData,
             'region' => $region_name,
             'cluster' => "",
             "captive_use" => $captive_use,
@@ -281,7 +304,7 @@ class HomeController extends Controller
                 return abort(404);
             }
         }
-        
+
      //   $currentDBParams = $this->getClusterParams($cluster);
 
         $geopoints = $cluster->geopoints;
