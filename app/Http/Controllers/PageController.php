@@ -242,24 +242,11 @@ class PageController extends Controller
         }
 
         $currentDBParams = $this->getClusterParams($cluster);
+        $orgData = $user->organization->toArray();
 
         $geopoints = $this->getProGeopoints($cluster);
         $data_array= $this->getGeopointData($geopoints);
 
-        $geopoints = $cluster->geopoints;
-        $data_array= $this->getGeopointData($geopoints);
-        // $monthly_savings = array_fill(0, 12, 0);
-        // $monthly_exports = array_fill(0, 12, 0);
-        // $yearly_co2 = array_fill(0, 26, 0);
-        // foreach ($geopoints as $geopoint) {
-        //     for ($i = 0; $i < 12; $i++) {
-        //         $monthly_savings[$i] += $geopoint->monthly_gen_saving_value_GBP[$i];
-        //         $monthly_exports[$i] += $geopoint->monthly_gen_export_value_GBP[$i];
-        //     }
-        //     for ($i = 0; $i < 26; $i++) {
-        //         $yearly_co2[$i] += $geopoint->yearly_co2_saved_kg[$i];
-        //     }
-        // }
         $html = view('pages.cluster_pdf', [
             'project' => $cluster->name,
             'size' => $geopoints->sum('system_capacity_kWp'),
@@ -278,7 +265,8 @@ class PageController extends Controller
             'yearly_gen_captive' => json_encode($data_array['yearly_gen_captive']),
             'yearly_gen_exports' => json_encode($data_array['yearly_gen_exports']),
             'saved_co2' => json_encode($data_array['yearly_co2']),
-            'currentDBParams' => $currentDBParams
+            'currentDBParams' => $currentDBParams,
+            'orgdata' => $orgData,
         ]);
         $output = [];
         $tempDir = (new TemporaryDirectory())->create();
