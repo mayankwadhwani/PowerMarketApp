@@ -295,9 +295,6 @@
                                                 <p class="text-sm mb-0">
                                                 </p>
                                             </div>
-                                            <!-- <div class="showing">
-                                            <h5>Showing <b id="count"></b> selected rooftops</h5>
-                                        </div> -->
                                             <div class="table-responsive" style="padding-top:10px;">
                                                 <table class="table" id="datatable-report">
                                                     <thead class="thead-light">
@@ -309,10 +306,8 @@
                                                             <th>Lifetime Savings (£) </th>
                                                             <th>Breakeven (Years)</th>
                                                             <th>ROI (%)</th>
-                                                            <th>IRR (%)</th>
                                                             <th>Annual CO<sub>2</sub> Savings (kgs)</th>
                                                             <th>Lifetime CO<sub>2</sub> Savings (kgs) </th>
-                                                            <!-- <th>Address</th> -->
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -325,9 +320,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="text-center">
-                                    <a href="{{ route('page.pdf') }}?geopoint_id={{ $id ?? ''}}"><button type="button" class="btn btn-primary mb-3">Download Report</button></a>
-                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -400,8 +392,9 @@
 
             if (jsonString.length > 0) {
                 $('#count').append(dataArray.length);
+                let dtData = [];
                 for (key = 0; key < dataArray.length; key++) {
-                    $('#datatable-report').dataTable().fnAddData([
+                    dtData[key] = [
                         numeral(dataArray[key].system_capacity_kWp).format('0,0.0a'),
                         numeral(dataArray[key].system_cost_GBP).format('0,0.0a'),
                         numeral(dataArray[key].annual_gen_kWh).format('0,0.0a'),
@@ -411,9 +404,10 @@
                         numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a'),
                         numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a'),
                         numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a'),
-                        // dataArray[key].address
-                    ]);
+                    ];
                 }
+                table.rows.add(dtData);
+                table.draw();
             }
         }
 
