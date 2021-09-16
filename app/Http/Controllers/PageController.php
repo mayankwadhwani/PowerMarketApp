@@ -316,15 +316,15 @@ class PageController extends Controller
         }
 
         $geopoints = $this->getProGeopoints($cluster);
-        $data_array= $this->getGeopointData($geopoints);
+        $data_array = $this->getGeopointData($geopoints);
 
         $currentDBParams = $this->getClusterParams($cluster);
         $orgData = $user->organization->toArray();
         if (empty($orgData['currencysymbol'])) {
             $orgData['currencysymbol'] = "£";
         }
-        $geopoints = $cluster->geopoints;
-        $data_array= $this->getGeopointData($geopoints);
+        //$geopoints = $cluster->geopoints;
+        //$data_array = $this->getGeopointData($geopoints);
         // $monthly_savings = array_fill(0, 12, 0);
         // $monthly_exports = array_fill(0, 12, 0);
         // $monthly_gen_captive = array_fill(0, 12, 0);

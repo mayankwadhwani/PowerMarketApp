@@ -63,7 +63,7 @@
                         <div class="col-auto">
                           <div class="row">
                             <div class="icon icon-shape bg-gradient-pm text-white rounded-circle shadow">
-                              <i class="fas fa-pound-sign"></i>
+                              <i class="fas fa-file-invoice-dollar"></i>
                             </div>
                           </div>
                         </div>
@@ -291,11 +291,12 @@
                     <!-- <div class="showing">
                     <h5>Showing <b id="count"></b> selected rooftops</h5>
                   </div> -->
+
                   <div class="table-responsive" style="padding-top:10px;">
                     <table class="table" id="datatable-report">
                       <thead class="thead-light">
                         <tr>
-                          <th>Id</th>
+                          <th>Id here</th>
                           <th>System Size (kWp)</th>
                           <th>System Cost ({{ $orgdata['currencysymbol'] }})</th>
                           <th>Annual Generation (kWh)</th>
@@ -357,51 +358,19 @@
 <script src="{{ asset('js') }}/numeral.min.js"></script>
 <script src="{{ asset('js') }}/finance.js"></script>
 <script>
-var monthly_savings = JSON.parse('{!! $monthly_savings ?? '
-' !!}');
-var monthly_exports = JSON.parse('{!! $monthly_exports ?? '
-' !!}');
-var saved_co2 = JSON.parse('{!! $saved_co2 ?? '
-' !!} ');
-var monthly_gen_captive = JSON.parse('{!! $monthly_gen_captive ?? '
-' !!}');
-var monthly_gen_exports = JSON.parse('{!! $monthly_gen_exports ?? '
-' !!}');
-var yearly_gen_captive = JSON.parse('{!! $yearly_gen_captive ?? '
-' !!}');
-var yearly_gen_exports = JSON.parse('{!! $yearly_gen_exports ?? '
-' !!}');
-console.log("m-gen-cap: ", monthly_gen_captive, "m-gen-exp: ", monthly_gen_exports, "y-gen-cap: ", yearly_gen_captive, 'yearly_gen_exports: ', yearly_gen_exports, "saved_co2: ", saved_co2  );
+var monthly_savings = JSON.parse('{!! $monthly_savings ?? '' !!}');
+var monthly_exports = JSON.parse('{!! $monthly_exports ?? '' !!}');
+var saved_co2 = JSON.parse('{!! $saved_co2 ?? '' !!} ');
+var monthly_gen_captive = JSON.parse('{!! $monthly_gen_captive ?? '' !!}');
+var monthly_gen_exports = JSON.parse('{!! $monthly_gen_exports ?? '' !!}');
+var yearly_gen_captive = JSON.parse('{!! $yearly_gen_captive ?? '' !!}');
+var yearly_gen_exports = JSON.parse('{!! $yearly_gen_exports ?? '' !!}');
 
-var jsonString = `{!! $geodata ?? '
-' !!}`;
+var jsonString = `{!! $geodata ?? '' !!}`;
 var map;
 var dataArray = JSON.parse(jsonString);
 
 function renderTable() {
-
-
-  var sys_cap = sys_cost_5kw;
-  var electric_price = 0;
-
-  if(sys_cap < 10){
-      electric_price = 0.146; //default value is set in controller method
-  } else {
-      electric_price = 0.12;  //default value is set in controller method
-  }
-
-  var export_tariff = 0.055;
-  var captive_use = 80;
-  var residential_threshold = 10;
-
-  var breakeven = -1;
-  var v = 0;
-  var c = 0;
-  var ag = sys_cap * 937;
-  var ep = electric_price; //came from either domestic tariff or commercial tariff
-  var ex = export_tariff;
-
-  sys_cost = sys_cost_5kw;
 
   var layerPrefix = 'layer-years-';
   var table = $('#datatable-report').DataTable({
@@ -423,56 +392,29 @@ function renderTable() {
   $('.dt-buttons .btn').removeClass('btn-secondary').addClass('btn-sm btn-default');
 
   if (jsonString.length > 0) {
-    $('#count').append(dataArray.length);
+
+      $('#count').append(dataArray.length);
+
+    var dtData = [];
     for (key = 0; key < dataArray.length; key++) {
-
-
-      sys_cost = dataArray[key].system_cost_GBP;
-
-        for(var k = 1; k <= panel_lifetime; k++){
-            var tmpv = ag * ep * captive_use + ag * ex * (1 - captive_use); //value of elctricity use + export
-            var dpt = 0;
-            if(sys_cap > residential_threshold && k <= (1/annual_depreciation)){
-                dpt = sys_cost * annual_depreciation * corporate_tax_rate; //depreciation tax benefits
-            }
-            tmpv += dpt;
-            cashflow[k-1]=tmpv;
-            discountedcashflow[k-1]=tmpv/(1+wacc)**(k-1)
-            v += tmpv;
-            if(v > sys_cost){
-                breakeven = k;
-                break;
-            }
-            ag *= panel_degradation;
-            if(sys_cap > residential_threshold){
-                ep *= annual_commercial_electric_price_increase;
-            } else{
-                ep *= annual_domestic_electric_price_increase;
-            }
-        }
-        discountedcashflow.unshift((sys_cost)*(-1));
-
-        var finalirr = finance.IRR(discountedcashflow);
-        finalirr = finalirr/100;
-        finalirr = finalirr.toFixed(2);
-
-
-      $('#datatable-report').dataTable().fnAddData([
-        dataArray[key].id,
-        numeral(dataArray[key].system_capacity_kWp).format('0,0.0a'),
-        numeral(dataArray[key].system_cost_GBP).format('0,0.0a'),
-        numeral(dataArray[key].annual_gen_kWh).format('0,0.0a'),
-        numeral(dataArray[key].annual_gen_GBP).format('0,0.0a'),
-        numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a'),
-        dataArray[key].breakeven_years,
-        numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a'),
-        numeral(finalirr).format('0,0.0a'),
-        numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a'),
-        numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a'),
-        dataArray[key].address
-      ]);
+      dtData[key] = [
+          dataArray[key].id,
+          numeral(dataArray[key].system_capacity_kWp).format('0,0.0a'),
+          numeral(dataArray[key].system_cost_GBP).format('0,0.0a'),
+          numeral(dataArray[key].annual_gen_kWh).format('0,0.0a'),
+          numeral(dataArray[key].annual_gen_GBP).format('0,0.0a'),
+          numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a'),
+          dataArray[key].breakeven_years,
+          numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a'),
+          numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a'),
+          numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a'),
+          dataArray[key].address
+      ];
     }
+    table.rows.add(dtData);
+    table.draw();
   }
+
   table.on('select', function(e, dt, type, indexes) {
     if (type === 'row') {
       var data = table.rows(indexes).data();

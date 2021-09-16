@@ -675,21 +675,17 @@ div#calculated-area {
         var totalshowingval  = 0;
 
         @php
-            echo "var sys_cost_5kw = ".$prev_inputs['cost_of_small_system']/$prev_inputs['system_size_kwp'].";";
+            echo "sys_cost_5kw = ".$prev_inputs['cost_of_small_system']/$prev_inputs['system_size_kwp'].";";
         @endphp
 
 
         function renderMap() {
 
-          var jsonString = `{!! $geodata ?? '
-          ' !!}`;
-          jsonString = jsonString.replace('"Lu Colciu Rocchi"',"'Lu Colciu Rocchi'");
+          var jsonString = `{!! $geodata ?? '' !!}`;
           var bounds = new mapboxgl.LngLatBounds();
           var filterGroup = document.getElementById('filter-group');
           if (jsonString.length > 0) {
             dataArray = JSON.parse(jsonString);
-
-           // console.log(dataArray)
 
             dataArray.sort(function(a, b) {
               return a['breakeven_years'] - b['breakeven_years'];
