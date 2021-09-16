@@ -296,7 +296,7 @@
                     <table class="table" id="datatable-report">
                       <thead class="thead-light">
                         <tr>
-                          <th>Id here</th>
+                          <th>Id</th>
                           <th>System Size (kWp)</th>
                           <th>System Cost ({{ $orgdata['currencysymbol'] }})</th>
                           <th>Annual Generation (kWh)</th>
