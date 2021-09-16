@@ -649,8 +649,6 @@ div#calculated-area {
         var irrfinal = 0;
         var sys_cost_5kw = 1200;
         var totalshowingval  = 0;
-        var irrfinal = 0;
-        var sys_cost_5kw = 1200;
 
         function renderMap() {
           var jsonString = `{!! $geodata ?? '
