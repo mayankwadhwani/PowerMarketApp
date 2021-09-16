@@ -220,34 +220,53 @@ class HomeController extends Controller
                 return abort(404);
             }
         }
-
-       // $currentDBParams = $this->getClusterParams($cluster);
+        $orgData = $user->organization->toArray();
+        $currentDBParams = $this->getClusterParams($cluster);
 
         $geopoints = $cluster->geopoints;
         if($geopoints == null) return abort(404);
         //-----------user input params-------------
         //----laravel blade input seems unable to pass input of type "number" as numeric values----
         //----so manually converting input fields from string to floats in controller, for now-----
-        $captive_use = 0.8;
+        $captive_use = floatval($currentDBParams['captive_use'])/100;
         if(!empty($request->captive_use)){
             $captive_use = floatval($request->captive_use)/100;
         }
 
-        $export_tariff = $request->export_tariff ? floatval($request->export_tariff) : 0.055;
+        $export_tariff_tmp = 0.055;
+        if(!empty($currentDBParams['export_tariff'])){
+            $export_tariff_tmp = $currentDBParams['export_tariff'];
+        }
+        $export_tariff = $request->export_tariff ? floatval($request->export_tariff) : $export_tariff_tmp;
+
         //$domestic_tariff may have a different value if account is "PPS"
         if($request->domestic_tariff){
             $domestic_tariff = floatval($request->domestic_tariff);
         } else{
-            //to-do: how to use default 0.095 for PPS accounts
-           $domestic_tariff = 0.146;
+            $domestic_tariff = $currentDBParams['domestic_tariff'];
         }
-        //dd($domestic_tariff);
-        $commercial_tariff = $request->commercial_tariff ? floatval($request->commercial_tariff) : 0.12;
-        $cost_of_small_system = $request->cost_of_small_system ? floatval($request->cost_of_small_system) : 6000;
-        $system_size_kwp = $request->system_size_kwp ? floatval($request->system_size_kwp) : 5;
+
+        $commercial_tariff_tmp = 0.12;
+        if(!empty($currentDBParams['commercial_tariff'])){
+            $commercial_tariff_tmp = $currentDBParams['commercial_tariff'];
+        }
+
+        $cost_of_small_system_tmp = 6000;
+        if (!empty($currentDBParams['cost_of_small_system'])) {
+            $cost_of_small_system_tmp = $currentDBParams['cost_of_small_system'];
+        }
+
+        $system_size_kwp_tmp = 5;
+        if (!empty($currentDBParams['system_size_kwp'])) {
+            $system_size_kwp_tmp = $currentDBParams['system_size_kwp'];
+        }
+
+        $commercial_tariff = $request->commercial_tariff ? floatval($request->commercial_tariff) : $commercial_tariff_tmp;
+        $cost_of_small_system = $request->cost_of_small_system ? floatval($request->cost_of_small_system) : $cost_of_small_system_tmp;
+        $system_size_kwp = $request->system_size_kwp ? floatval($request->system_size_kwp) : $system_size_kwp_tmp;
         $test_geopoint = $geopoints->where("id", 19483);
         $pro_geopoints = pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, $geopoints);
-        //dd($geopoints->where('id', 17499));
+
         $prev_inputs = [
             "captive_use" => $captive_use,
             "export_tariff" => $export_tariff,
@@ -259,9 +278,9 @@ class HomeController extends Controller
         return view('pages.dashboard-pro', [
             'geodata' => $pro_geopoints,
             'cluster' => $cluster->name,
-            'region'=>'',
+            'region' => '',
             'account' => '',
-            'orgdata' => $user->organization->toArray(),
+            'orgdata' => $orgData,
             "captive_use" => $captive_use,
             "export_tariff" => $export_tariff,
             "prev_inputs" => $prev_inputs,
@@ -271,18 +290,16 @@ class HomeController extends Controller
 
     private function getClusterParams($cluster){
         $firstPoint = $cluster->geopoints->first();
-     //   print_r($firstPoint);
 
-        $currentParams = [
-            "captive_use" => 0,
-            "export_tariff" => $firstPoint->pivot->export_tariff,
-            "domestic_tariff" => $firstPoint->pivot->domestic_tariff,
-            "commercial_tariff" => 0,
-            "cost_of_small_system" => 0,
-            "system_size_kwp" => 0
-        ];
+//        $currentParams = [
+//            "captive_use" => 0,
+//            "export_tariff" => $firstPoint->pivot->export_tariff,
+//            "domestic_tariff" => $firstPoint->pivot->domestic_tariff,
+//            "commercial_tariff" => 0,
+//            "cost_of_small_system" => 0,
+//            "system_size_kwp" => 0
+//        ];
 
-        /*
         $currentParams = [
             "captive_use" => $firstPoint->pivot->captive_use,
             "export_tariff" => $firstPoint->pivot->export_tariff,
@@ -291,7 +308,7 @@ class HomeController extends Controller
             "cost_of_small_system" => $firstPoint->pivot -> system_cost,
             "system_size_kwp" => $firstPoint->pivot->system_size
         ];
-        */
+
         return $currentParams;
     }
 
@@ -305,28 +322,15 @@ class HomeController extends Controller
             }
         }
 
-     //   $currentDBParams = $this->getClusterParams($cluster);
-
+        $currentDBParams = $this->getClusterParams($cluster);
         $geopoints = $cluster->geopoints;
+
         return view('pages.dashboard', [
-        'geodata' => $geopoints,
-        'cluster' => $cluster->name,
-        'orgdata' => $user->organization->toArray(),
+            'geodata' => $geopoints,
+            'cluster' => $cluster->name,
+            'orgdata' => $user->organization->toArray(),
+            'currentDBParams' => $currentDBParams
         ]);
-
-
     }
 
-    // public function cluster($cluster_name) {
-    //     $user = auth()->user();
-    //     $cluster = Cluster::where('user_id', $user->id)->where('name', $cluster_name)->first();
-    //     if ($cluster == null){
-    //         return abort(404);
-    //     }
-    //     $geopoints = $cluster->geopoints;
-    //     return view('pages.dashboard', [
-    //         'geodata' => $geopoints,
-    //         'cluster' => $cluster->name
-    //     ]);
-    // }
 }
