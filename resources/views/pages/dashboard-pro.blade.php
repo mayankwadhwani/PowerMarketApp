@@ -350,7 +350,7 @@ div#calculated-area {
     <!-- <a href="{{ route('home') }}"><i class="fas fa-home" style="font-size: 1.8rem; color: #191B2E; padding-bottom: 2rem; " data-toggle="tooltip" data-placement="top" title="Back home"></i></a> -->
     <a href="{{ route('home') }}"><i class="fas fa-home map-icon-black report-icon card-icons" style="font-size: 1.7rem; color: #191B2E; padding-bottom: 2rem;" data-toggle="tooltip" data-placement="top" title="Back Home"></i></a>
     <!-- if the cluster name is passed in (which means if we are at a project page) -->
-    @if(isset($cluster))
+    @if(!empty($cluster))
     <a href="/reporting/project/{{ $cluster}}" target="_blank"><i class="fas fa-file-alt map-icon-black report-icon card-icons" style="font-size: 1.6rem; color: #191B2E; padding-left: 1.2rem;" data-toggle="tooltip" data-placement="top" title="View Report"></i></a>
     @endif
 
