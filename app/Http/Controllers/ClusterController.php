@@ -51,16 +51,18 @@ class ClusterController extends Controller
         //$cluster->geopoints()->attach($geopoints);
         //create data array for each geopoint and insert to db using a single query:
         $geopoint_data = [];
+        $orgData = $user->organization->toArray();
+
         foreach($geopoints as $geopoint){
             // the hardcoded values account for when user create cluster directly from the non-pro dashboard
             // (meaning no value in each input field)
             array_push($geopoint_data, [
-                'cluster_id'=>$cluster->id,
+                'cluster_id' => $cluster->id,
                 'geopoint_id' => $geopoint,
-                'captive_use'=>$pro_params->captive_use ?? 80,
-                'export_tariff' => $pro_params->export_tariff ?? 0.055,
-                'domestic_tariff' => $pro_params->domestic_tariff ?? 0.146,
-                'commercial_tariff' => $pro_params->commercial_tariff ?? 0.12,
+                'captive_use' => $pro_params->captive_use ?? $orgData['captiveuse'],
+                'export_tariff' => $pro_params->export_tariff ?? $orgData['exporttariff'],
+                'domestic_tariff' => $pro_params->domestic_tariff ?? $orgData['residentialtariff'],
+                'commercial_tariff' => $pro_params->commercial_tariff ?? $orgData['nonresidentialtariff'],
                 'system_cost' => $pro_params->system_cost ?? 6000,
                 'system_size' => $pro_params->system_size ?? 5
             ]);
