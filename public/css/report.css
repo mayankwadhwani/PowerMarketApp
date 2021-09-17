@@ -87,20 +87,23 @@
 
 .face {
     display: none;
-    height: 100%;
-    width: 100%;
+    /*height: 100%;
+    width: 100%;*/
+    height: 93%;
+    width: 95%;
+    margin-left: 14px;
     background-color: RGBA(31, 45, 71, 1.00);
     position: absolute;
     top: 0px;
     left: 0px;
     z-index: 100;
     opacity: 0.6;
-    background-clip: content-box;
+    /*background-clip: content-box;
     box-sizing: border-box;
     padding-right: 15px;
     padding-left: 15px;
     padding-bottom: 30px;
-    margin-bottom: 23px;
+    margin-bottom: 23px;*/
     overflow: hidden;
     border-radius: .375rem !important;
 }
