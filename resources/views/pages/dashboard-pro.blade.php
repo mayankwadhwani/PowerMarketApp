@@ -1015,7 +1015,7 @@ div#calculated-area {
                 var totallength = 0;
 
                 var srchwithin = [];
-                var allpolyginptn = [];
+                allpolyginptn = [];
 
                 var data = draw.getAll();
 
@@ -1078,8 +1078,8 @@ div#calculated-area {
 
                 });
 
-                console.log("All polygon--");
-                console.log(allpolyginptn);
+                //console.log("All polygon--");
+                //console.log(allpolyginptn);
 
                 $("#calculated-area").html("Polygon Selection " + numeral(allpolyginptn.length).format('0,0') + " of <span class='poly-ms'>" + $("#total-count").html() + "</span> sites.");
 
@@ -1213,7 +1213,7 @@ div#calculated-area {
                 $("#calculated-area-container").slideDown();
                 var fttemp = [];
 
-                var allpolyginptn = [];
+                allpolyginptn = [];
 
                 var totallength = 0;
 
@@ -1280,7 +1280,7 @@ div#calculated-area {
 
                               if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
 
-                                console.log(featuremain);
+                                //console.log(featuremain);
                                 if(featuremain.properties.solarData != 'Y'){
                                   if(!allpolyginptn.includes(featuremain.properties.id)){
                                     allpolyginptn.push(featuremain.properties.id);
@@ -1535,14 +1535,12 @@ div#calculated-area {
 
         $('#modal-form-polygon').submit(function(event) {
           event.preventDefault();
-          var visiblePoints = [];
-
 
           var formData = {
             'name': $('input[name=namepoly]').val(),
             '_token': $('input[name=_token]').val(),
             'geopoints': JSON.stringify(allpolyginptn),
-             'pro_params': JSON.stringify(getProParams())
+            'pro_params': JSON.stringify(getProParams())
           };
           $.ajax({
             type: 'POST',

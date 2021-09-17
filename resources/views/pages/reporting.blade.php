@@ -368,24 +368,15 @@
 
     var finance = new Finance();
 
-    var lat = '{!! $lat ?? '
-    ' !!}';
-    var lon = '{!! $lon ?? '
-    ' !!}';
-    var monthly_savings = JSON.parse('{!! $monthly_savings ?? '
-        ' !!}');
-    var monthly_exports = JSON.parse('{!! $monthly_exports ?? '
-        ' !!}');
-    var saved_co2 = JSON.parse('{!! $saved_co2 ?? '
-        ' !!} ');
-    var monthly_gen_captive = JSON.parse('{!! $monthly_gen_captive ?? '
-        ' !!}');
-    var monthly_gen_exports = JSON.parse('{!! $monthly_gen_exports ?? '
-        ' !!}');
-    var yearly_gen_captive = JSON.parse('{!! $yearly_gen_captive ?? '
-        ' !!}');
-    var yearly_gen_exports = JSON.parse('{!! $yearly_gen_exports ?? '
-        ' !!}');
+    var lat = '{!! $lat ?? '' !!}';
+    var lon = '{!! $lon ?? '' !!}';
+    var monthly_savings = JSON.parse('{!! $monthly_savings ?? '' !!}');
+    var monthly_exports = JSON.parse('{!! $monthly_exports ?? '' !!}');
+    var saved_co2 = JSON.parse('{!! $saved_co2 ?? '' !!} ');
+    var monthly_gen_captive = JSON.parse('{!! $monthly_gen_captive ?? '' !!}');
+    var monthly_gen_exports = JSON.parse('{!! $monthly_gen_exports ?? '' !!}');
+    var yearly_gen_captive = JSON.parse('{!! $yearly_gen_captive ?? '' !!}');
+    var yearly_gen_exports = JSON.parse('{!! $yearly_gen_exports ?? '' !!}');
 
     var cashflow = [0, 26, 0];
     var feature = "";
@@ -401,8 +392,7 @@
     var sys_cost_5kw = 1200;
 
     function renderTable() {
-        var jsonString = `{!! $geodata ?? '
-        ' !!}`;
+        var jsonString = `{!! $geodata ?? '' !!}`;
 
           var sys_cap = sys_cost_5kw;
           var electric_price = 0;
