@@ -980,7 +980,7 @@ div#calculated-area {
                 var totallength = 0;
 
                 var srchwithin = [];
-                var allpolyginptn = [];
+                allpolyginptn = [];
 
                 var data = draw.getAll();
 
@@ -1027,7 +1027,7 @@ div#calculated-area {
 
                               if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
 
-                                console.log(featuremain);
+                                //console.log(featuremain);
                                 if(featuremain.properties.solarData != 'Y'){
                                   if(!allpolyginptn.includes(featuremain.properties.id)){
                                     allpolyginptn.push(featuremain.properties.id);
@@ -1178,7 +1178,7 @@ div#calculated-area {
                 $("#calculated-area-container").slideDown();
                 var fttemp = [];
 
-                var allpolyginptn = [];
+                allpolyginptn = [];
 
                 var totallength = 0;
 
@@ -1481,126 +1481,32 @@ div#calculated-area {
           });
         });
 
-        $('#modal-form-polygon').submit(function(event) {
-          event.preventDefault();
-          var visiblePoints = [];
+          $('#modal-form-polygon').submit(function(event) {
+              event.preventDefault();
 
-
-          $("#calculated-area-container").slideDown();
-          var fttemp = [];
-          var allpolyginptn = [];
-          var totallength = 0;
-
-          var srchwithin = [];
-          var data = draw.getAll();
-          var answer = document.getElementById('calculated-area');
-          if (data.features.length > 0) {
-
-
-          var features_temp = [];
-          var selectecheckboxes = [];
-
-
-
-          $("#filter-group input:checkbox:checked").each(function(){
-              var slchec = $(this).attr("id");
-              var templayersl = slchec.split("layer-years-");
-              var yeartempsl = templayersl[1];
-              yeartempsl = parseInt(yeartempsl);
-              selectecheckboxes.push(yeartempsl);
+              var formData = {
+                  'name': $('input[name=namepoly]').val(),
+                  '_token': $('input[name=_token]').val(),
+                  'geopoints': JSON.stringify(allpolyginptn),
+              };
+              $.ajax({
+                  type: 'POST',
+                  url: '/clusters',
+                  data: formData,
+                  dataType: 'json',
+                  encode: true
+              }).done(function(data) {
+                  $('#modal-form-polygon').modal('hide')
+                  $('#next-form').modal('show')
+                  getClusters()
+                  $('#next-response-status').text(data.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(3000).fadeOut();
+                  $('#cluster-href').attr('href', data.cluster_link)
+              }).fail(function(data) {
+                  $('#modal-form-polygon').modal('hide')
+                  $('#next-form').modal('show')
+                  $('#next-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(3000).fadeOut();
+              });
           });
-
-
-          features.forEach(function(feature) {
-           // console.log(feature.properties.years);
-            if(selectecheckboxes.includes(feature.properties.years)){
-              if($("#zeroSolarData").is(':checked')){
-                   features_temp.push(feature);
-              } else {
-                 if(feature.properties.solarData == 'N'){
-                  features_temp.push(feature);
-                }
-              }
-
-            }
-          });
-
-
-          features_temp.forEach(function(feature) {
-          //  console.log(feature.solarData);
-            if(feature.solarData != 'Y'){
-              fttemp.push(feature.geometry.coordinates);
-            }
-          });
-
-          data.features.forEach(function(feature) {
-            srchwithin.push(feature.geometry.coordinates);
-          });
-
-          var points = turf.points(fttemp);
-
-          srchwithin.forEach(function(srchin){
-
-            var searchWithin = turf.polygon(srchin);
-
-            var ptsWithin = turf.pointsWithinPolygon(points, searchWithin);
-
-            var ftms = ptsWithin.features;
-
-
-            totallength = totallength + ptsWithin.features.length;
-
-
-
-            features_temp.forEach(function(featuremain) {
-
-                ftms.forEach(function(featuresingle) {
-
-
-                        if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
-
-                          //console.log(featuremain);
-                          if(featuremain.properties.solarData != 'Y'){
-                            if(!allpolyginptn.includes(featuremain.properties.id)){
-                              allpolyginptn.push(featuremain.properties.id);
-                            }
-                          }
-                        }
-
-
-                });
-
-            });
-
-
-          });
-
-
-          }
-
-          var formData = {
-            'name': $('input[name=namepoly]').val(),
-            '_token': $('input[name=_token]').val(),
-            'geopoints': JSON.stringify(allpolyginptn)
-          };
-          $.ajax({
-            type: 'POST',
-            url: '/clusters',
-            data: formData,
-            dataType: 'json',
-            encode: true
-          }).done(function(data) {
-            $('#modal-form-polygon').modal('hide')
-            $('#next-form').modal('show')
-            getClusters()
-            $('#next-response-status').text(data.message).css('display', 'block').addClass('alert-success').removeClass('alert-danger').delay(3000).fadeOut();
-            $('#cluster-href').attr('href', data.cluster_link)
-          }).fail(function(data) {
-            $('#modal-form-polygon').modal('hide')
-            $('#next-form').modal('show')
-            $('#next-response-status').text(data.responseJSON.message).css('display', 'block').addClass('alert-danger').removeClass('alert-success').delay(3000).fadeOut();
-          });
-        });
 
         if(totalshowingval == 0){
           $("#zero_solar_data_wrp").append('<div class="block-ui-toggle"></div>');
