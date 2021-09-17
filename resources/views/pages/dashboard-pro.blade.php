@@ -1577,7 +1577,8 @@ div#calculated-area {
           event.preventDefault();
           var formData = {
             geopoint_id: clicked_geopoint_id,
-            '_token': $('input[name=_token]').val()
+            '_token': $('input[name=_token]').val(),
+            'pro_params': JSON.stringify(getProParams())
           }
           if ($('#newClusterCheck').is(":checked")) {
             formData['new_name'] = $('input[name=new_name]').val()
