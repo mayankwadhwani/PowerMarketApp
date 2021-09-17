@@ -7,7 +7,7 @@ async function run() {
         const browser = await puppet.launch({
             headless: true,
             // ignoreDefaultArgs: ["--user-data-dir"],
-            // args: ["--disable-web-security", "--no-sandbox"],
+            args: ["--disable-web-security", "--no-sandbox"],
             // pipe: true
         });
         const page = await browser.newPage();
