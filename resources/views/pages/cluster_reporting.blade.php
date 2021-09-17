@@ -1171,7 +1171,7 @@ function renderMap() {
           'icon-image': 'marker-icon',
           'icon-allow-overlap': true,
           "icon-size": ['interpolate', ['linear'],
-          ['zoom'], 10, 0.1, 15, 1
+          ['zoom'], 10, 1.2, 15, 1
         ]
       },
       'paint': {
