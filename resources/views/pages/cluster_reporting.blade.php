@@ -367,6 +367,7 @@ var yearly_gen_captive = JSON.parse('{!! $yearly_gen_captive ?? '' !!}');
 var yearly_gen_exports = JSON.parse('{!! $yearly_gen_exports ?? '' !!}');
 
 var jsonString = `{!! $geodata ?? '' !!}`;
+jsonString = jsonString.replace('"Lu Colciu Rocchi"',"'Lu Colciu Rocchi'");
 var map;
 var dataArray = JSON.parse(jsonString);
 
