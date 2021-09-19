@@ -1,15 +1,44 @@
 <?php
 
-function geodata_process_irr($geodata){
-    print_r($geodata);
-}
+if(!function_exists('IRR')){
+    function IRR($investment, $flow, $precision = 0.000001)
+    {
+        if (array_sum($flow) < $investment):
+            return 0;
+        endif;
+        $maxIterations = 2000;
+        $i =0;
+        if (is_array($flow)):
+            $min = 0;
+            $max = 1;
+            $net_present_value = 1;
+            while ((abs($net_present_value - $investment) > $precision) && ($i < $maxIterations)) {
+                $net_present_value = 0;
+                $guess = ($min + $max) / 2;
+                foreach ($flow as $period => $cashflow) {
+                    $net_present_value += $cashflow / (1 + $guess) ** ($period + 1);
+                }
+                if ($net_present_value - $investment > 0) {
+                    $min = $guess;
+                } else {
+                    $max = $guess;
+                }
+                $i++;
+            }
+            return $guess * 100;
+        else:
+            return 0;
+        endif;
+    }
 
+}
 if(!function_exists('pro_params')){
-    function pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp,$geopoints)
+    function pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, $geopoints)
     {
         //echo("Using helper!");
         // echo("using default values: $captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, \n ");
         //globals
+        $captive_use = $captive_use/100;
         $distance_per_pixel = 0.3677;
         $area_per_pix =  $distance_per_pixel**2;
         //area, in pixels, of a standard 1.6x0.99m size
@@ -23,6 +52,7 @@ if(!function_exists('pro_params')){
         $panel_degradation = 0.99; //%1 degradation
         $annual_depreciation = 0.1;
         $corporate_tax_rate = 0.21;
+        $wacc = 0.05;
         $residential_threshold = 10; //treat systems below this size as residential.  above, assume tax benefits claimed etc
         $co2_saved_per_kwh = 0.5; //rensmart.com/Calculators/KWH-to-CO2 also breaks down different electricity sources.  Since UK hardly uses coal and oil any more, we should view the gas-based generation as what our solar generation replaces, so 0.5kg/kWh
         $embedded_co2_per_kwp = 2142; //kg. renewableenergyhub.co.uk/main/solar-panels/solar-panels-carbon-analysis/ suggests 1500kg for manufacture nrel.gov/docs/fy13osti/56487.pdf suggests 60-70% of CO2 due to manufacture, so lets assume 1500/0.7=2142
@@ -43,8 +73,12 @@ if(!function_exists('pro_params')){
         //THE REST OF THESE CALCULATION have to be applied to each site in the project,
         //so LOOP through these sites
         //we will be using these stored values for each stie:
-            //$numpanels. $system_capacity_kWp, $roofclass (from the database);
+        //$numpanels. $system_capacity_kWp, $roofclass (from the database);
         foreach($geopoints as $geopoint){
+            if (empty($geopoint->system_cost_GBP)) {
+                continue;
+            }
+
             //echo("$geopoint->roofclass");
             $roofclass = $geopoint->roofclass;
             if($roofclass == 's'){
@@ -92,14 +126,15 @@ if(!function_exists('pro_params')){
                 $c= 500 * ($sys_cost_5kw / 1200);
             }
             $sys_cost = $c * $sys_cap;
-            if($sys_cap < 10){
+            if($sys_cap < $residential_threshold){
                 $electric_price = $domestic_tariff; //default value is set in controller method
             } else {
                 $electric_price = $commercial_tariff;  //default value is set in controller method
             }
+
             //as per Phil, these should not need recalculating, just use stored values (unless panel rating is added to pro interface)
             //means no need to update geopoint data in the following variables: (marked by corresponding database column name)
-                //annual_gen_kwh:
+            //annual_gen_kwh:
             // $annual_gen_kwh = $sys_cap * $gen_per_year_per_kwp;
             //     //annual_saved_co2_kg:
             // $annual_co2_saved = $annual_gen_kwh * $co2_saved_per_kwh;
@@ -127,6 +162,7 @@ if(!function_exists('pro_params')){
             //1. annual_gen_GBP:
             $annual_gen_kwh = $geopoint->annual_gen_kWh;
             $annual_gen_val = ($annual_gen_kwh * $electric_price * $captive_use) + ($annual_gen_kwh * $export_tariff *(1 - $captive_use));
+
             //$annual_gen_val = $annual_gen_kwh * 0.146 * 0.8 + $annual_gen_kwh * 0.055 * 0.2;
             //2. lifetime_gen_GBP:
             if($sys_cap > $residential_threshold){
@@ -135,7 +171,7 @@ if(!function_exists('pro_params')){
                 $lifetime_value = $annual_gen_val * $panel_domestic_lifetime_value_factor;
             }
             //3. lifetime_return_on_investment_percent:
-            
+
             try {
                 $return_on_investment = $lifetime_value / $sys_cost;
             }
@@ -151,37 +187,54 @@ if(!function_exists('pro_params')){
             $ag = $annual_gen_kwh;
             $ep = $electric_price; //came from either domestic tariff or commercial tariff
             $ex = $export_tariff;
-            for($k = 1; $k <= $panel_lifetime; $k++){
-                $tmpv = $ag * $ep * $captive_use + $ag * $ex * (1 - $captive_use); //value of elctricity use + export
+            $cashflow = [];
+            $discountedcashflow = [];
+
+            for ($i = 1; $i <= $panel_lifetime; $i++) {
+                $tmpv = $ag*$ep*$captive_use+$ag*$ex*(1-$captive_use); // value of electricity use and export
                 $dpt = 0;
-                if($sys_cap > $residential_threshold && $k <= (1/$annual_depreciation)){
-                    $dpt = $sys_cost * $annual_depreciation * $corporate_tax_rate; //depreciation tax benefits
+
+                if ($sys_cap > $residential_threshold && $i <= (1/$annual_depreciation)) {
+                    $dpt = $sys_cost*$annual_depreciation*$corporate_tax_rate; // depreciation tax benefits
                 }
-                $tmpv += $dpt;
-                $v += $tmpv;
-                if($v > $sys_cost){
-                    $breakeven = $k;
-                    break;
+
+                $tmpv = $tmpv+$dpt;
+                $cashflow[$i-1] = $tmpv;
+                $discountedcashflow[$i-1] = $tmpv/(1+$wacc)**($i-1);
+                $v = $v+$tmpv;
+
+                if ($v >= $sys_cost && $breakeven < 0) {
+                    $breakeven = $i;
                 }
-                $ag *= $panel_degradation;
-                if($sys_cap > $residential_threshold){
-                    $ep *= $annual_commercial_electric_price_increase;
-                } else{
-                    $ep *= $annual_domestic_electric_price_increase;
+
+                $ag = $ag*$panel_degradation;
+
+                if ($sys_cap > $residential_threshold) {
+                    $ep = $ep*$annual_commercial_electric_price_increase;
+                } else {
+                    $ep = $ep*$annual_domestic_electric_price_increase;
                 }
             }
-            if($breakeven == -1){
-                $breakeven = $panel_lifetime;
+
+            if ($breakeven == -1 || $sys_cost == 0) {
+                $breakeven = 0;
             }
+
+            $internal_rate_of_return_discounted=0;
+            // $internal_rate_of_return_simple=0;
+            if ($sys_cost > 0) {
+                $internal_rate_of_return_discounted = IRR($sys_cost, $discountedcashflow);
+               // $internal_rate_of_return_simple = IRR($sys_cost, $cashflow);
+            }
+
             //update all the changed params on a geopoint
             $geopoint -> system_cost_GBP = $sys_cost;
             $geopoint -> annual_gen_GBP = $annual_gen_val;
             $geopoint -> lifetime_gen_GBP = $lifetime_value;
-            $geopoint -> lifetime_return_on_investment_percent = $return_on_investment * 100;
-            $geopoint -> annualized_return_on_investment_percent = $annual_roi * 100;
-            $geopoint ->breakeven_years = $breakeven;
+            $geopoint -> irr_discounted_percent = $internal_rate_of_return_discounted;
+            $geopoint -> breakeven_years = $breakeven;
         }
-        $pro_geopoints = $geopoints;
-        return $pro_geopoints;
+
+        return $geopoints;
     }
 }
