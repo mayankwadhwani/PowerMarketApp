@@ -382,6 +382,8 @@
 
         function renderTable() {
             var jsonString = `{!! $geodata ?? '' !!}`;
+            // on production something breaks json data
+            jsonString = jsonString.replace('"Lu Colciu Rocchi"',"'Lu Colciu Rocchi'");
 
 
             if (jsonString.length > 0) {

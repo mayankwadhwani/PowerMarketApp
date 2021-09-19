@@ -82,25 +82,25 @@ if(!function_exists('pro_params')){
             //echo("$geopoint->roofclass");
             $roofclass = $geopoint->roofclass;
             if($roofclass == 's'){
-                //$gen_per_year_per_kwp = 937; //figure for south facing in gloucester according to NREL
-                //$yr_breakdown_per_kwp = [24,40,74,104,128,132,133,115,83,54,29,21]; //from NREL, gloucester
+                $gen_per_year_per_kwp = 937; //figure for south facing in gloucester according to NREL
+                $yr_breakdown_per_kwp = [24,40,74,104,128,132,133,115,83,54,29,21]; //from NREL, gloucester
                 $spacing_factor = 1;
                 $foreshorten = 1/cos((30*M_PI)/180); //--> 1.1547; assume 30 degree average slope - area will be foreshortened by cos(30)
             }
             else if($roofclass == 'f'){
-                //$gen_per_year_per_kwp = 937; //figure for south facing in gloucester according to NREL - flat should enable optimal angle (e.g. ~15 deg) but need to space racks (or lay flat, but that increases system cost)
-                //$yr_breakdown_per_kwp = [24,40,74,104,128,132,133,115,83,54,29,21];
+                $gen_per_year_per_kwp = 937; //figure for south facing in gloucester according to NREL - flat should enable optimal angle (e.g. ~15 deg) but need to space racks (or lay flat, but that increases system cost)
+                $yr_breakdown_per_kwp = [24,40,74,104,128,132,133,115,83,54,29,21];
                 $spacing_factor = 1.5; //0.5m spacing between rows so area usual increases by at least factor of 1.5
                 $foreshorten = 1; //no foreshortening of the roof, and 15 deg racks basically no foreshortening
             }
             else if($roofclass == 'i'){
-                //$gen_per_year_per_kwp = 806; //figure for south facing in gloucester according to NREL - flat should enable optimal angle (e.g. ~15 deg) but need to space racks (or lay flat, but that increases system cost)
+                $gen_per_year_per_kwp = 806; //figure for south facing in gloucester according to NREL - flat should enable optimal angle (e.g. ~15 deg) but need to space racks (or lay flat, but that increases system cost)
                 //these two arrays below are used to get the average of each month in the matlab file
-                //$arr1 = [16,30,61,91,119,124,125,102,69,41,20,13];
-                //$arr2 = [16,30,60,90,114,121,122,102,69,42,22,13];
-                //$yr_breakdown_per_kwp = array_map(function(...$arrays){
-                //    return array_sum($arrays) /2;
-                //}, $arr1, $arr2); // --> gives [16, 30, 60.5, 90.5, 116.5, 122.5, 123.5, 102, 69, 41.5, 21, 13]
+                $arr1 = [16,30,61,91,119,124,125,102,69,41,20,13];
+                $arr2 = [16,30,60,90,114,121,122,102,69,42,22,13];
+                $yr_breakdown_per_kwp = array_map(function(...$arrays){
+                    return array_sum($arrays) /2;
+                }, $arr1, $arr2); // --> gives [16, 30, 60.5, 90.5, 116.5, 122.5, 123.5, 102, 69, 41.5, 21, 13]
                 $spacing_factor = 1;
                 $foreshorten = 1/cos(30*M_PI/180); //--> 1.1547
             }
@@ -171,7 +171,13 @@ if(!function_exists('pro_params')){
                 $lifetime_value = $annual_gen_val * $panel_domestic_lifetime_value_factor;
             }
             //3. lifetime_return_on_investment_percent:
-            $return_on_investment = $lifetime_value / $sys_cost;
+
+            try {
+                $return_on_investment = $lifetime_value / $sys_cost;
+            }
+            catch(Exception $ex){
+                $return_on_investment = 0;
+            }
 
             //4. annualized_return_on_investment_percent:
             $annual_roi = (1 + $return_on_investment) ** (1 / $panel_lifetime) - 1;
@@ -179,7 +185,7 @@ if(!function_exists('pro_params')){
             $breakeven = -1;
             $v = 0;
             $ag = $annual_gen_kwh;
-            $ep = $electric_price;
+            $ep = $electric_price; //came from either domestic tariff or commercial tariff
             $ex = $export_tariff;
             $cashflow = [];
             $discountedcashflow = [];
