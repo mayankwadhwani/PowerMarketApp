@@ -357,7 +357,6 @@
 <script src="{{ asset('argon') }}/vendor/datatables.net-select/js/dataTables.select.min.js"></script>
 <script src="{{ asset('argon') }}/vendor/list.js/dist/list.min.js"></script>
 <script src="{{ asset('js') }}/numeral.min.js"></script>
-<script src="{{ asset('js') }}/finance.js"></script>
 <script>
 var monthly_savings = JSON.parse('{!! $monthly_savings ?? '' !!}');
 var monthly_exports = JSON.parse('{!! $monthly_exports ?? '' !!}');
@@ -372,46 +371,15 @@ jsonString = jsonString.replace('"Lu Colciu Rocchi"',"'Lu Colciu Rocchi'");
 var map;
 var finance = new Finance();
 var dataArray = JSON.parse(jsonString);
-var cashflow = [0, 26, 0];
+
 var feature = "";
-var discountedcashflow = [0, 25, 0];
-var panel_lifetime = 25;
-var annual_depreciation = 0.1;
-var corporate_tax_rate = 0.21;
-var panel_degradation = 0.99;
-var annual_commercial_electric_price_increase = 1.05;
-var annual_domestic_electric_price_increase = 1.03;
-var wacc = 0.05;
 var showactivesites = 0;
-var irrfinal = 0;
-var sys_cost_5kw = 1200;
 var totalshowingval  = 0;
 
-@php
-    echo "sys_cost_5kw = ".$currentDBParams['cost_of_small_system']/$currentDBParams['system_size_kwp'].";";
-@endphp
-var sys_cap = sys_cost_5kw;
-var electric_price = 0;
+var feature = "";
+var showactivesites = 0;
+var totalshowingval  = 0;
 
-if(sys_cap < 10){
-    electric_price = {{ $currentDBParams['domestic_tariff'] }}; //default value is set in controller method
-} else {
-    electric_price = {{ $currentDBParams['commercial_tariff'] }};  //default value is set in controller method
-}
-
-var export_tariff = {{ $currentDBParams['export_tariff'] }};
-var captive_use = {{ $currentDBParams['captive_use'] }};
-
-var residential_threshold = 10;
-
-var breakeven = -1;
-var v = 0;
-var c = 0;
-var ag = sys_cap * 937;
-var ep = electric_price; //came from either domestic tariff or commercial tariff
-var ex = export_tariff;
-
-var sys_cost = sys_cost_5kw;
 
 function renderTable() {
 
@@ -441,35 +409,6 @@ function renderTable() {
     var dtData = [];
     for (key = 0; key < dataArray.length; key++) {
 
-        sys_cost = dataArray[key].system_cost_GBP;
-
-        for(var k = 1; k <= panel_lifetime; k++){
-            var tmpv = ag * ep * captive_use + ag * ex * (1 - captive_use); //value of elctricity use + export
-            var dpt = 0;
-            if(sys_cap > residential_threshold && k <= (1/annual_depreciation)){
-                dpt = sys_cost * annual_depreciation * corporate_tax_rate; //depreciation tax benefits
-            }
-            tmpv += dpt;
-            cashflow[k-1]=tmpv;
-            discountedcashflow[k-1]=tmpv/(1+wacc)**(k-1)
-            v += tmpv;
-            if(v > sys_cost){
-                breakeven = k;
-                break;
-            }
-            ag *= panel_degradation;
-            if(sys_cap > residential_threshold){
-                ep *= annual_commercial_electric_price_increase;
-            } else{
-                ep *= annual_domestic_electric_price_increase;
-            }
-        }
-        discountedcashflow.unshift((sys_cost)*(-1));
-
-        var finalirr = finance.IRR(discountedcashflow);
-        finalirr = finalirr/100;
-        finalirr = finalirr.toFixed(2);
-
       dtData[key] = [
           dataArray[key].id,
           numeral(dataArray[key].system_capacity_kWp).format('0,0.0a'),
@@ -479,7 +418,7 @@ function renderTable() {
           numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a'),
           dataArray[key].breakeven_years,
           numeral(dataArray[key].lifetime_return_on_investment_percent).format('0,0.0a'),
-          numeral(finalirr).format('0,0.0a'),
+          numeral(dataArray[key].irr_discounted_percent).format('0,0.0a'),
           numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a'),
           numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a'),
           dataArray[key].address
