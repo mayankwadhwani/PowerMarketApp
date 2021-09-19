@@ -227,14 +227,6 @@ if(!function_exists('pro_params')){
                // $internal_rate_of_return_simple = IRR($sys_cost, $cashflow);
             }
 
-//            dd(
-//                "Syscost: ".$sys_cost,
-//                "DB / FUNC",
-//                "Discount: ".$geopoint->irr_discounted_percent." / ".$internal_rate_of_return_discounted,
-//                $discountedcashflow,
-//                $geopoint
-//            );
-
             //update all the changed params on a geopoint
             $geopoint -> system_cost_GBP = $sys_cost;
             $geopoint -> annual_gen_GBP = $annual_gen_val;
