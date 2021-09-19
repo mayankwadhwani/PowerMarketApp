@@ -369,7 +369,6 @@ var yearly_gen_exports = JSON.parse('{!! $yearly_gen_exports ?? '' !!}');
 var jsonString = `{!! $geodata ?? '' !!}`;
 jsonString = jsonString.replace('"Lu Colciu Rocchi"',"'Lu Colciu Rocchi'");
 var map;
-var finance = new Finance();
 var dataArray = JSON.parse(jsonString);
 
 var feature = "";
