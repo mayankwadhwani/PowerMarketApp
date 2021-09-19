@@ -375,11 +375,6 @@ var feature = "";
 var showactivesites = 0;
 var totalshowingval  = 0;
 
-var feature = "";
-var showactivesites = 0;
-var totalshowingval  = 0;
-
-
 function renderTable() {
 
   var layerPrefix = 'layer-years-';

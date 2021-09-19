@@ -453,27 +453,23 @@ div#calculated-area {
               <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Captive Use." /></label>
 
-                <input type="number" step="any" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="{{ $orgdata['captiveuse'] }}" value="{{ ($prev_inputs['captive_use'] <= 1 ? $prev_inputs['captive_use']*100 : $prev_inputs['captive_use'] ) }}">
+                <input type="number" step="any" name="captive_use" min="1" max="100" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="{{ $orgdata['captiveuse'] }}" value="{{ ($prev_inputs['captive_use'] <= 1 ? $prev_inputs['captive_use']*100 : $prev_inputs['captive_use'] ) }}">
 
                 @include('alerts.feedback', ['field' => 'captive_use'])
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-export-tariff">{{ __('Export Tariff') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Export Tariff." /></label>
-                <input type="number" step="any" name="export_tariff" id="input-export-tariff" class="pro-input form-control{{ $errors->has('export-tariff') ? ' is-invalid' : '' }}" placeholder = "{{ $orgdata['exporttariff'] }}" value="{{ $prev_inputs['export_tariff'] }}">
+                <input type="number" step="any" min="0" name="export_tariff" id="input-export-tariff" class="pro-input form-control{{ $errors->has('export-tariff') ? ' is-invalid' : '' }}" placeholder = "{{ $orgdata['exporttariff'] }}" value="{{ $prev_inputs['export_tariff'] }}">
                 @include('alerts.feedback', ['field' => 'export_tariff'])
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('domestic-tariff') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-domestic-tariff">{{ __('Residential Tariff') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Residential Tariff." /></label>
-                @if(!empty($account))
-                <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="pro-input form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder="{{ $orgdata['residentialtariff'] }}" value="{{ $prev_inputs['domestic_tariff'] }}">
-                @else
-                <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="pro-input form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder="<?php echo $orgdata['residentialtariff']; ?>"  value="{{ $prev_inputs['domestic_tariff'] }}">
-                @endif
+                <input type="number" step="any" min="0.01" name="domestic_tariff" id="input-domestic-tariff" class="pro-input form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder="{{ $orgdata['residentialtariff'] }}" value="{{ $prev_inputs['domestic_tariff'] }}">
                 @include('alerts.feedback', ['field' => 'domestic_tariff'])
               </div>
               <div class="col-sm-2 form-group{{ $errors->has('commercial-tariff') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-commercial-tariff">{{ __('Non-Residential Tariff') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Non-residential Tariff." /></label>
-                <input type="number" step="any" name="commercial_tariff" id="input-commercial-tariff" class="pro-input form-control{{ $errors->has('commercial-tariff') ? ' is-invalid' : '' }}" placeholder = "{{ $orgdata['nonresidentialtariff'] }}" value="{{ $prev_inputs['commercial_tariff'] }}">
+                <input type="number" step="any" min="0.01" name="commercial_tariff" id="input-commercial-tariff" class="pro-input form-control{{ $errors->has('commercial-tariff') ? ' is-invalid' : '' }}" placeholder = "{{ $orgdata['nonresidentialtariff'] }}" value="{{ $prev_inputs['commercial_tariff'] }}">
                 @include('alerts.feedback', ['field' => 'commercial_tariff'])
               </div>
               <div class="col-sm-2 text-left">
@@ -512,22 +508,22 @@ div#calculated-area {
                   <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Captive use." /></label>
 
-                    <input type="number" step="any" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="{{ $orgdata['captiveuse'] }}" value="{{ ($prev_inputs['captive_use'] <= 1 ? $prev_inputs['captive_use']*100 : $prev_inputs['captive_use'] ) }}">
+                    <input type="number" step="any" min="1" max="100" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="{{ $orgdata['captiveuse'] }}" value="{{ ($prev_inputs['captive_use'] <= 1 ? $prev_inputs['captive_use']*100 : $prev_inputs['captive_use'] ) }}">
                     @include('alerts.feedback', ['field' => 'captive_use'])
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-export-tariff">{{ __('Export Tariff') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Export tariff." /></label>
-                    <input type="number" step="any" name="export_tariff" id="input-export-tariff" class="pro-input form-control{{ $errors->has('export-tariff') ? ' is-invalid' : '' }}" placeholder = "{{ $orgdata['exporttariff'] }}" value="{{ $prev_inputs['export_tariff'] }}">
+                    <input type="number" step="any" min="0" name="export_tariff" id="input-export-tariff" class="pro-input form-control{{ $errors->has('export-tariff') ? ' is-invalid' : '' }}" placeholder = "{{ $orgdata['exporttariff'] }}" value="{{ $prev_inputs['export_tariff'] }}">
                     @include('alerts.feedback', ['field' => 'export_tariff'])
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('domestic-tariff') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-domestic-tariff">{{ __('Residential Tariff') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Residential tariff." /></label>
-                      <input type="number" step="any" name="domestic_tariff" id="input-domestic-tariff" class="pro-input form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder="{{ $orgdata['residentialtariff'] }}" value="{{ $prev_inputs['domestic_tariff'] }}">
+                      <input type="number" step="any" min="0.01" name="domestic_tariff" id="input-domestic-tariff" class="pro-input form-control{{ $errors->has('domestic-tariff') ? ' is-invalid' : '' }}" placeholder="{{ $orgdata['residentialtariff'] }}" value="{{ $prev_inputs['domestic_tariff'] }}">
                       @include('alerts.feedback', ['field' => 'domestic_tariff'])
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('commercial-tariff') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-commercial-tariff">{{ __('Non-Residential Tariff') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Non-residential tariff." /></label>
-                    <input type="number" step="any" name="commercial_tariff" id="input-commercial-tariff" class="pro-input form-control{{ $errors->has('commercial-tariff') ? ' is-invalid' : '' }}" placeholder = "{{ $orgdata['nonresidentialtariff'] }}" value="{{ $prev_inputs['commercial_tariff'] }}">
+                    <input type="number" step="any" min="0.01" name="commercial_tariff" id="input-commercial-tariff" class="pro-input form-control{{ $errors->has('commercial-tariff') ? ' is-invalid' : '' }}" placeholder = "{{ $orgdata['nonresidentialtariff'] }}" value="{{ $prev_inputs['commercial_tariff'] }}">
                     @include('alerts.feedback', ['field' => 'commercial_tariff'])
                   </div>
                   <div class="col-sm-2 text-left">
@@ -589,12 +585,12 @@ div#calculated-area {
         <script>
 
         $(document).ready(function(){
-           $("input[name='captive_use']").change(function() {
-            number = $("input[name='captive_use']").val()
-             if( number <= 0 || number > 100 ) {
-                 $("input[name='captive_use']").val("");
-               }
-             });
+           // $("input[name='captive_use']").change(function() {
+           //  number = $("input[name='captive_use']").val()
+           //   if( number <= 0 || number > 100 ) {
+           //       $("input[name='captive_use']").val("");
+           //     }
+           //   });
         });
 
 
@@ -659,7 +655,6 @@ div#calculated-area {
         var feature = "";
         var showactivesites = 0;
         var totalshowingval  = 0;
-
 
         function renderMap() {
 

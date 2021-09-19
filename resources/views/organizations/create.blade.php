@@ -55,34 +55,34 @@
 
                             <div class="form-group{{ $errors->has('captiveuse') ? ' has-danger' : '' }}">
                                 <label class="form-control-label" for="input-captiveuse">{{ __('Captive Use') }}</label>
-                                <input type="text" name="captiveuse" id="input-captiveuse" class="form-control{{ $errors->has('captiveuse') ? ' is-invalid' : '' }}" placeholder="{{ __('80') }}" value="{{ old('captiveuse') }}"  autofocus>
+                                <input type="number" required step="any" min="1" max="100" name="captiveuse" id="input-captiveuse" class="form-control{{ $errors->has('captiveuse') ? ' is-invalid' : '' }}" placeholder="{{ __('80') }}" value="{{ old('captiveuse') }}"  autofocus>
 
                                 @include('alerts.feedback', ['field' => 'captiveuse'])
                             </div>
                             <div class="form-group{{ $errors->has('exporttariff') ? ' has-danger' : '' }}">
                                 <label class="form-control-label" for="input-exporttariff">{{ __('Export Tariff') }}</label>
-                                <input type="text" name="exporttariff" id="input-exporttariff" class="form-control{{ $errors->has('exporttariff') ? ' is-invalid' : '' }}" placeholder="{{ __('0.055') }}" value="{{ old('exporttariff') }}"  autofocus>
+                                <input type="number" step="any" min="0" name="exporttariff" id="input-exporttariff" class="form-control{{ $errors->has('exporttariff') ? ' is-invalid' : '' }}" placeholder="{{ __('0.055') }}" value="{{ old('exporttariff') }}"  autofocus>
 
                                 @include('alerts.feedback', ['field' => 'exporttariff'])
                             </div>
 
                             <div class="form-group{{ $errors->has('residentialtariff') ? ' has-danger' : '' }}">
                                 <label class="form-control-label" for="input-residentialtariff">{{ __('Residential Tariff') }}</label>
-                                <input type="text" name="residentialtariff" id="input-residentialtariff" class="form-control{{ $errors->has('residentialtariff') ? ' is-invalid' : '' }}" placeholder="{{ __('0.146') }}" value="{{ old('residentialtariff') }}"  autofocus>
+                                <input type="number" required step="any" min="0.01" name="residentialtariff" id="input-residentialtariff" class="form-control{{ $errors->has('residentialtariff') ? ' is-invalid' : '' }}" placeholder="{{ __('0.146') }}" value="{{ old('residentialtariff') }}"  autofocus>
 
                                 @include('alerts.feedback', ['field' => 'residentialtariff'])
                             </div>
 
                             <div class="form-group{{ $errors->has('nonresidentialtariff') ? ' has-danger' : '' }}">
                                 <label class="form-control-label" for="input-nonresidentialtariff">{{ __('Non-Residential Tariff') }}</label>
-                                <input type="text" name="nonresidentialtariff" id="input-nonresidentialtariff" class="form-control{{ $errors->has('nonresidentialtariff') ? ' is-invalid' : '' }}" placeholder="{{ __('0.12') }}" value="{{ old('nonresidentialtariff') }}" autofocus>
+                                <input type="number" required step="any" min="0.01" name="nonresidentialtariff" id="input-nonresidentialtariff" class="form-control{{ $errors->has('nonresidentialtariff') ? ' is-invalid' : '' }}" placeholder="{{ __('0.12') }}" value="{{ old('nonresidentialtariff') }}" autofocus>
 
                                 @include('alerts.feedback', ['field' => 'nonresidentialtariff'])
                             </div>
 
                             <div class="form-group{{ $errors->has('currencysymbol') ? ' has-danger' : '' }}">
                                 <label class="form-control-label" for="input-currencysymbol">{{ __('Currency Symbol') }}</label>
-                                <input type="text" name="currencysymbol" id="input-currencysymbol" class="form-control{{ $errors->has('currencysymbol') ? ' is-invalid' : '' }}" placeholder="{{ __('£') }}" value="{{ old('currencysymbol') }}" autofocus>
+                                <input type="text" required name="currencysymbol" id="input-currencysymbol" class="form-control{{ $errors->has('currencysymbol') ? ' is-invalid' : '' }}" placeholder="{{ __('£') }}" value="{{ old('currencysymbol') }}" autofocus>
 
                                 @include('alerts.feedback', ['field' => 'currencysymbol'])
                             </div>
@@ -93,7 +93,7 @@
                         </div>
 
 
-   
+
 
                     </form>
                 </div>
