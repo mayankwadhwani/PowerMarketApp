@@ -183,7 +183,7 @@
 {{--                            <i class="ni ni-calendar-grid-58"></i>--}}
 {{--                            <span>{{ __('Activity') }}</span>--}}
 {{--                        </a>--}}
-                        <a href="mailto: support@powermarket.ai" class="dropdown-item">
+                        <a href="/faq" target="_blank" class="dropdown-item">
                             <i class="ni ni-support-16"></i>
                             <span>{{ __('Support') }}</span>
                         </a>

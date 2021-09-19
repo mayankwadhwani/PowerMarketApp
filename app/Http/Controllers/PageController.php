@@ -379,7 +379,7 @@ class PageController extends Controller
 
     public function faq()
     {
-        return view('pages.termsandconditions');
+        return view('pages.faq');
     }
 
     public function building()
