@@ -35,10 +35,13 @@ if(!function_exists('IRR')){
 if(!function_exists('pro_params')){
     function pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, $geopoints)
     {
+        //dd($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, $geopoints);
         //echo("Using helper!");
         // echo("using default values: $captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, \n ");
         //globals
-        $captive_use = $captive_use/100;
+        if ($captive_use >= 1) {
+            $captive_use = $captive_use/100;
+        }
         $distance_per_pixel = 0.3677;
         $area_per_pix =  $distance_per_pixel**2;
         //area, in pixels, of a standard 1.6x0.99m size

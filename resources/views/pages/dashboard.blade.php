@@ -356,7 +356,7 @@ div#calculated-area {
     </div>
 
     <div class="col text-left" style="margin-bottom: 10px;" id="zero_solar_data_wrp" >
-      <span class="text-nowrap zero-solar-span" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">0 Solar Data &nbsp;</span>
+      <span class="text-nowrap zero-solar-span" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">No Solar Data &nbsp;</span>
       <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
         <input id="zeroSolarData" name="zeroSolarData" type="checkbox">
         <span class="custom-toggle-slider rounded-circle" style=""></span>
@@ -430,11 +430,11 @@ div#calculated-area {
             <div class="input-group" id="input-system-cost-per-kwp">
               {{-- <div class="form-group{{ $errors->has('cost_of_small_system') ? ' has-danger' : '' }}"> --}}
                 {{-- <label class="form-control-label" for="input-cost-of-small-system">{{ __('cost_of_small_system') }}</label> --}}
-                <input type="number" step="any" class="form-control" name="cost_of_small_system" id="input-cost-of-small-system" class="form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['cost_of_small_system'] }}" value="{{ old('cost_of_small_system') }}">
+                <input type="number" step="any" min="500" class="form-control" name="cost_of_small_system" id="input-cost-of-small-system" class="form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['cost_of_small_system'] }}" value="{{ old('cost_of_small_system') }}">
                 @include('alerts.feedback', ['field' => 'cost_of_small_system'])
                 {{-- </div> --}}
                 {{-- <div class="form-group{{ $errors->has('system_size_kwp') ? ' has-danger' : '' }}"> --}}
-                  <input type="number" step="any" class="form-control" name="system_size_kwp" id="input-system-size-kwp" class="form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['system_size_kwp'] }}" value="{{ old('system_size_kwp') }}">
+                  <input type="number" step="any" min="1" max="10" class="form-control" name="system_size_kwp" id="input-system-size-kwp" class="form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder="{{ $currentDBParams['system_size_kwp'] }}" value="{{ old('system_size_kwp') }}">
                   @include('alerts.feedback', ['field' => 'system_size_kwp'])
                   {{-- </div> --}}
                 </div>
@@ -482,11 +482,11 @@ div#calculated-area {
                 <div class="input-group" id="input-system-cost-per-kwp">
                   {{-- <div class="form-group{{ $errors->has('cost_of_small_system') ? ' has-danger' : '' }}"> --}}
                     {{-- <label class="form-control-label" for="input-cost-of-small-system">{{ __('cost_of_small_system') }}</label> --}}
-                    <input type="number" step="any" class="form-control" name="cost_of_small_system" id="input-cost-of-small-system" class="form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}" placeholder="{{ trans('Total Cost: :currencysymbol6000', ['currencysymbol' => $orgdata['currencysymbol']]) }}" value="{{ old('cost_of_small_system') }}">
+                    <input type="number" step="any" min="500" class="form-control" name="cost_of_small_system" id="input-cost-of-small-system" class="form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}" placeholder="{{ trans('Total Cost: :currencysymbol6000', ['currencysymbol' => $orgdata['currencysymbol']]) }}" value="{{ old('cost_of_small_system') }}">
                     @include('alerts.feedback', ['field' => 'cost_of_small_system'])
                     {{-- </div> --}}
                     {{-- <div class="form-group{{ $errors->has('system_size_kwp') ? ' has-danger' : '' }}"> --}}
-                      <input type="number" step="any" class="form-control" name="system_size_kwp" id="input-system-size-kwp" class="form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder="{{ __('System Size: 5kw') }}" value="{{ old('system_size_kwp') }}">
+                      <input type="number" step="any" min="1" max="10" class="form-control" name="system_size_kwp" id="input-system-size-kwp" class="form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder="{{ __('System Size: 5kw') }}" value="{{ old('system_size_kwp') }}">
                       @include('alerts.feedback', ['field' => 'system_size_kwp'])
                       {{-- </div> --}}
                     </div>
@@ -675,8 +675,6 @@ div#calculated-area {
               if(dataArray[key].existingsolar == 'Y'){
                 showactivesites++;
               }
-
-              var feature = "";
 
               if(dataArray[key].breakeven_years == 0){
                  feature = {
