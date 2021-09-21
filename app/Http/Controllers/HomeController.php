@@ -138,16 +138,16 @@ class HomeController extends Controller
         //-----------user input params-------------
         //----laravel blade input seems unable to pass input of type "number" as numeric values----
         //----so manually converting input fields from string to floats in controller, for now-----
-        $captive_use = floatval($orgmaindata['captiveuse'])/100;
+        $captive_use = floatval($orgmaindata['captiveuse']);
         if(!empty($request->captive_use)){
-            $captive_use = floatval($request->captive_use)/100;
+            $captive_use = floatval($request->captive_use);
         }
         $export_tariff_tmp = 0;
         //if(!empty($orgmaindata['export_tariff'])){
         //    $export_tariff_tmp = $orgmaindata['export_tariff'];
         //}
         if(!empty($orgmaindata['exporttariff'])){
-            $export_tariff_tmp = $orgmaindata['exporttariff'];
+            //$export_tariff_tmp = $orgmaindata['exporttariff'];
         }
         $export_tariff = $request->export_tariff ? floatval($request->export_tariff) : $export_tariff_tmp;
 
@@ -230,12 +230,12 @@ class HomeController extends Controller
         //-----------user input params-------------
         //----laravel blade input seems unable to pass input of type "number" as numeric values----
         //----so manually converting input fields from string to floats in controller, for now-----
-        $captive_use = floatval($currentDBParams['captive_use'])/100;
+        $captive_use = floatval($currentDBParams['captive_use']);
         if(!empty($request->captive_use)){
-            $captive_use = floatval($request->captive_use)/100;
+            $captive_use = floatval($request->captive_use);
         }
 
-        $export_tariff_tmp = 0.055;
+        $export_tariff_tmp = 0;
         if(!empty($currentDBParams['export_tariff'])){
             $export_tariff_tmp = $currentDBParams['export_tariff'];
         }
@@ -293,15 +293,6 @@ class HomeController extends Controller
     private function getClusterParams($cluster){
         $firstPoint = $cluster->geopoints->first();
 
-//        $currentParams = [
-//            "captive_use" => 0,
-//            "export_tariff" => $firstPoint->pivot->export_tariff,
-//            "domestic_tariff" => $firstPoint->pivot->domestic_tariff,
-//            "commercial_tariff" => 0,
-//            "cost_of_small_system" => 0,
-//            "system_size_kwp" => 0
-//        ];
-
         $currentParams = [
             "captive_use" => $firstPoint->pivot->captive_use,
             "export_tariff" => $firstPoint->pivot->export_tariff,
@@ -325,7 +316,7 @@ class HomeController extends Controller
         }
 
         $currentDBParams = $this->getClusterParams($cluster);
-        $geopoints = $cluster->geopoints;
+        $geopoints = pro_params($currentDBParams['captive_use'], $currentDBParams['export_tariff'], $currentDBParams['domestic_tariff'], $currentDBParams['commercial_tariff'], $currentDBParams['cost_of_small_system'], $currentDBParams['system_size_kwp'], $cluster->geopoints);
 
         return view('pages.dashboard', [
             'geodata' => $geopoints,

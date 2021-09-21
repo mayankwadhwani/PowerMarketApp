@@ -368,9 +368,9 @@ div#calculated-area {
     </div>
 
     <div class="col text-left" style="margin-bottom: 10px;" id="zero_solar_data_wrp">
-      <span class="text-nowrap zero-solar-span" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">0 Solar Data &nbsp;</span>
+      <span class="text-nowrap zero-solar-span" style="font-size: .75rem; margin-right: .5rem; margin-bottom: .5rem;">No Solar Data &nbsp;</span>
       <label class="custom-toggle checkbox-inline btn-sm mr-0" style="">
-        <input id="zeroSolarData" type="checkbox">
+        <input id="zeroSolarData" name="zeroSolarData" type="checkbox">
         <span class="custom-toggle-slider rounded-circle" style=""></span>
       </label>
     </div>
@@ -441,11 +441,11 @@ div#calculated-area {
             <div class="input-group" id="input-system-cost-per-kwp">
               {{-- <div class="form-group{{ $errors->has('cost_of_small_system') ? ' has-danger' : '' }}"> --}}
                 {{-- <label class="form-control-label" for="input-cost-of-small-system">{{ __('cost_of_small_system') }}</label> --}}
-                <input type="number" step="any" name="cost_of_small_system" id="input-cost-of-small-system" class="pro-input form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}" placeholder = "{{ trans('Total Cost: :currencysymbol6000', ['currencysymbol' => $orgdata['currencysymbol']]) }}" value="{{ $prev_inputs['cost_of_small_system'] }}">
+                <input type="number" step="any" min="500" name="cost_of_small_system" id="input-cost-of-small-system" class="pro-input form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}" placeholder = "{{ trans('Total Cost: :currencysymbol6000', ['currencysymbol' => $orgdata['currencysymbol']]) }}" value="{{ $prev_inputs['cost_of_small_system'] }}">
                 @include('alerts.feedback', ['field' => 'cost_of_small_system'])
                 {{-- </div> --}}
                 {{-- <div class="form-group{{ $errors->has('system_size_kwp') ? ' has-danger' : '' }}"> --}}
-                  <input type="number" step="any" name="system_size_kwp" id="input-system-size-kwp" class="pro-input form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder = "5" value="{{ $prev_inputs['system_size_kwp'] }}">
+                  <input type="number" step="any" min="1" max="10" name="system_size_kwp" id="input-system-size-kwp" class="pro-input form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder = "5" value="{{ $prev_inputs['system_size_kwp'] }}">
                   @include('alerts.feedback', ['field' => 'system_size_kwp'])
                   {{-- </div> --}}
                 </div>
@@ -453,7 +453,7 @@ div#calculated-area {
               <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                 <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Captive Use." /></label>
 
-                <input type="number" step="any" name="captive_use" min="1" max="100" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="{{ $orgdata['captiveuse'] }}" value="{{ ($prev_inputs['captive_use'] <= 1 ? $prev_inputs['captive_use']*100 : $prev_inputs['captive_use'] ) }}">
+                <input type="number" step="any" name="captive_use" min="1" max="100" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="{{ $orgdata['captiveuse'] }}" value="{{ $prev_inputs['captive_use'] }}">
 
                 @include('alerts.feedback', ['field' => 'captive_use'])
               </div>
@@ -496,11 +496,11 @@ div#calculated-area {
                 <div class="input-group" id="input-system-cost-per-kwp">
                   {{-- <div class="form-group{{ $errors->has('cost_of_small_system') ? ' has-danger' : '' }}"> --}}
                     {{-- <label class="form-control-label" for="input-cost-of-small-system">{{ __('cost_of_small_system') }}</label> --}}
-                    <input type="number" step="any" name="cost_of_small_system" id="input-cost-of-small-system" class="pro-input form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}"  placeholder="{{ trans('Total Cost: :currencysymbol6000', ['currencysymbol' => $orgdata['currencysymbol']]) }}" value="{{ $prev_inputs['cost_of_small_system'] }}">
+                    <input type="number" step="any" min="500" name="cost_of_small_system" id="input-cost-of-small-system" class="pro-input form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}"  placeholder="{{ trans('Total Cost: :currencysymbol6000', ['currencysymbol' => $orgdata['currencysymbol']]) }}" value="{{ $prev_inputs['cost_of_small_system'] }}">
                     @include('alerts.feedback', ['field' => 'cost_of_small_system'])
                     {{-- </div> --}}
                     {{-- <div class="form-group{{ $errors->has('system_size_kwp') ? ' has-danger' : '' }}"> --}}
-                      <input type="number" step="any" name="system_size_kwp" id="input-system-size-kwp" class="pro-input form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder = "5" value="{{ $prev_inputs['system_size_kwp'] }}">
+                      <input type="number" step="any" min="1" max="10" name="system_size_kwp" id="input-system-size-kwp" class="pro-input form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder = "5" value="{{ $prev_inputs['system_size_kwp'] }}">
                       @include('alerts.feedback', ['field' => 'system_size_kwp'])
                       {{-- </div> --}}
                     </div>
@@ -508,7 +508,7 @@ div#calculated-area {
                   <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Captive use." /></label>
 
-                    <input type="number" step="any" min="1" max="100" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="{{ $orgdata['captiveuse'] }}" value="{{ ($prev_inputs['captive_use'] <= 1 ? $prev_inputs['captive_use']*100 : $prev_inputs['captive_use'] ) }}">
+                    <input type="number" step="any" min="1" max="100" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="{{ $orgdata['captiveuse'] }}" value="{{ $prev_inputs['captive_use'] }}">
                     @include('alerts.feedback', ['field' => 'captive_use'])
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
@@ -939,7 +939,7 @@ div#calculated-area {
 
                 var data = draw.getAll();
 
-                console.log(features_temp);
+                //console.log(features_temp);
 
 
                 var answer = document.getElementById('calculated-area');
@@ -973,7 +973,7 @@ div#calculated-area {
                   totallength = totallength + ptsWithin.features.length;
 
 
-                  console.log('data22');
+                  //console.log('data22');
 
                   features_temp.forEach(function(featuremain) {
 
@@ -982,7 +982,7 @@ div#calculated-area {
 
                               if(featuresingle.geometry.coordinates[0] == featuremain.geometry.coordinates[0] && featuresingle.geometry.coordinates[1] == featuremain.geometry.coordinates[1]){
 
-                                console.log(featuremain);
+                                //console.log(featuremain);
                                 if(featuremain.properties.solarData != 'Y'){
                                   if(!allpolyginptn.includes(featuremain.properties.id)){
                                     allpolyginptn.push(featuremain.properties.id);
