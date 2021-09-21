@@ -76,7 +76,7 @@ if(!function_exists('pro_params')){
         //$numpanels. $system_capacity_kWp, $roofclass (from the database);
         foreach($geopoints as $geopoint){
             if (empty($geopoint->system_cost_GBP)) {
-                continue;
+                //continue;
             }
 
             //echo("$geopoint->roofclass");
@@ -223,7 +223,7 @@ if(!function_exists('pro_params')){
             $internal_rate_of_return_discounted=0;
             // $internal_rate_of_return_simple=0;
             if ($sys_cost > 0) {
-                $internal_rate_of_return_discounted = IRR($sys_cost, $discountedcashflow);
+                $internal_rate_of_return_discounted = round(IRR($sys_cost, $discountedcashflow), 3);
                // $internal_rate_of_return_simple = IRR($sys_cost, $cashflow);
             }
 

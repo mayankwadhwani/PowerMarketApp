@@ -60,6 +60,7 @@ class HomeController extends Controller
         if ($account == null) {
             return abort(404);
         }
+
         $org = $user->organization;
         if ($user->isOrgAdmin() && $account_name != Controller::DEFAULT_ACCOUNT) {
             if ($org == null) return abort(404);
@@ -77,10 +78,11 @@ class HomeController extends Controller
             unset($region_ids[$key]);
         }
 
-
         $geopoints = Geopoint::whereIn('region_id', $region_ids)->get();
+        $pro_geopoints = pro_params($org['captiveuse'], $org['exporttariff'], $org['residentialtariff'], $org['nonresidentialtariff'], 6000, 5 , $geopoints);
+
         return view('pages.dashboard', [
-            'geodata' => $geopoints,
+            'geodata' => $pro_geopoints,
             'account' => $account_name,
             'orgdata' => $user->organization->toArray()
         ]);
