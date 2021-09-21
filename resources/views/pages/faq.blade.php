@@ -21,40 +21,33 @@
 <div class="container mt--8 pb-5">
   <div class="container mt--8 pb-5">
     <div class="row justify-content-center">
-      <div class="col-lg-10">
+      <div class="col-lg-12">
         <div class="pricing card-group flex-column flex-md-row mb-3">
           <div class="card card-pricing border-0 text-center mb-4">
             <div class="card-header bg-transparent">
-              <h4 class="text-uppercase ls-1 text-primary py-3 mb-0">Terms of</h4>
+              <h4 class="text-uppercase ls-1 text-primary py-3 mb-0">Frequently Asked Questions</h4>
             </div>
             <div class="card-body px-lg-7">
               <!-- <embed src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions.pdf" width="700px" height="2100px" > -->
 
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_01.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_02.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_03.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_04.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_05.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_06.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_07.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_08.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_09.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_10.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_11.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_12.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_13.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_14.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_15.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_16.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_17.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_18.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_19.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_20.png" width="100%"  >
-              <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_21.png" width="100%"  >
+              <!-- <img src="{{ asset('argon') }}/tc/PowerMarket Platform - Terms and Conditions_Page_01.png" width="100%"  > -->
+              <h3 class="mb-4 mt-4 text-left">Drawing Polygons</h3>
+
+              <h4 class="mb-3 text-left">Polygons are a third way in which you can make organise sites and create and share projects.</h4>
+
+              <p class="mb-2 text-left">1. Use the breakeven legend on the right side to filter down your results.</p>
+              <p class="mb-2 text-left">2. Select polygon edit button at the top right of your explorer (map) view.</p>
+              <p class="mb-2 text-left">3. With the edit tool engaged, select a starting vertex for your polygon.</p>
+              <p class="mb-2 text-left">4. Draw a cluster around the sites you want to include. Click to add a vertex.</p>
+              <p class="mb-2 text-left">5. Press 'enter' to enable create project from polygon card below map.</p>
+              <p class="mb-6 text-left">6. Name your project and save it. It will now be accessible via your main dashboard.</p>
+              <p class="mb-6 text-left"> <img src="https://res.cloudinary.com/dqwrhv4ue/image/upload/v1632110308/ezgif.com-gif-maker_1_s9mm6e.gif" alt="PowerMarket Polygon" width="700"></p>
+
 
             </div>
             <div class="card-footer">
-            <a href="mailto: abhinav.jain@powermarket.net"><button type="button" class="btn btn-primary m-3" style="max-width: auto;">Questions about our Terms of Use?</button></a>
+            <h4 class="mb-2 mt-4">Still have questions or want to help improve the FAQ?</h4>
+            <a href="mailto: lucas.porterbakker@powermarket.net"><button type="button" class="btn btn-primary m-3" style="max-width: auto;">Contact Help</button></a>
             <!-- <a href="mailto: abhinav.jain@powermarket.net" target="_blank" class="text-light">Upgrade to generate your own</a> -->
           </div>
           </div>
