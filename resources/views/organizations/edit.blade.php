@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="form-group{{ $errors->has('exporttariff') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-exporttariff">{{ __('Export Tariff') }}</label>
-                                    <input type="number" min="0" name="exporttariff" id="input-exporttariff" class="form-control{{ $errors->has('exporttariff') ? ' is-invalid' : '' }}" placeholder="{{ __('0.055') }}" value="{{ old('name', $organization->exporttariff) }}"  autofocus>
+                                    <input type="number" step="any" min="0" name="exporttariff" id="input-exporttariff" class="form-control{{ $errors->has('exporttariff') ? ' is-invalid' : '' }}" placeholder="{{ __('0.055') }}" value="{{ old('name', $organization->exporttariff) }}"  autofocus>
 
                                     @include('alerts.feedback', ['field' => 'exporttariff'])
                                 </div>
