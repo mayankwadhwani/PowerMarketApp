@@ -353,22 +353,15 @@
     <script src="{{ asset('argon') }}/vendor/list.js/dist/list.min.js"></script>
     <script src="{{ asset('js') }}/numeral.min.js"></script>
     <script>
-        var monthly_savings = JSON.parse('{!! $monthly_savings ?? '
-            ' !!}');
-        var monthly_exports = JSON.parse('{!! $monthly_exports ?? '
-            ' !!}');
-        var saved_co2 = JSON.parse('{!! $saved_co2 ?? '
-            ' !!} ');
-        var monthly_gen_captive = JSON.parse('{!! $monthly_gen_captive ?? '
-             ' !!}');
-        var monthly_gen_exports = JSON.parse('{!! $monthly_gen_exports ?? '
-             ' !!}');
-        var yearly_gen_captive = JSON.parse('{!! $yearly_gen_captive ?? '
-             ' !!}');
-        var yearly_gen_exports = JSON.parse('{!! $yearly_gen_exports ?? '
-             ' !!}');
-        var jsonString = `{!! $geodata ?? '
-    ' !!}`;
+        var monthly_savings = JSON.parse('{!! $monthly_savings ?? '' !!}');
+        var monthly_exports = JSON.parse('{!! $monthly_exports ?? '' !!}');
+        var saved_co2 = JSON.parse('{!! $saved_co2 ?? '' !!} ');
+        var monthly_gen_captive = JSON.parse('{!! $monthly_gen_captive ?? '' !!}');
+        var monthly_gen_exports = JSON.parse('{!! $monthly_gen_exports ?? '' !!}');
+        var yearly_gen_captive = JSON.parse('{!! $yearly_gen_captive ?? '' !!}');
+        var yearly_gen_exports = JSON.parse('{!! $yearly_gen_exports ?? '' !!}');
+        var jsonString = `{!! $geodata ?? '' !!}`;
+        jsonString = jsonString.replace('"Lu Colciu Rocchi"',"'Lu Colciu Rocchi'");
         var dataArray = JSON.parse(jsonString);
 
         function renderTable() {
