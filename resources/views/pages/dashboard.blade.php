@@ -482,11 +482,11 @@ div#calculated-area {
                 <div class="input-group" id="input-system-cost-per-kwp">
                   {{-- <div class="form-group{{ $errors->has('cost_of_small_system') ? ' has-danger' : '' }}"> --}}
                     {{-- <label class="form-control-label" for="input-cost-of-small-system">{{ __('cost_of_small_system') }}</label> --}}
-                    <input type="number" step="any" min="500" class="form-control" name="cost_of_small_system" id="input-cost-of-small-system" class="form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}" placeholder="{{ trans('Total Cost: :currencysymbol6000', ['currencysymbol' => $orgdata['currencysymbol']]) }}" value="{{ old('cost_of_small_system') }}">
+                    <input type="number" step="any" min="500" class="form-control" name="cost_of_small_system" id="input-cost-of-small-system" class="form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}" placeholder="{{ $orgdata['system_cost'] }}" value="{{ old('cost_of_small_system') }}">
                     @include('alerts.feedback', ['field' => 'cost_of_small_system'])
                     {{-- </div> --}}
                     {{-- <div class="form-group{{ $errors->has('system_size_kwp') ? ' has-danger' : '' }}"> --}}
-                      <input type="number" step="any" min="1" max="10" class="form-control" name="system_size_kwp" id="input-system-size-kwp" class="form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder="{{ __('System Size: 5kw') }}" value="{{ old('system_size_kwp') }}">
+                      <input type="number" step="any" min="1" max="10" class="form-control" name="system_size_kwp" id="input-system-size-kwp" class="form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder="{{ $orgdata['system_size'] }}" value="{{ old('system_size_kwp') }}">
                       @include('alerts.feedback', ['field' => 'system_size_kwp'])
                       {{-- </div> --}}
                     </div>

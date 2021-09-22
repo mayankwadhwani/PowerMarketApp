@@ -441,11 +441,11 @@ div#calculated-area {
             <div class="input-group" id="input-system-cost-per-kwp">
               {{-- <div class="form-group{{ $errors->has('cost_of_small_system') ? ' has-danger' : '' }}"> --}}
                 {{-- <label class="form-control-label" for="input-cost-of-small-system">{{ __('cost_of_small_system') }}</label> --}}
-                <input type="number" step="any" min="500" name="cost_of_small_system" id="input-cost-of-small-system" class="pro-input form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}" placeholder = "{{ trans('Total Cost: :currencysymbol6000', ['currencysymbol' => $orgdata['currencysymbol']]) }}" value="{{ $prev_inputs['cost_of_small_system'] }}">
+                <input type="number" step="any" min="500" name="cost_of_small_system" id="input-cost-of-small-system" class="pro-input form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}" placeholder = "{{ $orgdata['system_cost'] }}" value="{{ $prev_inputs['cost_of_small_system'] }}">
                 @include('alerts.feedback', ['field' => 'cost_of_small_system'])
                 {{-- </div> --}}
                 {{-- <div class="form-group{{ $errors->has('system_size_kwp') ? ' has-danger' : '' }}"> --}}
-                  <input type="number" step="any" min="1" max="10" name="system_size_kwp" id="input-system-size-kwp" class="pro-input form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder = "5" value="{{ $prev_inputs['system_size_kwp'] }}">
+                  <input type="number" step="any" min="1" max="10" name="system_size_kwp" id="input-system-size-kwp" class="pro-input form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder = "{{ $orgdata['system_size'] }}" value="{{ $prev_inputs['system_size_kwp'] }}">
                   @include('alerts.feedback', ['field' => 'system_size_kwp'])
                   {{-- </div> --}}
                 </div>
@@ -496,11 +496,11 @@ div#calculated-area {
                 <div class="input-group" id="input-system-cost-per-kwp">
                   {{-- <div class="form-group{{ $errors->has('cost_of_small_system') ? ' has-danger' : '' }}"> --}}
                     {{-- <label class="form-control-label" for="input-cost-of-small-system">{{ __('cost_of_small_system') }}</label> --}}
-                    <input type="number" step="any" min="500" name="cost_of_small_system" id="input-cost-of-small-system" class="pro-input form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}"  placeholder="{{ trans('Total Cost: :currencysymbol6000', ['currencysymbol' => $orgdata['currencysymbol']]) }}" value="{{ $prev_inputs['cost_of_small_system'] }}">
+                    <input type="number" step="any" min="500" name="cost_of_small_system" id="input-cost-of-small-system" class="pro-input form-control{{ $errors->has('cost_of_small_system') ? ' is-invalid' : '' }}"  placeholder = "{{ $orgdata['system_cost'] }}" value="{{ $prev_inputs['cost_of_small_system'] }}">
                     @include('alerts.feedback', ['field' => 'cost_of_small_system'])
                     {{-- </div> --}}
                     {{-- <div class="form-group{{ $errors->has('system_size_kwp') ? ' has-danger' : '' }}"> --}}
-                      <input type="number" step="any" min="1" max="10" name="system_size_kwp" id="input-system-size-kwp" class="pro-input form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder = "5" value="{{ $prev_inputs['system_size_kwp'] }}">
+                      <input type="number" step="any" min="1" max="10" name="system_size_kwp" id="input-system-size-kwp" class="pro-input form-control{{ $errors->has('system_size_kwp') ? ' is-invalid' : '' }}" placeholder = "{{ $orgdata['system_size'] }}" value="{{ $prev_inputs['system_size_kwp'] }}">
                       @include('alerts.feedback', ['field' => 'system_size_kwp'])
                       {{-- </div> --}}
                     </div>
@@ -508,7 +508,7 @@ div#calculated-area {
                   <div class="col-sm-2 form-group{{ $errors->has('captive-use') ? ' has-danger' : '' }}">
                     <label class="form-control-label" for="input-captive-use">{{ __('Captive Use') }} <img src="{{ asset('svg') }}/info.svg" style="width: 10px; margin-bottom: 15px;"data-toggle="tooltip" title="Captive use." /></label>
 
-                    <input type="number" step="any" min="1" max="100" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder="{{ $orgdata['captiveuse'] }}" value="{{ $prev_inputs['captive_use'] }}">
+                    <input type="number" step="any" min="1" max="100" name="captive_use" id="input-captive-use" class="pro-input form-control{{ $errors->has('captive_use') ? ' is-invalid' : '' }}" placeholder = "{{ $orgdata['captiveuse'] }}" value="{{ $prev_inputs['captive_use'] }}">
                     @include('alerts.feedback', ['field' => 'captive_use'])
                   </div>
                   <div class="col-sm-2 form-group{{ $errors->has('export-tariff') ? ' has-danger' : '' }}">
