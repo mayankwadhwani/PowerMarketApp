@@ -52,7 +52,18 @@
 
 
                             <!-- New fields on the region -->
+                            <div class="form-group{{ $errors->has('system_cost') ? ' has-danger' : '' }}">
+                                <label class="form-control-label" for="input-system_cost">{{ __('System cost') }}</label>
+                                <input type="number" required step="any" min="0" name="system_cost" id="input-system_cost" class="form-control{{ $errors->has('system_cost') ? ' is-invalid' : '' }}" placeholder="{{ __('6000') }}" value="{{ old('system_cost') }}"  autofocus>
 
+                                @include('alerts.feedback', ['field' => 'system_cost'])
+                            </div>
+                            <div class="form-group{{ $errors->has('system_size') ? ' has-danger' : '' }}">
+                                <label class="form-control-label" for="input-system_size">{{ __('System size') }}</label>
+                                <input type="number" required step="any" min="1" max="10" name="system_size" id="input-system_size" class="form-control{{ $errors->has('system_size') ? ' is-invalid' : '' }}" placeholder="{{ __('5') }}" value="{{ old('system_size') }}"  autofocus>
+
+                                @include('alerts.feedback', ['field' => 'system_size'])
+                            </div>
                             <div class="form-group{{ $errors->has('captiveuse') ? ' has-danger' : '' }}">
                                 <label class="form-control-label" for="input-captiveuse">{{ __('Captive Use') }}</label>
                                 <input type="number" required step="any" min="1" max="100" name="captiveuse" id="input-captiveuse" class="form-control{{ $errors->has('captiveuse') ? ' is-invalid' : '' }}" placeholder="{{ __('80') }}" value="{{ old('captiveuse') }}"  autofocus>

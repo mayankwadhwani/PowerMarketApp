@@ -41,6 +41,8 @@ class OrganizationController extends Controller
     {
         $organization = Organization::create([
             'name' => $request->name,
+            'system_cost' => $request->system_cost,
+            'system_size' => $request->system_size,
             'captiveuse' => $request->captiveuse,
             'exporttariff' => $request->exporttariff,
             'residentialtariff' => $request->residentialtariff,
@@ -80,6 +82,12 @@ class OrganizationController extends Controller
         if ($request->filled('name')) {
             $organization->name = $request->name;
         }
+        if ($request->filled('system_cost')) {
+            $organization->system_cost = $request->system_cost;
+        }
+        if ($request->filled('system_size')) {
+            $organization->system_size = $request->system_size;
+        }
         if ($request->filled('captiveuse')) {
             $organization->captiveuse = $request->captiveuse;
         }
@@ -95,7 +103,7 @@ class OrganizationController extends Controller
         if ($request->filled('currencysymbol')) {
             $organization->currencysymbol = $request->currencysymbol;
         }
-        
+
 
         $organization->save();
 

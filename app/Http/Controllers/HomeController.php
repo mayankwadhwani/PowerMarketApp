@@ -168,8 +168,8 @@ class HomeController extends Controller
 
 
         $commercial_tariff = $request->commercial_tariff ? floatval($request->commercial_tariff) : $commercial_tariff_tmp;
-        $cost_of_small_system = $request->cost_of_small_system ? floatval($request->cost_of_small_system) : 6000;
-        $system_size_kwp = $request->system_size_kwp ? floatval($request->system_size_kwp) : 5;
+        $cost_of_small_system = $request->cost_of_small_system ? floatval($request->cost_of_small_system) : $orgmaindata['system_cost'];
+        $system_size_kwp = $request->system_size_kwp ? floatval($request->system_size_kwp) : $orgmaindata['system_size'];
         $test_geopoint = $geopoints->where("id", 19483);
         $pro_geopoints = pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp , $geopoints);
         //dd($geopoints->where('id', 17499));
@@ -248,18 +248,18 @@ class HomeController extends Controller
             $domestic_tariff = $currentDBParams['domestic_tariff'];
         }
 
-        $commercial_tariff_tmp = 0.12;
-        if(!empty($currentDBParams['commercial_tariff'])){
+        $commercial_tariff_tmp = $orgData['nonresidentialtariff'];
+        if ($currentDBParams['commercial_tariff'] != '') {
             $commercial_tariff_tmp = $currentDBParams['commercial_tariff'];
         }
 
-        $cost_of_small_system_tmp = 6000;
-        if (!empty($currentDBParams['cost_of_small_system'])) {
+        $cost_of_small_system_tmp = $orgData['system_cost'];
+        if ($currentDBParams['cost_of_small_system'] != '') {
             $cost_of_small_system_tmp = $currentDBParams['cost_of_small_system'];
         }
 
-        $system_size_kwp_tmp = 5;
-        if (!empty($currentDBParams['system_size_kwp'])) {
+        $system_size_kwp_tmp = $orgData['system_size'];
+        if ($currentDBParams['system_size_kwp'] != '') {
             $system_size_kwp_tmp = $currentDBParams['system_size_kwp'];
         }
 
