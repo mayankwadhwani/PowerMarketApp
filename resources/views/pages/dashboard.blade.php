@@ -777,8 +777,8 @@ div#calculated-area {
             totalCount = dataArray.length;
             selectedCount = totalCount;
 
-            $('#total-count').text(numeral(dataArray.length - totalshowingval).format('0,0'));
-            $('#selected-count').text(numeral(dataArray.length - totalshowingval).format('0,0'));
+            $('#total-count').text(numeral(dataArray.length).format('0,0'));
+            $('#selected-count').text(numeral(totalshowingval).format('0,0'));
            // $('#total-count').text(numeral(dataArray.length).format('0,0'));
            // $('#selected-count').text(numeral(dataArray.length).format('0,0'));
 
@@ -854,15 +854,15 @@ div#calculated-area {
 
                 // When the checkbox changes, update the visibility of the layer.
                 input.addEventListener('change', function(e) {
+
                   var features_temp = [];
                   var selectecheckboxes = [];
 
                   var templayer = layerID.split("layer-years-");
                   var yeartemp = templayer[1];
+                  totalshowingval = 0;
 
                   yeartemp = parseInt(yeartemp);
-
-
 
                   $("#filter-group input:checkbox:checked").each(function(){
                       var slchec = $(this).attr("id");
@@ -878,11 +878,14 @@ div#calculated-area {
                     if(selectecheckboxes.includes(feature.properties.years)){
                       if($("#zeroSolarData").is(':checked')){
                            features_temp.push(feature);
+                           totalshowingval++;
                       } else {
                          if(feature.properties.solarData == 'N'){
                           features_temp.push(feature);
+                          totalshowingval++;
                         }
                       }
+
 
                     }
                   });
@@ -903,7 +906,7 @@ div#calculated-area {
                   selectedCount = selectedCount + symbolCountMap[symbol];
                   else
                   selectedCount = selectedCount - symbolCountMap[symbol];
-                  $('#selected-count').text(numeral(selectedCount).format('0,0'));
+                  $('#selected-count').text(numeral(totalshowingval).format('0,0'));
                   $('.poly-ms').text(numeral(selectedCount).format('0,0'));
 
                 $("#calculated-area-container").slideDown();
@@ -1120,6 +1123,7 @@ div#calculated-area {
 
                 var features_temp = [];
                 var selectecheckboxes = [];
+                totalshowingval = 0;
 
 
 
@@ -1137,9 +1141,11 @@ div#calculated-area {
                   if(selectecheckboxes.includes(feature.properties.years)){
                     if($("#zeroSolarData").is(':checked')){
                          features_temp.push(feature);
+                         totalshowingval++;
                     } else {
                        if(feature.properties.solarData == 'N'){
                         features_temp.push(feature);
+                        totalshowingval++;
                       }
                     }
 
@@ -1200,9 +1206,9 @@ div#calculated-area {
 
 
             $(document).on('change', '[name="zeroSolarData"]', function() {
-
-                var features_temp = [];
-                var selectecheckboxes = [];
+                features_temp = [];
+                selectecheckboxes = [];
+                var totalshowingval = 0;
                 var checkbox = $(this), // Selected or current checkbox
                     value = checkbox.val(); // Value of checkbox
 
@@ -1219,8 +1225,9 @@ div#calculated-area {
                     features.forEach(function(feature) {
                      // console.log(feature.properties.years);
                         if(selectecheckboxes.includes(feature.properties.years)){
-                            if(feature.properties.solarData == 'Y' || feature.properties.solarData == 'N'){
+                            if(feature.properties.solarData === 'Y' || feature.properties.solarData === 'N'){
                               features_temp.push(feature);
+                                totalshowingval++;
                             }
                         }
                     });
@@ -1231,24 +1238,25 @@ div#calculated-area {
                     });
 
                     $('#total-count').text(numeral(dataArray.length).format('0,0'));
-                    $('#selected-count').text(numeral(dataArray.length).format('0,0'));
+                    $('#selected-count').text(numeral(totalshowingval).format('0,0'));
                     $('.poly-ms').text($("#total-count").html());
 
                   }
                   else{
-
-                    $('#total-count').text(numeral(dataArray.length - totalshowingval).format('0,0'));
-                    $('#selected-count').text(numeral(dataArray.length - totalshowingval).format('0,0'));
-                    $('.poly-ms').text($("#total-count").html());
 
                     features.forEach(function(feature) {
                      // console.log(feature.properties.years);
                         if(selectecheckboxes.includes(feature.properties.years)){
                             if(feature.properties.solarData == 'N'){
                               features_temp.push(feature);
+                                totalshowingval++;
                             }
                         }
                     });
+
+                     $('#total-count').text(numeral(dataArray.length).format('0,0'));
+                     $('#selected-count').text(numeral(totalshowingval).format('0,0'));
+                     $('.poly-ms').text($("#total-count").html());
 
                     map.getSource('places').setData({
                       'type': 'FeatureCollection',
