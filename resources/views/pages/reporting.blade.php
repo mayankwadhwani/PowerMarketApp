@@ -26,7 +26,13 @@
                     <div class="card card-pricing border-0 mb-4">
                         <div class="card-header bg-transparent">
                           <h4 class="text-uppercase ls-1 text-primary text-center py-3 mb-0">Report for:</h4>
-                          <h2 class="text-uppercase ls-1 text-primary text-center py-3 mb-0">{{ $address ?? ''}}</h2>
+                            <h2 class="text-uppercase ls-1 text-primary text-center py-3 mb-0">
+                                @if(!empty(json_decode($geodata)[0]->site_code) && !empty(json_decode($geodata)[0]->site_name))
+                                    {{ json_decode($geodata)[0]->site_code }} {{ json_decode($geodata)[0]->site_name }}
+                                @elseif(!empty($address))
+                                    {{ $address }}
+                                @endif
+                            </h2>
                         </div>
                         <div class="card-body px-lg-10">
                             <div class="row justify-content-center">
@@ -299,6 +305,12 @@
                                                         {{-- <th>Lifetime CO<sub>2</sub> Emissions (kgs) </th>--}}
                                                         {{-- <th>Latitude</th>--}}
                                                         {{-- <th>Longitude</th>--}}
+                                                        @if(!empty(json_decode($geodata)[0]->site_name))
+                                                            <th>Site name</th>
+                                                        @endif
+                                                        @if(!empty(json_decode($geodata)[0]->site_code))
+                                                            <th>Site code</th>
+                                                        @endif
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -456,7 +468,7 @@
                   finalirr = finalirr/100;
                   finalirr = finalirr.toFixed(2);
 
-                $('#datatable-report').dataTable().fnAddData([
+                let dtArr = [
                     numeral(dataArray[key].system_capacity_kWp).format('0,0.0a'),
                     numeral(dataArray[key].system_cost_GBP).format('0,0.0a'),
                     numeral(dataArray[key].annual_gen_kWh).format('0,0.0a'),
@@ -467,7 +479,14 @@
                     numeral(finalirr).format('0,0.0a'),
                     numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a'),
                     numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a'),
-                ]);
+                ];
+                if (dataArray[key].site_name && dataArray[key].site_name.length > 0) {
+                    dtArr.push(dataArray[key].site_name);
+                }
+                if (dataArray[key].site_code && dataArray[key].site_code.length > 0) {
+                    dtArr.push(dataArray[key].site_code);
+                }
+                $('#datatable-report').dataTable().fnAddData(dtArr);
             }
         }
     }

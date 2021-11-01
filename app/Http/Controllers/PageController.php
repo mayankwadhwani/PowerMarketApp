@@ -345,6 +345,7 @@ class PageController extends Controller
         //         }
         //     }
         // }
+
         return view('pages.cluster_reporting', [
             'project' => $cluster->name,
             'size' => $geopoints->sum('system_capacity_kWp'),
@@ -365,6 +366,12 @@ class PageController extends Controller
             'saved_co2' => json_encode($data_array['yearly_co2']),
             'currentDBParams' => $currentDBParams,
             'orgdata' => $orgData,
+            'showSiteNameCol' => $geopoints->filter(function ($item) {
+                                    return !empty($item->site_name);
+                                })->isNotEmpty(),
+            'showSiteCodeCol' => $geopoints->filter(function ($item) {
+                                    return !empty($item->site_code);
+                                })->isNotEmpty(),
         ]);
     }
     /**

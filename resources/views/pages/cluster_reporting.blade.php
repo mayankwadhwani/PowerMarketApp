@@ -308,6 +308,12 @@
                           <th>Annual CO<sub>2</sub> Savings (kgs)</th>
                           <th>Lifetime CO<sub>2</sub> Savings (kgs) </th>
                           <th>Address</th>
+                            @if($showSiteNameCol === true)
+                                <th>Site name</th>
+                            @endif
+                            @if($showSiteCodeCol === true)
+                                <th>Site code</th>
+                            @endif
                         </tr>
                       </thead>
                       <tbody>
@@ -415,7 +421,13 @@ function renderTable() {
           numeral(dataArray[key].irr_discounted_percent).format('0,0.0a'),
           numeral(dataArray[key].annual_co2_saved_kg).format('0,0.0a'),
           numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a'),
-          dataArray[key].address
+          dataArray[key].address,
+          @if($showSiteNameCol === true)
+              dataArray[key].site_code,
+          @endif
+              @if($showSiteCodeCol === true)
+              dataArray[key].site_code
+          @endif
       ];
     }
     table.rows.add(dtData);
