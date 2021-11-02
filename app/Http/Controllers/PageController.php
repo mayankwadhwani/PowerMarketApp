@@ -188,6 +188,19 @@ class PageController extends Controller
         if (is_null($geopoint)) {
             return view('pages.reporting');
         }
+        $orgData = $user->organization->toArray();
+
+        $geopoints = pro_params(
+            $orgData['captiveuse'],
+            $orgData['exporttariff'],
+            $orgData['residentialtariff'],
+            $orgData['nonresidentialtariff'],
+            $orgData['system_cost'],
+            $orgData['system_size'],
+            [$geopoint]
+        );
+        $data_array = $this->getGeopointData($geopoints);
+
         $lat = $geopoint->latLon->getLat();
         $lon = $geopoint->latLon->getLng();
         $key = config('services.google_maps.key');
@@ -197,6 +210,7 @@ class PageController extends Controller
         } catch (\Exception $e) {
             $address = null;
         }
+
         return view('pages.reporting', [
             'id' => $geopoint->id,
             'size' => $geopoint->system_capacity_kWp,
@@ -212,13 +226,13 @@ class PageController extends Controller
             'orgdata' => $user->organization->toArray(),
             'address' => $address,
             'geodata' => json_encode([$geopoint]),
-            'monthly_savings' => json_encode($geopoint->monthly_gen_saving_value_GBP),
-            'monthly_exports' => json_encode($geopoint->monthly_gen_export_value_GBP),
-            'saved_co2' => json_encode($geopoint->yearly_co2_saved_kg),
-            'monthly_gen_captive' => json_encode($geopoint->monthly_gen_captive_kWh),
-            'monthly_gen_exports' => json_encode($geopoint->monthly_gen_export_kWh),
-            'yearly_gen_captive' => json_encode($geopoint->yearly_gen_captive_kWh),
-            'yearly_gen_exports' => json_encode($geopoint->yearly_gen_export_kWh),
+            'monthly_savings' => json_encode($data_array['monthly_savings']),
+            'monthly_exports' => json_encode($data_array['monthly_exports']),
+            'monthly_gen_captive' => json_encode($data_array['monthly_gen_captive']),
+            'monthly_gen_exports' => json_encode($data_array['monthly_gen_exports']),
+            'yearly_gen_captive' => json_encode($data_array['yearly_gen_captive']),
+            'yearly_gen_exports' => json_encode($data_array['yearly_gen_exports']),
+            'saved_co2' => json_encode($data_array['yearly_co2']),
         ]);
     }
 
