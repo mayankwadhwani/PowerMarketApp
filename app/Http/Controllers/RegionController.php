@@ -32,9 +32,20 @@ class RegionController extends Controller
         ]);
         $values = [];
         $json_data =  json_decode($request->geodata, true)['regions'];
+        $siteNameCol = auth()->user()->organization()->first()->site_name_column;
+        $siteCodeCol = auth()->user()->organization()->first()->site_code_column;
+        $columns = Geopoint::COLUMNS;
+
+        if (!empty($siteNameCol)) {
+            array_push($columns, $siteNameCol);
+        }
+        if (!empty($siteCodeCol)) {
+            array_push($columns, $siteCodeCol);
+        }
+
         foreach ($json_data as $point) {
             $value = [];
-            foreach (Geopoint::COLUMNS as $field) {
+            foreach ($columns as $field) {
                 if ($field == 'latLon') {
                     $value[] = $this->wrapPoint($point);
                 } else if (is_string($point[$field])) {
@@ -45,18 +56,20 @@ class RegionController extends Controller
             }
             $value[] = '"' . $region->id . '"';
             $values[] = "(" . implode(",", $value) . ")";
-        };
-        DB::insert('insert into geopoints (' . implode(",", Geopoint::COLUMNS) . ',region_id) values ' . implode(",", $values));
+        }
+        DB::insert('insert into geopoints (' . implode(",", $columns) . ',region_id) values ' . implode(",", $values));
         $geopoints = Geopoint::where('region_id', $region->id)->get();
         ReverseGeocoding::dispatch($geopoints);
         return redirect()->route('region.index')->withStatus(__('Region successfully created.'));
     }
+
     public function create(Region $region)
     {
         return view('regions.create', [
             'accounts' => Account::all()
         ]);
     }
+
     public function edit(Region $region)
     {
         return view('regions.edit', [
@@ -92,9 +105,20 @@ class RegionController extends Controller
             Geopoint::where('region_id', $region->id)->delete();
             $values = [];
             $json_data =  json_decode($request->geodata, true)['regions'];
+            $siteNameCol = auth()->user()->organization()->first()->site_name_column;
+            $siteCodeCol = auth()->user()->organization()->first()->site_code_column;
+            $columns = Geopoint::COLUMNS;
+
+            if (!empty($siteNameCol)) {
+                array_push($columns, $siteNameCol);
+            }
+            if (!empty($siteCodeCol)) {
+                array_push($columns, $siteCodeCol);
+            }
+
             foreach ($json_data as $point) {
                 $value = [];
-                foreach (Geopoint::COLUMNS as $field) {
+                foreach ($columns as $field) {
                     if ($field == 'latLon') {
                         $value[] = $this->wrapPoint($point);
                     } else if (is_string($point[$field])) {
@@ -105,8 +129,8 @@ class RegionController extends Controller
                 }
                 $value[] = '"' . $region->id . '"';
                 $values[] = "(" . implode(",", $value) . ")";
-            };
-            DB::insert('insert into geopoints (' . implode(",", Geopoint::COLUMNS) . ',region_id) values ' . implode(",", $values));
+            }
+            DB::insert('insert into geopoints (' . implode(",", $columns) . ',region_id) values ' . implode(",", $values));
             $geopoints = Geopoint::where('region_id', $region->id)->get();
             ReverseGeocoding::dispatch($geopoints);
         }
