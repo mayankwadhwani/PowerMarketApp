@@ -1,5 +1,4 @@
 <?php
-
 if(!function_exists('IRR')){
     function IRR($investment, $flow, $precision = 0.000001)
     {
@@ -30,9 +29,8 @@ if(!function_exists('IRR')){
             return 0;
         endif;
     }
-
 }
-if(!function_exists('pro_params')) {
+if(!function_exists('pro_params')){
     function pro_params($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, $geopoints)
     {
         //dd($captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, $geopoints);
@@ -40,12 +38,12 @@ if(!function_exists('pro_params')) {
         // echo("using default values: $captive_use, $export_tariff, $domestic_tariff, $commercial_tariff, $cost_of_small_system, $system_size_kwp, \n ");
         //globals
         if ($captive_use >= 1) {
-            $captive_use = $captive_use / 100;
+            $captive_use = $captive_use/100;
         }
         $distance_per_pixel = 0.3677;
-        $area_per_pix = $distance_per_pixel ** 2;
+        $area_per_pix =  $distance_per_pixel**2;
         //area, in pixels, of a standard 1.6x0.99m size
-        $panel_area_in_pix = (1.6 * 0.99) / $area_per_pix;
+        $panel_area_in_pix = (1.6*0.99)/$area_per_pix;
         $min_worth_while_system_in_panels = 4;
         $min_worth_while_system_in_pix = round($panel_area_in_pix * $min_worth_while_system_in_panels); //used in area processing
         $min_worth_while_system_cap = 2; //applied as threshold on final system
@@ -66,9 +64,9 @@ if(!function_exists('pro_params')) {
         $panel_domestic_lifetime_value_factor = 0;
         $panel_commercial_lifetime_value_factor = 0;
         //echo nl2br("calculating panel-related variables\r\n");
-        for ($i = 1; $i <= $panel_lifetime; $i++) {
-            $panel_lifetime_output_factor = $panel_lifetime_output_factor + $panel_degradation ** ($i - 1);
-            $panel_domestic_lifetime_value_factor = $panel_domestic_lifetime_value_factor + $annual_domestic_electric_price_increase ** ($i - 1);
+        for($i = 1; $i <= $panel_lifetime; $i++){
+            $panel_lifetime_output_factor = $panel_lifetime_output_factor + $panel_degradation**($i - 1);
+            $panel_domestic_lifetime_value_factor = $panel_domestic_lifetime_value_factor + $annual_domestic_electric_price_increase ** ($i-1);
             $panel_commercial_lifetime_value_factor = $panel_commercial_lifetime_value_factor + $annual_commercial_electric_price_increase ** ($i - 1);
             //echo nl2br("_____________________in iteration $i\r\n __________________panel_lifetime_output_factor: $panel_lifetime_output_factor\r\n __________________panel_domestic_lifetime_value_factor: $panel_domestic_lifetime_value_factor\r\n __________________panel_commercial_lifetime_value_factor: $panel_commercial_lifetime_value_factor\r\n");
         }
@@ -77,11 +75,10 @@ if(!function_exists('pro_params')) {
         //so LOOP through these sites
         //we will be using these stored values for each stie:
         //$numpanels. $system_capacity_kWp, $roofclass (from the database);
-        foreach ($geopoints as $geopoint) {
+        foreach($geopoints as $geopoint){
             if (empty($geopoint->system_cost_GBP)) {
                 //continue;
             }
-
             //            //echo("$geopoint->roofclass");
             //            $roofclass = $geopoint->roofclass;
             //            if($roofclass == 's'){
@@ -110,40 +107,30 @@ if(!function_exists('pro_params')) {
             //SYSTEM COST ESTIMATES, scaled by the value entered by the user
             $sys_cost_5kw = $cost_of_small_system / $system_size_kwp; //default 1200
             $sys_cap = $geopoint->system_capacity_kWp;
-            if ($sys_cap < 3) {
-                $c = 1500 * ($sys_cost_5kw / 1200);
+            if($sys_cap < 3){
+                $c = 1500 * ($sys_cost_5kw/1200);
+            }
+            else if($sys_cap < 10){
+                $c = $sys_cost_5kw;
+            }
+            else if($sys_cap < 50){
+                $c = 1000 * ($sys_cost_5kw / 1200);
+            }
+            else if($sys_cap < 250){
+                $c= 850 * ($sys_cost_5kw / 1200);
+            }
+            else if($sys_cap < 1000){
+                $c= 600 * ($sys_cost_5kw / 1200);
             }
             else {
-                if ($sys_cap < 10) {
-                    $c = $sys_cost_5kw;
-                }
-                else {
-                    if ($sys_cap < 50) {
-                        $c = 1000 * ($sys_cost_5kw / 1200);
-                    }
-                    else {
-                        if ($sys_cap < 250) {
-                            $c = 850 * ($sys_cost_5kw / 1200);
-                        }
-                        else {
-                            if ($sys_cap < 1000) {
-                                $c = 600 * ($sys_cost_5kw / 1200);
-                            }
-                            else {
-                                $c = 500 * ($sys_cost_5kw / 1200);
-                            }
-                        }
-                    }
-                }
+                $c= 500 * ($sys_cost_5kw / 1200);
             }
             $sys_cost = $c * $sys_cap;
-            if ($sys_cap < $residential_threshold) {
+            if($sys_cap < $residential_threshold){
                 $electric_price = $domestic_tariff; //default value is set in controller method
-            }
-            else {
+            } else {
                 $electric_price = $commercial_tariff;  //default value is set in controller method
             }
-
             ////annual_gen_kwh:
             //$annual_gen_kwh = $sys_cap * $gen_per_year_per_kwp;
             //annual_saved_co2_kg:
@@ -171,24 +158,21 @@ if(!function_exists('pro_params')) {
             //each variable is marked by their corresponding column name in the database on top
             //1. annual_gen_GBP:
             $annual_gen_kwh = $geopoint->annual_gen_kWh;
-            $annual_gen_val = ($annual_gen_kwh * $electric_price * $captive_use) + ($annual_gen_kwh * $export_tariff * (1 - $captive_use));
-
+            $annual_gen_val = ($annual_gen_kwh * $electric_price * $captive_use) + ($annual_gen_kwh * $export_tariff *(1 - $captive_use));
             //$annual_gen_val = $annual_gen_kwh * 0.146 * 0.8 + $annual_gen_kwh * 0.055 * 0.2;
             //2. lifetime_gen_GBP:
-            if ($sys_cap > $residential_threshold) {
+            if($sys_cap > $residential_threshold){
                 $lifetime_value = $annual_gen_val * $panel_commercial_lifetime_value_factor;
-            }
-            else {
+            } else{
                 $lifetime_value = $annual_gen_val * $panel_domestic_lifetime_value_factor;
             }
             //3. lifetime_return_on_investment_percent:
-
             try {
                 $return_on_investment = $lifetime_value / $sys_cost;
-            } catch (Exception $ex) {
+            }
+            catch(Exception $ex){
                 $return_on_investment = 0;
             }
-
             //4. annualized_return_on_investment_percent:
             $annual_roi = (1 + $return_on_investment) ** (1 / $panel_lifetime) - 1;
             //5. breakeven_years calculation
@@ -199,39 +183,30 @@ if(!function_exists('pro_params')) {
             $ex = $export_tariff;
             $cashflow = [];
             $discountedcashflow = [];
-
             for ($i = 1; $i <= $panel_lifetime; $i++) {
-                $tmpv = $ag * $ep * $captive_use + $ag * $ex * (1 - $captive_use); // value of electricity use and export
+                $tmpv = $ag*$ep*$captive_use+$ag*$ex*(1-$captive_use); // value of electricity use and export
                 $dpt = 0;
-
-                if ($sys_cap > $residential_threshold && $i <= (1 / $annual_depreciation)) {
-                    $dpt = $sys_cost * $annual_depreciation * $corporate_tax_rate; // depreciation tax benefits
+                if ($sys_cap > $residential_threshold && $i <= (1/$annual_depreciation)) {
+                    $dpt = $sys_cost*$annual_depreciation*$corporate_tax_rate; // depreciation tax benefits
                 }
-
-                $tmpv = $tmpv + $dpt;
-                $cashflow[$i - 1] = $tmpv;
-                $discountedcashflow[$i - 1] = $tmpv / (1 + $wacc) ** ($i - 1);
-                $v = $v + $tmpv;
-
+                $tmpv = $tmpv+$dpt;
+                $cashflow[$i-1] = $tmpv;
+                $discountedcashflow[$i-1] = $tmpv/(1+$wacc)**($i-1);
+                $v = $v+$tmpv;
                 if ($v >= $sys_cost && $breakeven < 0) {
                     $breakeven = $i;
                 }
-
-                $ag = $ag * $panel_degradation;
-
+                $ag = $ag*$panel_degradation;
                 if ($sys_cap > $residential_threshold) {
-                    $ep = $ep * $annual_commercial_electric_price_increase;
-                }
-                else {
-                    $ep = $ep * $annual_domestic_electric_price_increase;
+                    $ep = $ep*$annual_commercial_electric_price_increase;
+                } else {
+                    $ep = $ep*$annual_domestic_electric_price_increase;
                 }
             }
-
             if ($breakeven == -1 || $sys_cost == 0) {
                 $breakeven = 0;
             }
-
-            $internal_rate_of_return_discounted = 0;
+            $internal_rate_of_return_discounted=0;
             // $internal_rate_of_return_simple=0;
             if ($sys_cost > 0) {
                 $internal_rate_of_return_discounted = round(IRR($sys_cost, $discountedcashflow), 3);
@@ -239,47 +214,47 @@ if(!function_exists('pro_params')) {
             }
 
             // Update the split between export and captive, and the 12-month and 25-year value plots
-            $total_monthly_gen_kWh = array_fill(0, 12, 0);
+            $total_monthly_gen_kWh = array_fill(0, 12, 0);;
             $total_annual_gen_kWh = array_fill(0, 25, 0);
-            for ($j = 0; $j < $panel_lifetime; $j++) {
-                $total_annual_gen_kWh[$j] = $geopoint->yearly_gen_captive_kWh[$j] + $geopoint->yearly_gen_export_kWh[$j];
+
+            for($j = 0; $j < $panel_lifetime; $j++){
+                $total_annual_gen_kWh[$j]=$geopoint->yearly_gen_captive_kWh[$j] + $geopoint->yearly_gen_export_kWh[$j];
             }
-            for ($j = 0; $j < 12; $j++) {
-                $total_monthly_gen_kWh[$j] = $geopoint->monthly_gen_captive_kWh[$j] + $geopoint->monthly_gen_export_kWh[$j];
+
+            for($j = 0; $j < 12; $j++){
+                $total_monthly_gen_kWh[$j]=$geopoint->monthly_gen_captive_kWh[$j] + $geopoint->monthly_gen_export_kWh[$j];
             }
+
             $yearly_gen_captive_kWh = [];
             $yearly_gen_export_kWh = [];
-            for ($j = 0; $j < $panel_lifetime; $j++) {
-
-                $yearly_gen_captive_kWh[$j] = $total_annual_gen_kWh[$j] * $captive_use;
-                $yearly_gen_export_kWh[$j] = $total_annual_gen_kWh[$j] * (1 - $captive_use);
-
-                $monthly_gen_captive_kWh = [];
-                $monthly_gen_export_kWh = [];
-                $monthly_gen_saving_value_GBP = [];
-                $monthly_gen_export_value_GBP = [];
-                for ($i = 0; $i < 12; $i++) {
-                    $monthly_gen_captive_kWh[$i] = $total_monthly_gen_kWh[$i] * $captive_use;
-                    $monthly_gen_export_kWh[$i] = $total_monthly_gen_kWh[$i] * (1 - $captive_use);
-                    $monthly_gen_saving_value_GBP[$i] = $geopoint->monthly_gen_captive_kWh[$i] * $electric_price;
-                    $monthly_gen_export_value_GBP[$i] = $geopoint->monthly_gen_export_kWh[$i] * $export_tariff;
-                }
-
-                //update all the changed params on a geopoint
-                $geopoint->system_cost_GBP = $sys_cost;
-                $geopoint->annual_gen_GBP = $annual_gen_val;
-                $geopoint->lifetime_gen_GBP = $lifetime_value;
-                $geopoint->irr_discounted_percent = $internal_rate_of_return_discounted;
-                $geopoint->breakeven_years = $breakeven;
-                $geopoint->yearly_gen_captive_kWh = $yearly_gen_captive_kWh;
-                $geopoint->yearly_gen_export_kWh = $yearly_gen_export_kWh;
-                $geopoint->monthly_gen_captive_kWh = $monthly_gen_captive_kWh;
-                $geopoint->monthly_gen_export_kWh = $monthly_gen_export_kWh;
-                $geopoint->monthly_gen_saving_value_GBP = $monthly_gen_saving_value_GBP;
-                $geopoint->monthly_gen_export_value_GBP = $monthly_gen_export_value_GBP;
+            for($j = 0; $j < $panel_lifetime; $j++){
+                $yearly_gen_captive_kWh[$j] = $total_annual_gen_kWh[$j]*$captive_use;
+                $yearly_gen_export_kWh[$j] = $total_annual_gen_kWh[$j]*(1-$captive_use);
             }
 
-            return $geopoints;
+            $monthly_gen_captive_kWh = [];
+            $monthly_gen_export_kWh = [];
+            $monthly_gen_saving_value_GBP = [];
+            $monthly_gen_export_value_GBP = [];
+            for($j = 0; $j < 12; $j++){
+                $monthly_gen_captive_kWh[$j] = $total_monthly_gen_kWh[$j]*$captive_use;
+                $monthly_gen_export_kWh[$j] = $total_monthly_gen_kWh[$j]*(1-$captive_use);
+                $monthly_gen_saving_value_GBP[$j] = $geopoint->monthly_gen_captive_kWh[$j]*$electric_price;
+                $monthly_gen_export_value_GBP[$j] = $geopoint->monthly_gen_export_kWh[$j]*$export_tariff;
+            }
+            //update all the changed params on a geopoint
+            $geopoint -> system_cost_GBP = $sys_cost;
+            $geopoint -> annual_gen_GBP = $annual_gen_val;
+            $geopoint -> lifetime_gen_GBP = $lifetime_value;
+            $geopoint -> irr_discounted_percent = $internal_rate_of_return_discounted;
+            $geopoint -> breakeven_years = $breakeven;
+            $geopoint->yearly_gen_captive_kWh = $yearly_gen_captive_kWh;
+            $geopoint->yearly_gen_export_kWh = $yearly_gen_export_kWh;
+            $geopoint->monthly_gen_captive_kWh = $monthly_gen_captive_kWh;
+            $geopoint->monthly_gen_export_kWh = $monthly_gen_export_kWh;
+            $geopoint->monthly_gen_saving_value_GBP = $monthly_gen_saving_value_GBP;
+            $geopoint->monthly_gen_export_value_GBP = $monthly_gen_export_value_GBP;
         }
+        return $geopoints;
     }
 }
