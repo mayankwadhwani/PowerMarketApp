@@ -239,8 +239,8 @@ if(!function_exists('pro_params')){
             for($j = 0; $j < 12; $j++){
                 $monthly_gen_captive_kWh[$j] = $total_monthly_gen_kWh[$j]*$captive_use;
                 $monthly_gen_export_kWh[$j] = $total_monthly_gen_kWh[$j]*(1-$captive_use);
-                $monthly_gen_saving_value_GBP[$j] = $geopoint->monthly_gen_captive_kWh[$j]*$electric_price;
-                $monthly_gen_export_value_GBP[$j] = $geopoint->monthly_gen_export_kWh[$j]*$export_tariff;
+                $monthly_gen_saving_value_GBP[$j] = $monthly_gen_captive_kWh[$j]*$electric_price;
+                $monthly_gen_export_value_GBP[$j] = $monthly_gen_export_kWh[$j]*$export_tariff;
             }
             //update all the changed params on a geopoint
             $geopoint -> system_cost_GBP = $sys_cost;
