@@ -423,7 +423,7 @@ function renderTable() {
           numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a'),
           dataArray[key].address,
           @if($showSiteNameCol === true)
-              dataArray[key].site_code,
+              dataArray[key].site_name,
           @endif
               @if($showSiteCodeCol === true)
               dataArray[key].site_code
