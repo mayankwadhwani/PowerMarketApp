@@ -75,4 +75,15 @@ class UserPolicy
     {
         return $user->isAdmin() || $user->isCreator();
     }
+
+    /**
+     * Determine whether the authenticate user can manage organisation vendors
+     *
+     * @param  \App\User  $user
+     * @return boolean
+     */
+    public function mananageOrganizationVendors(User $user)
+    {
+        return $user->isOrgAdmin();
+    }
 }

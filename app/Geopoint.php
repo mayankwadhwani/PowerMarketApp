@@ -44,7 +44,7 @@ class Geopoint extends Model
         'latLon'
     ];
 
-    public function clusters()
+   public function clusters()
    {
        return $this->belongsToMany(Cluster::class)->withPivot([
                'captive_use',
