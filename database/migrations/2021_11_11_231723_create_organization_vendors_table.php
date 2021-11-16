@@ -19,6 +19,7 @@ class CreateOrganizationVendorsTable extends Migration
             $table->bigInteger('vendor_id')->unsigned();
             $table->timestamp('last_run')->nullable();
             $table->json('auth_data');
+            $table->tinyInteger('active')->comment('1 = yes, 0 = no');
             $table->timestamps();
         });
     }

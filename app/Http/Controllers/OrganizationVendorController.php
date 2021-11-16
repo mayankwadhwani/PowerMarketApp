@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Organization;
 use App\Account;
 
+use App\OrganizationVendor;
 use Illuminate\Http\Request;
 
 class OrganizationVendorController extends Controller
@@ -16,8 +17,19 @@ class OrganizationVendorController extends Controller
      */
     public function index()
     {
-        dd('Stop!');
-        return view('organizations.index', ['organizations' => Organization::all()]);
+        $user = auth()->user();
+
+        if ($user->isAdmin()) {
+            $organisations = OrganizationVendor::query();
+        } else {
+            $organisations = OrganizationVendor::where('organisation_id', $user->organization->id);
+        }
+
+        $organisations = $organisations->with('organization')->with('vendor')->get();
+        return view('organization_vendors.index', [
+            'organization_vendors' => $organisations,
+            'user_is_admin' =>$user->isAdmin()
+        ]);
     }
 
     /**
@@ -57,11 +69,11 @@ class OrganizationVendorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Organization  $organization
+     * @param  \App\OrganizationVendor  $organizationVendor
      * @return \Illuminate\Http\Response
      */
-    public function edit(Organization $organization)
-    {
+    public function edit(OrganizationVendor $organizationVendor)
+    {dd($organizationVendor);
         return view(
             'organizations.edit',
             [
@@ -112,15 +124,4 @@ class OrganizationVendorController extends Controller
         return redirect()->route('organization.index')->withStatus(__('Organization successfully updated.'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Organization  $organization
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Organization $organization)
-    {
-        $organization->delete();
-        return redirect()->route('organization.index')->withStatus(__('Organization successfully deleted.'));
-    }
 }

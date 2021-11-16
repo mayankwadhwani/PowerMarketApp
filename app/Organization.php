@@ -12,8 +12,14 @@ class Organization extends Model
     {
         return $this->belongsToMany(Account::class);
     }
+
     public function members()
     {
         return $this->hasMany(User::class);
+    }
+
+    public function vendors()
+    {
+        return $this->hasMany(OrganizationVendor::class, 'organisation_id');
     }
 }
