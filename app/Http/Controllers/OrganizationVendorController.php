@@ -6,6 +6,7 @@ use App\Organization;
 use App\Account;
 
 use App\OrganizationVendor;
+use App\Vendor;
 use Illuminate\Http\Request;
 
 class OrganizationVendorController extends Controller
@@ -39,8 +40,11 @@ class OrganizationVendorController extends Controller
      */
     public function create()
     {
-        return view('organizations.create', [
-            'accounts' => Account::all()
+        $user = auth()->user();
+        return view('organization_vendors.create', [
+            'organisations' => Organization::all(),
+            'vendors' => Vendor::all(),
+            'user_is_admin' => $user->isAdmin()
         ]);
     }
 
@@ -52,18 +56,28 @@ class OrganizationVendorController extends Controller
      */
     public function store(Request $request)
     {
-        $organization = Organization::create([
-            'name' => $request->name,
-            'system_cost' => $request->system_cost,
-            'system_size' => $request->system_size,
-            'captiveuse' => $request->captiveuse,
-            'exporttariff' => $request->exporttariff,
-            'residentialtariff' => $request->residentialtariff,
-            'nonresidentialtariff' => $request->nonresidentialtariff,
-            'currencysymbol' => $request->currencysymbol
+        $request->validate([
+            'organisation_id' => 'sometimes|numeric',
+            'vendor_id' => 'required|numeric',
+            'active' => 'sometimes|in:1,0'
         ]);
-        $organization->accounts()->attach($request->accounts);
-        return redirect()->route('organization.index')->withStatus(__('Organization successfully created.'));
+
+        $authData = $this->processAuthDataFields($request);
+
+        $user = auth()->user();
+        $organizationId = $user->organization->id;
+        if ($user->isAdmin()) {
+            $organizationId = $request->get('organisation_id');
+        }
+
+        OrganizationVendor::create([
+            'organisation_id' => $organizationId,
+            'vendor_id' => $request->get('vendor_id'),
+            'active' => $request->get('active') ?? 0,
+            'auth_data' => $authData
+        ]);
+
+        return redirect()->route('organization_vendor.index')->withStatus(__('Vendor successfully added.'));
     }
 
     /**
@@ -73,55 +87,65 @@ class OrganizationVendorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(OrganizationVendor $organizationVendor)
-    {dd($organizationVendor);
-        return view(
-            'organizations.edit',
-            [
-                'organization' => $organization,
-                'accounts' => Account::all()
-            ]
-        );
+    {
+        $organizationVendor->load('organization')->load('vendor');
+
+        return view('organization_vendors.edit', [
+            'organization_vendor' => $organizationVendor,
+            'organisations' => Organization::all(),
+            'vendors' => Vendor::all(),
+            'user_is_admin' => auth()->user()->isAdmin()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Organization  $organization
+     * @param  \App\OrganizationVendor $organizationVendor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Organization $organization)
+    public function update(Request $request, OrganizationVendor $organizationVendor)
     {
-        if ($request->filled('name')) {
-            $organization->name = $request->name;
-        }
-        if ($request->filled('system_cost')) {
-            $organization->system_cost = $request->system_cost;
-        }
-        if ($request->filled('system_size')) {
-            $organization->system_size = $request->system_size;
-        }
-        if ($request->filled('captiveuse')) {
-            $organization->captiveuse = $request->captiveuse;
-        }
-        if ($request->filled('exporttariff')) {
-            $organization->exporttariff = $request->exporttariff;
-        }
-        if ($request->filled('residentialtariff')) {
-            $organization->residentialtariff = $request->residentialtariff;
-        }
-        if ($request->filled('nonresidentialtariff')) {
-            $organization->nonresidentialtariff = $request->nonresidentialtariff;
-        }
-        if ($request->filled('currencysymbol')) {
-            $organization->currencysymbol = $request->currencysymbol;
+        $request->validate([
+            'organisation_id' => 'sometimes|numeric',
+            'vendor_id' => 'required|numeric',
+            'active' => 'sometimes|in:1,0'
+        ]);
+
+        $user = auth()->user();
+        if (!$user->isAdmin()) {
+            $request->request->remove('organisation_id');
         }
 
+        if (!$request->has('active')) {
+            $request->merge(['active' => 0]);
+        }
 
-        $organization->save();
+        $request->merge(['auth_data' => $this->processAuthDataFields($request)]);
 
-        $organization->accounts()->sync($request->accounts);
-        return redirect()->route('organization.index')->withStatus(__('Organization successfully updated.'));
+        $organizationVendor->update($request->only(['organisation_id', 'vendor_id', 'auth_data', 'active']));
+
+        return redirect()->route('organization_vendor.index')->withStatus(__('Vendor successfully updated.'));
+    }
+
+    private function processAuthDataFields(Request $request): array
+    {
+        $vendorAuthData = Vendor::find($request->get('vendor_id'))->auth_data;
+        $authData = [];
+        if (!empty($vendorAuthData)) {
+            $validation = [];
+            foreach($vendorAuthData as $field) {
+                $validation[$field['name']] = 'required';
+            }
+            $request->validate($validation);
+
+            foreach($vendorAuthData as $field) {
+                $authData[$field['name']] = $request->get($field['name']);
+            }
+        }
+
+        return $authData;
     }
 
 }

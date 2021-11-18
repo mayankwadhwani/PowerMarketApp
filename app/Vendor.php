@@ -10,4 +10,8 @@ class Vendor extends Model
         'name',
         'type'
     ];
+
+    protected $casts = [
+        'auth_data' => 'array'
+    ];
 }

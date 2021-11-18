@@ -17,6 +17,7 @@ class CreateVendorsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('type')->comment('API/FTP');
+            $table->json('auth_data');
             $table->timestamps();
         });
     }
