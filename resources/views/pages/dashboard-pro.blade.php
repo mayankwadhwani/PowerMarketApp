@@ -702,7 +702,7 @@ div#calculated-area {
                       </div>
                       <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
                         <p class="card-text card-empty-error">
-                          There is no solar data for this location.
+                          There is no solar data for this location, either because the site is unsuitable (e.g. due to shadowing), or the available area is too small to be financially viable.
                         </p>
                       </div>
                       </div>`,
