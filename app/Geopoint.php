@@ -44,18 +44,6 @@ class Geopoint extends Model
         'latLon'
     ];
 
-   public function clusters()
-   {
-       return $this->belongsToMany(Cluster::class)->withPivot([
-               'captive_use',
-               'export_tariff',
-               'domestic_tariff',
-               'commercial_tariff',
-               'system_cost',
-               'system_size'
-           ]);
-   }
-
     protected $casts = [
         'monthly_gen_saving_value_GBP' => 'array',
         'monthly_gen_export_value_GBP' => 'array',
@@ -65,4 +53,21 @@ class Geopoint extends Model
         'yearly_gen_export_kWh' => 'array',
         'yearly_gen_captive_kWh' => 'array'
     ];
+
+    public function clusters()
+    {
+        return $this->belongsToMany(Cluster::class)->withPivot([
+            'captive_use',
+            'export_tariff',
+            'domestic_tariff',
+            'commercial_tariff',
+            'system_cost',
+            'system_size'
+        ]);
+    }
+
+    public function geopoint_organization_vendor()
+    {
+        return $this->hasMany(GeopointOrganizationVendor::class);
+    }
 }

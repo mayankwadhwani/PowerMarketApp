@@ -78,7 +78,17 @@ class HomeController extends Controller
             unset($region_ids[$key]);
         }
 
-        $geopoints = Geopoint::whereIn('region_id', $region_ids)->get();
+        $geopoints = Geopoint::whereIn('region_id', $region_ids)
+            ->with(['geopoint_organization_vendor' => function($q) use ($user) {
+                $q->whereHas('organization_vendor', function($q) use ($user) {
+                    $q->where('organisation_id', '=', $user->organization_id);
+                })
+                ->with(['organization_vendor' => function($q) use ($user) {
+                    $q->with('vendor');
+                }]);
+            }])
+            ->get();
+
         $pro_geopoints = pro_params($org['captiveuse'], $org['exporttariff'], $org['residentialtariff'], $org['nonresidentialtariff'], 6000, 5 , $geopoints);
 
         return view('pages.dashboard', [

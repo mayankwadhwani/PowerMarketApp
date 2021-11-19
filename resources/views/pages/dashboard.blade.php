@@ -716,6 +716,7 @@ div#calculated-area {
                       <div class="card popup-card">
                       <div id="cluster-header" class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:0;">
                       ${header}
+                       Here: ${dataArray[key].geopoint_organization_vendor}
                       </div>
                       <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
                       <p class="card-text">
