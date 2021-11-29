@@ -78,15 +78,15 @@ class HomeController extends Controller
             unset($region_ids[$key]);
         }
 
-        $geopoints = Geopoint::whereIn('region_id', $region_ids)
-            ->with(['geopoint_organization_vendor' => function($q) use ($user) {
-                $q->whereHas('organization_vendor', function($q) use ($user) {
-                    $q->where('organisation_id', '=', $user->organization_id);
-                })
-                ->with(['organization_vendor' => function($q) use ($user) {
-                    $q->with('vendor');
-                }]);
-            }])
+        $geopoints = Geopoint::whereIn('geopoints.region_id', $region_ids)->whereIn('geopoints.id', [37530, 35445, 35446])
+            ->leftJoin('geopoint_organization_vendors', 'geopoint_organization_vendors.geopoint_id', '=', 'geopoints.id')
+            ->leftJoin('organization_vendors', function($q) use ($user) {
+                $q->on('organization_vendors.id', '=', 'geopoint_organization_vendors.organization_vendor_id')
+                    ->on('organization_vendors.organisation_id', '=', DB::raw($user->organization_id));
+            })
+            ->leftJoin('vendors', 'organization_vendors.vendor_id', '=', 'vendors.id')
+            ->select(['geopoints.*', 'organization_vendors.id as organization_vendors_id', 'vendors.id as vendor_id', 'vendors.name as vendor_name'])
+            ->groupBy('geopoints.id')
             ->get();
 
         $pro_geopoints = pro_params($org['captiveuse'], $org['exporttariff'], $org['residentialtariff'], $org['nonresidentialtariff'], 6000, 5 , $geopoints);

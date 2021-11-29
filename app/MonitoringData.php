@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class MonitoringData extends Model
 {
+    public $timestamps = true;
+
     protected $fillable = [
         'geopoint_id',
         'organisation_vendor_id',
