@@ -34,13 +34,12 @@ class PullMonitoringData implements ShouldQueue
      */
     public function handle()
     {
+        ini_set('memory_limit',-1);
         if (empty($this->geopoint_organization_vendors)) {
             $this->geopoint_organization_vendors = GeopointOrganizationVendor::all();
         }
 
         $monitoringService = new MonitoringVendorService($this->geopoint_organization_vendors);
         $monitoringService->pullData();
-
-        dd('here');
     }
 }

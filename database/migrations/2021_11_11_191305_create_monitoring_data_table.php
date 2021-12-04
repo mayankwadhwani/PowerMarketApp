@@ -21,6 +21,8 @@ class CreateMonitoringDataTable extends Migration
             $table->timestamp('range_start')->nullable();
             $table->timestamp('range_end')->nullable();
             $table->timestamps();
+
+            $table->unique(['geopoint_id', 'organization_vendor_id', 'range_start', 'range_end'], 'unique_key');
         });
     }
 

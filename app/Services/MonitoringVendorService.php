@@ -26,9 +26,17 @@ class MonitoringVendorService
             $vendorClass = '\App\Services\MonitoringVendorConnectors\\'.$vendor->name;
             if (class_exists($vendorClass)) {
                 $vendorClass = new $vendorClass($geoPointOrganisationVendor, $organisationVendor->auth_data);
-                $data = $vendorClass->pullData();
 
-                MonitoringData::insert($data);
+                $startDate = null;
+                $endDate = null;
+                if (!empty($organisationVendor->last_run)) {
+                    $startDate = $organisationVendor->last_run;
+                    $endDate = \Carbon\Carbon::now();
+                }
+
+                if ($vendorClass->pullData($startDate, $endDate)) {
+                    $organisationVendor->update(['last_run' => \Carbon\Carbon::now()]);
+                }
             } else {
                 Log::error('Class '.$vendorClass.' doesn\'t exists');
             }
