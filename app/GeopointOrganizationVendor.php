@@ -12,7 +12,6 @@ class GeopointOrganizationVendor extends Model
         'site_id'
     ];
 
-
     public function organization_vendor()
     {
         return $this->belongsTo(OrganizationVendor::class);

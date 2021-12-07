@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-
+use Illuminate\Support\Collection;
 
 class PullMonitoringData implements ShouldQueue
 {
@@ -37,6 +37,10 @@ class PullMonitoringData implements ShouldQueue
         ini_set('memory_limit',-1);
         if (empty($this->geopoint_organization_vendors)) {
             $this->geopoint_organization_vendors = GeopointOrganizationVendor::all();
+        } else {
+            if (!$this->geopoint_organization_vendors instanceof Collection) {
+                $this->geopoint_organization_vendors = collect([$this->geopoint_organization_vendors]);
+            }
         }
 
         $monitoringService = new MonitoringVendorService($this->geopoint_organization_vendors);
