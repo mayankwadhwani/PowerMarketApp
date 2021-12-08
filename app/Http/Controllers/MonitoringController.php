@@ -27,7 +27,8 @@ class MonitoringController extends Controller
         $dateStart = Carbon::parse($request->get('date_start'));
         $dateEnd = Carbon::parse($request->get('date_end'));
 
-        $result = MonitoringData::where([
+        $response = [];
+        $data = MonitoringData::where([
             'geopoint_id' => $geoPointOrganizationVendor->geopoint_id,
             'organization_vendor_id' => $geoPointOrganizationVendor->organization_vendor->id
         ])
@@ -37,6 +38,10 @@ class MonitoringController extends Controller
             })
             ->get();
 
+        if (empty($data)) {
+            return $response;
+        }
+
         // If I select a day or a week, x-axis is 15min intervals - so up to 7*24*4 = 672 data points plotted as a line plot.
         // If I select month, x-axis becomes days 1st, 2nd, 3rd, 4th, etc., with entries every day (daily output sum) - 30ish entries.
         // If I select year, x-axis becomes months jan, feb, march, etc., with entries every month (monthly output sum) - 12 entries.
@@ -44,37 +49,60 @@ class MonitoringController extends Controller
 
         $diffInDays = $dateStart->diffInDays($dateEnd);
         if ($diffInDays <= 7) {
-            // day or a week
-            $range = $this->generateDateRange($dateStart, $dateEnd, 'd-H-i');
-            $selectedRange = 1;
+            // selected day or a week -> 15min
+            $format = "Y-m-d-H-i";
+            $response = $this->generateDateRange($dateStart, $dateEnd, 'd-H-i', $format);
+
+            foreach ($data as $value) {
+                $response[$this->convertToHourQuarter($value->range_start)] += $value->energy_generated_wh;
+            }
 
         } elseif ($diffInDays <= 31) {
-            // month
-            $range = $this->generateDateRange($dateStart, $dateEnd, 'd');
-            $selectedRange = 2;
+            // selected month -> days
+            $format = "Y-m-d";
+            $response = $this->generateDateRange($dateStart, $dateEnd, 'd', $format);
 
-        } elseif ($diffInDays <= 365) {
-            // year
-            $range = $this->generateDateRange($dateStart, $dateEnd, 'm');
-            $selectedRange = 3;
+            foreach ($data as $value) {
+                $response[Carbon::parse($value->range_start)->format($format)] += $value->energy_generated_wh;
+            }
 
         } else {
             // default month
-            $range = $this->generateDateRange($dateStart, $dateEnd, 'Y-m');
-            $selectedRange = 4;
+            $format = "Y-m";
+            $response = $this->generateDateRange($dateStart, $dateEnd, 'm', $format);
+
+            foreach ($data as $value) {
+                $response[Carbon::parse($value->range_start)->format($format)] += $value->energy_generated_wh;
+            }
         }
 
-        dd(count($range), $selectedRange, $range);
+        return $response;
     }
 
-    private function generateDateRange(Carbon $date_start, Carbon $date_end, String $format='d'): array
+    private function generateDateRange(Carbon $date_start, Carbon $date_end, String $step='d', String $format='Y-m-d'): array
     {
         $dates = [];
-        for ($date = $date_start->copy(); $date->lte($date_end); ($format === 'd' ? $date->addDay() : ($format === 'd-H-i' ? $date->addMinutes(15) : $date->addMonth()))) {
+        for ($date = $date_start->copy(); $date->lte($date_end); ($step === 'd' ? $date->addDay() : ($step === 'd-H-i' ? $date->addMinutes(15) : $date->addMonth()))) {
             $dates[$date->format($format)] = 0;
         }
 
         return $dates;
+    }
+
+    private function convertToHourQuarter(string $dateTime): string
+    {
+        $carbon = Carbon::parse($dateTime);
+        if ($carbon->format('i') < 15) {
+            $return = $carbon->format("Y-m-d-H-00");
+        } elseif ($carbon->format('i') < 30) {
+            $return = $carbon->format("Y-m-d-H-15");
+        } elseif ($carbon->format('i') < 45) {
+            $return = $carbon->format("Y-m-d-H-30");
+        } else {
+            $return = $carbon->format("Y-m-d-H-45");
+        }
+
+        return $return;
     }
 
     public function addGeoPointToVendor(Request $request)
