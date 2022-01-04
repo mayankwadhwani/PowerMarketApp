@@ -51,6 +51,14 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::resource('organization', 'OrganizationController');
 	});
 
+    Route::group(['middleware' => 'orgAdmin'], function () {
+        Route::resource('organization_vendor', 'OrganizationVendorController');
+        Route::post('geoPointOrganizationVendor', 'MonitoringController@addGeoPointToVendor');
+        Route::put('geoPointOrganizationVendor/{geoPointOrganizationVendor}', 'MonitoringController@updateGeoPointVendor');
+        Route::delete('geoPointOrganizationVendor/{geoPointOrganizationVendor}', 'MonitoringController@removeGeoPointFromVendor');
+        Route::get('monitoringData/{geoPointOrganizationVendor}', 'MonitoringController@getData');
+    });
+
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);

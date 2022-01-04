@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Geopoint;
+use App\Jobs\PullMonitoringData;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -28,6 +29,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->job(new PullMonitoringData())->hourly();
+
         //fix geocoding errors
         $schedule->call(function () {
             //regions that need fixing

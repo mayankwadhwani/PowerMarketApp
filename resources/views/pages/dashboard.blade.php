@@ -670,6 +670,15 @@ div#calculated-area {
                 `
               }
 
+              let monitoring = "";
+              if (dataArray[key].organization_vendors_id) {
+                monitoring = `Organisation vendor ID: ${dataArray[key].organization_vendors_id}<br />
+                Vendor ID: ${dataArray[key].vendor_id}<br />
+                Vendor Name: ${dataArray[key].vendor_name}<br />`;
+              } else {
+                  monitoring = `Click here to configure monitoring`;
+              }
+
               var feature = "";
 
               if(dataArray[key].existingsolar == 'Y'){
@@ -725,6 +734,7 @@ div#calculated-area {
                       <strong>Lifetime Savings:</strong> {{ $orgdata['currencysymbol'] }}  ${numeral(dataArray[key].lifetime_gen_GBP).format('0,0.0a')}<br/>
                       <strong>Lifetime CO<sub>2</sub> saving:</strong> ${numeral(dataArray[key].lifetime_co2_saved_kg).format('0,0.0a')} kgs<br/>
                       <strong>IRR: </strong> ${dataArray[key].irr_discounted_percent}%<br/>
+                      ${monitoring}
                       </p>
                       <a href="{{ route('page.reporting') }}?geopoint_id=${dataArray[key].id}" class="btn btn-primary"
                       target="_blank">Generate Report</a>
