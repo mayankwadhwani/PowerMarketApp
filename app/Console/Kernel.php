@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(new PullMonitoringData())->hourly();
 
         //fix geocoding errors
-        $schedule->call(function () {
+        /*$schedule->call(function () {
             //regions that need fixing
             $region_ids = [12, 13];
 
@@ -62,7 +62,7 @@ class Kernel extends ConsoleKernel
                 DB::update("UPDATE geopoints SET `address` = CASE `id` {$cases} END
             WHERE `id` in ({$ids})", $values);
             }
-        })->everyMinute();
+        })->everyMinute();*/
     }
 
     /**
