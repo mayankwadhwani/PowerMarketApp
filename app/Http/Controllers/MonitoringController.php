@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Cluster;
 use App\GeopointOrganizationVendor;
 use App\Jobs\PullMonitoringData;
 use App\MonitoringData;
@@ -32,7 +33,7 @@ class MonitoringController extends Controller
             'geopoint_id' => $geoPointOrganizationVendor->geopoint_id,
             'organization_vendor_id' => $geoPointOrganizationVendor->organization_vendor->id
         ])
-            ->where(function($query) use ($dateStart, $dateEnd){
+            ->where(function ($query) use ($dateStart, $dateEnd) {
                 $query->whereBetween('range_start', [$dateStart->startOfDay(), $dateEnd->endOfDay()])
                     ->orWhereBetween('range_end', [$dateStart->startOfDay(), $dateEnd->endOfDay()]);
             })
@@ -79,7 +80,20 @@ class MonitoringController extends Controller
         return $response;
     }
 
-    private function generateDateRange(Carbon $date_start, Carbon $date_end, String $step='d', String $format='Y-m-d'): array
+    public function getSumByProject(Request $request, Cluster $cluster)
+    {
+        $user = auth()->user();
+        /** @var \App\Organization $org */
+        $org = $user->organization;
+        // Random Vendor
+        $vendor = $org->vendors()->whereHas('geopoint_organization_vendors')
+            ->with('geopoint_organization_vendors')
+            ->get()->pluck('geopoint_organization_vendors')
+            ->collapse()->random();
+        return $this->getData($request, $vendor);
+    }
+
+    private function generateDateRange(Carbon $date_start, Carbon $date_end, string $step = 'd', string $format = 'Y-m-d'): array
     {
         $dates = [];
         for ($date = $date_start->copy(); $date->lte($date_end); ($step === 'd' ? $date->addDay() : ($step === 'd-H-i' ? $date->addMinutes(15) : $date->addMonth()))) {

@@ -29,4 +29,9 @@ class OrganizationVendor extends Model
     {
         return $this->belongsTo(Vendor::class);
     }
+
+    public function geopoint_organization_vendors()
+    {
+        return $this->hasMany(GeopointOrganizationVendor::class);
+    }
 }

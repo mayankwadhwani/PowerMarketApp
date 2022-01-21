@@ -238,7 +238,11 @@
                   <!-- <a href="/pricing" target="_blank"><i class="ni ni-curved-next map-icon-black report-icon" style="font-size:20px" data-toggle="tooltip" data-placement="top" title="Share Project"></i></a> -->
 
                   <a class="share-button" data-toggle="modal" data-target="#share-form" target="_blank" ><i class="ni ni-curved-next map-icon-black report-icon" style="font-size:20px" data-toggle="tooltip" data-placement="top" title="Share Project"></i></a>
-
+                  @if($cluster->active_sites > 0)
+                        <a href="/dashboard/monitoring/{{ $cluster->name }}" target="_blank"><i
+                                    class="fa fa-eye map-icon-black report-icon" style="font-size:20px"
+                                    data-toggle="tooltip" data-placement="top" title="View Project"></i></a>
+                    @endif
                   <div class="modal fade " id="share-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                       <div class="modal-content">

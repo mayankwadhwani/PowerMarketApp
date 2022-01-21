@@ -21,6 +21,9 @@ Route::get('sample-building-data-report', 'PageController@building')->name('page
 
 Route::prefix('dashboard')->middleware('auth')->group(function () {
 	Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/monitoring/{cluster}', 'ProjectMonitoringController@monitoring_dashboard')->name('monitoring_dashboard');
+    Route::get('/monitoring/{cluster}/sites', 'ProjectMonitoringController@project_sites')->name('project_sites');
+    Route::get('/monitoring/{cluster}/geopoint/{geopoint}', 'ProjectMonitoringController@monitoring_geopoint')->name('monitoring_dashboard_geopoint');
 	Route::get('/{account}', 'HomeController@account')->name('account');
 	Route::get('/{account}/{region}', 'HomeController@region')->name('region');
 });
@@ -57,6 +60,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('geoPointOrganizationVendor/{geoPointOrganizationVendor}', 'MonitoringController@updateGeoPointVendor');
         Route::delete('geoPointOrganizationVendor/{geoPointOrganizationVendor}', 'MonitoringController@removeGeoPointFromVendor');
         Route::get('monitoringData/{geoPointOrganizationVendor}', 'MonitoringController@getData');
+        Route::get('monitoringData/{cluster}/summary', 'MonitoringController@getSumByProject');
     });
 
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);

@@ -61,3 +61,11 @@
 .popup-card {
     margin-bottom: 0 !important;
 }
+
+
+.bg-organization {
+    background-color: rgba(29, 44, 73, 1.00);
+}
+td.graph_column{
+    padding: 0;
+}

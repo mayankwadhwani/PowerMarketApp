@@ -7,6 +7,7 @@ use App\Account;
 use App\Geopoint;
 use App\Cluster;
 use App\Helpers\pro;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -40,11 +41,13 @@ class HomeController extends Controller
             return redirect('dashboard/Gloucestershire');
         }
         $org = $user->organization;
-        $my_clusters = DB::table('clusters')
-                    ->where('user_id', $user->id)
-                    ->orderBy('created_at', 'desc')
-                    ->get();
-
+        $my_clusters = Cluster::query()
+            ->where('user_id', $user->id)
+            ->withCount(['geopoints as active_sites'=> function(Builder $q){
+                $q->whereHas('geopoint_organization_vendor');
+            }])
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('pages.organization', [
             'org_name' => $org->name,
             'members' => $user->isMember() ? [] : $org->members,
