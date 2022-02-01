@@ -536,11 +536,25 @@
             })
         }
         let graph_remove = (site) => {
-            console.log(site)
-            console.log(chart.data.datasets)
             chart.data.datasets = chart.data.datasets.filter(ds => ds.org_id != site.id)
             console.log(chart.data.datasets)
             chart.update();
+            if(chart.data.datasets.length === 0){
+                $('#loading_data').show();
+                getData(cluster_id, null, null, 'cluster').then((data) => {
+                    let labels = Object.keys(data);
+                    let values = Object.values(data);
+                    chart.data.labels = labels;
+                    chart.data.datasets = [{
+                        label: 'Summary',
+                        data: values,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                    }]
+                    chart.update();
+                    $('#loading_data').hide();
+                })
+            }
         }
         let initTable = () => {
             let table = $('#datatable-monitoring').DataTable({
