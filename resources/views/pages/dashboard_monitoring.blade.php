@@ -481,7 +481,7 @@
                         label: site.name ? site.name : site.id,
                         data: values,
                         org_vendor_id: site.org_vendor_id,
-                        backgroundColor: colors[ind].bg,
+                        // backgroundColor: colors[ind].bg,
                         borderColor: colors[ind].border,
                     })
                     if (i === active_sites.length) {
@@ -500,7 +500,7 @@
                     chart.data.datasets = [{
                         label: 'Summary',
                         data: values,
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        // backgroundColor: 'rgba(255, 99, 132, 0.2)',
                         borderColor: 'rgba(255, 99, 132, 1)',
                     }]
                     chart.update();
@@ -518,7 +518,7 @@
                         label: site.name ? site.name : site.id,
                         data: values,
                         org_id: site.id,
-                        backgroundColor: colors[0].bg,
+                        // backgroundColor: colors[0].bg,
                         borderColor: colors[0].border,
                     }]
                 } else {
@@ -526,7 +526,7 @@
                         label: site.name ? site.name : site.id,
                         data: values,
                         org_id: site.id,
-                        backgroundColor: colors[active_sites.length].bg,
+                        // backgroundColor: colors[active_sites.length].bg,
                         borderColor: colors[active_sites.length].border,
                     })
                 }
@@ -548,7 +548,7 @@
                     chart.data.datasets = [{
                         label: 'Summary',
                         data: values,
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        // backgroundColor: 'rgba(255, 99, 132, 0.2)',
                         borderColor: 'rgba(255, 99, 132, 1)',
                     }]
                     chart.update();
