@@ -384,7 +384,7 @@
                 let chart_picker = $('input[name="chart_picker"]').data('daterangepicker')
                 switch (period) {
                     case 'day':
-                        start_date = moment().subtract(1, 'year').format('YYYY-MM-DD')
+                        start_date = moment().subtract(1, 'day').format('YYYY-MM-DD')
                         chart_picker.setStartDate(moment().toDate());
                         break
                     case 'week':
