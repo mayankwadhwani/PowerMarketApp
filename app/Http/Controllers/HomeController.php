@@ -339,11 +339,13 @@ class HomeController extends Controller
         }
 
         $currentDBParams = $this->getClusterParams($cluster);
-        $geopoints = pro_params($currentDBParams['captive_use'], $currentDBParams['export_tariff'], $currentDBParams['domestic_tariff'], $currentDBParams['commercial_tariff'], $currentDBParams['cost_of_small_system'], $currentDBParams['system_size_kwp'], $cluster->geopoints);
-
+        $geopoints = pro_params($currentDBParams['captive_use'], $currentDBParams['export_tariff'], $currentDBParams['domestic_tariff'], $currentDBParams['commercial_tariff'], $currentDBParams['cost_of_small_system'], $currentDBParams['system_size_kwp'], $cluster->geopoints()
+            ->withCount('geopoint_organization_vendor')->with('geopoint_organization_vendor')->get());
+        /** @var Cluster $cluster */
         return view('pages.dashboard', [
             'geodata' => $geopoints,
             'cluster' => $cluster->name,
+            'active_sites_exists' => $cluster->geopoints()->whereHas('geopoint_organization_vendor')->exists(),
             'orgdata' => $user->organization->toArray(),
             'currentDBParams' => $currentDBParams
         ]);

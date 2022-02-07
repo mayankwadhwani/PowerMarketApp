@@ -47,7 +47,7 @@
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-muted mb-0">Total Capacity (AC)</h5>
-                                    <span class="h2 font-weight-bold mb-0" id="potential-card">{{ number_format($total_capacity) }}</span>
+                                    <span class="h2 font-weight-bold mb-0" id="potential-card">{{ number_format($total_capacity) }} kWp</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="row">
@@ -138,23 +138,21 @@
     <div class="container">
         <div class="row mb-4">
             <div class="col-md-12">
-                @if(count($geopoint_organization_vendors) > 0)
-                    <div class="rounded py-2 px-3   bg-organization">
-                        <div class=" d-flex align-items-center justify-content-end">
-                            <i class="fa fa-spinner fa-spin mr-4 " style="color:white" id="loading_data"></i>
-                            <div class="btn btn-primary action_period" data-period="day">D</div>
-                            <div class="btn btn-primary action_period" data-period="week">W</div>
-                            <div class="btn btn-primary action_period" data-period="month">M</div>
-                            <div class="btn btn-primary action_period" data-period="year">Y</div>
-                            <div class="form-group mb-0">
-                                <input type="text" name="chart_picker" class="form-control"/>
-                            </div>
-                        </div>
-                        <div id="chart" class="position-relative">
-                            <canvas id="geo_chart" class="w-100"></canvas>
+                <div class="rounded py-2 px-3   bg-organization">
+                    <div class=" d-flex align-items-center justify-content-end">
+                        <i class="fa fa-spinner fa-spin mr-4 " style="color:white" id="loading_data"></i>
+                        <div class="btn btn-primary action_period" data-period="day">D</div>
+                        <div class="btn btn-primary action_period active" data-period="week">W</div>
+                        <div class="btn btn-primary action_period" data-period="month">M</div>
+                        <div class="btn btn-primary action_period" data-period="year">Y</div>
+                        <div class="form-group mb-0">
+                            <input type="text" name="chart_picker" class="form-control"/>
                         </div>
                     </div>
-                @endif
+                    <div id="chart" class="position-relative">
+                        <canvas id="geo_chart" class="w-100"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -211,6 +209,9 @@
 
         div#datatable-monitoring_wrapper td {
             vertical-align: middle;
+        }
+        .mapboxgl-popup-close-button:focus {
+            outline: none;
         }
     </style>
 @endpush
@@ -273,9 +274,8 @@
             },
         ]
         let dataSets = [];
-        let geo_vendor_id = {{count($geopoint_organization_vendors) > 0 ? $geopoint_organization_vendors[0]['id'] : 'null'}};
         let cluster_id = {{$cluster_id}};
-        let start_date = moment().startOf('year').format('YYYY-MM-DD');
+        let start_date = moment().subtract(1, 'week').format('YYYY-MM-DD')
         let end_date = moment().format('YYYY-MM-DD');
         let active_sites = [];
         let features = []
@@ -451,11 +451,34 @@
                     legend: {
                         position: 'top',
                         display: true
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks:{
+                                maxRotation: 20,
+                                callback: function(value, index, values) {
+                                    let vals = value.split('-');
+                                    let res = '';
+                                    switch (vals.length){
+                                        case 5:
+                                            res = moment(value, 'YYYY-MM-DD-HH-mm').format('YYYY-MM-DD HH:mm')
+                                            break;
+                                        case 3:
+                                            res = moment(value, 'YYYY-MM-DD').format('YYYY-MM-DD')
+                                            break;
+                                        case 2:
+                                            res = moment(value, 'YYYY-MM').format('MMM YYYY')
+                                            break;
+                                    }
+                                    return res ? res : value //moment().parse(value).format('YYYY MMM DD,  HH:mm');
+                                }
+                            }
+                        }]
                     }
-                }
+                },
             });
             datePick = $('input[name="chart_picker"]').daterangepicker({
-                startDate: moment().startOf('year').toDate(),
+                startDate: moment().subtract(1, 'week').toDate(),
                 endDate: moment().toDate(),
                 opens: 'left'
             }, function (start, end, label) {
@@ -481,7 +504,7 @@
                         label: site.name ? site.name : site.id,
                         data: values,
                         org_vendor_id: site.org_vendor_id,
-                        // backgroundColor: colors[ind].bg,
+                        backgroundColor: 'transparent',//colors[ind].bg,
                         borderColor: colors[ind].border,
                     })
                     if (i === active_sites.length) {
@@ -500,7 +523,7 @@
                     chart.data.datasets = [{
                         label: 'Summary',
                         data: values,
-                        // backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        backgroundColor:  'transparent',//'rgba(255, 99, 132, 0.2)',
                         borderColor: 'rgba(255, 99, 132, 1)',
                     }]
                     chart.update();
@@ -518,7 +541,7 @@
                         label: site.name ? site.name : site.id,
                         data: values,
                         org_id: site.id,
-                        // backgroundColor: colors[0].bg,
+                        backgroundColor:  'transparent',//colors[0].bg,
                         borderColor: colors[0].border,
                     }]
                 } else {
@@ -526,7 +549,7 @@
                         label: site.name ? site.name : site.id,
                         data: values,
                         org_id: site.id,
-                        // backgroundColor: colors[active_sites.length].bg,
+                        backgroundColor:  'transparent',// colors[active_sites.length].bg,
                         borderColor: colors[active_sites.length].border,
                     })
                 }
@@ -537,7 +560,6 @@
         }
         let graph_remove = (site) => {
             chart.data.datasets = chart.data.datasets.filter(ds => ds.org_id != site.id)
-            console.log(chart.data.datasets)
             chart.update();
             if(chart.data.datasets.length === 0){
                 $('#loading_data').show();
@@ -548,7 +570,7 @@
                     chart.data.datasets = [{
                         label: 'Summary',
                         data: values,
-                        // backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        backgroundColor:  'transparent',//'rgba(255, 99, 132, 0.2)',
                         borderColor: 'rgba(255, 99, 132, 1)',
                     }]
                     chart.update();
@@ -593,20 +615,17 @@
                     },
                     {data: 'system_capacity_kWp'},
                     {
-                        data: 'id',
+                        data: 'geopoint_organization_vendor_count',
                         className: 'graph_column',
-                        sortable: false,
-                        orderable: false,
                         render: (data, index, row) => {
-                            return row.geopoint_organization_vendor.length ? '<i class="fa fa-spinner fa-spin " style="color:gray"></i><canvas id="line_chart_' + row.id + '" style="height: 75px;width: 500px;display: none" data-id="' + row.geopoint_organization_vendor[0].id + '" class="line_chart">' : '';
+                            return row.geopoint_organization_vendor.length
+                                ? '<i class="fa fa-spinner fa-spin " style="color:gray"></i><canvas id="line_chart_' + row.id + '" style="height: 75px;width: 500px;display: none" data-id="' + row.geopoint_organization_vendor[0].id + '" class="line_chart">'
+                                : '<button class="btn btn-primary">Connect Site</button>';
                         }
                     },
                     {data: 'lifetime_co2_saved_kg'},
                 ],
-                columnDefs: [{
-                    orderable: false,
-                    targets: [0]
-                }],
+                "order": [[ 3, "desc" ]],
 
                 drawCallback: () => {
                     $('.line_chart').each(function (index) {
@@ -671,9 +690,7 @@
             renderMap();
             initTable();
             let body = $('body');
-            if (geo_vendor_id) {
-                construct_chart();
-            }
+            construct_chart();
             $('[data-toggle="tooltip"]').tooltip();
             window.dispatchEvent(new Event('resize'));
 
@@ -705,8 +722,11 @@
                 chart_picker.setEndDate(moment().toDate());
                 changeGraph()
             })
-
+            let popup = null;
             body.on('click', '.location_pin', function () {
+                if(popup){
+                    popup.remove();
+                }
                 let point = $(this).data('id')
                 let feature = features.find(item => item.properties.id == point);
                 let coordinates = feature.geometry.coordinates;
@@ -721,12 +741,11 @@
                 $('html, body').animate({
                     scrollTop: $("#map").offset().top
                 }, 2000);
-                let popup = new mapboxgl.Popup()
+                popup = new mapboxgl.Popup()
                     .setLngLat(coordinates)
                     .setHTML(description)
                     .setMaxWidth("500px")
                     .addTo(map);
-
             })
 
         });

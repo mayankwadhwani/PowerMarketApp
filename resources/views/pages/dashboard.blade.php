@@ -335,12 +335,17 @@ div#calculated-area {
       </div>
     </div>
   </div>
-  <div class="back home">
+  <div class="back home d-flex align-items-center">
     <!-- <a href="{{ route('home') }}"><i class="fas fa-home" style="font-size: 1.8rem; color: #191B2E; padding-bottom: 2rem; " data-toggle="tooltip" data-placement="top" title="Back home"></i></a> -->
-    <a href="{{ route('home') }}"><i class="fas fa-home map-icon-black report-icon card-icons" style="font-size: 1.8rem; color: #191B2E; padding-bottom: 2rem;" data-toggle="tooltip" data-placement="top" title="Back Home"></i></a>
+    <a href="{{ route('home') }}" class="mr-3"><i class="fas fa-home map-icon-black report-icon card-icons" style="font-size: 1.8rem; color: #191B2E; " data-toggle="tooltip" data-placement="top" title="Back Home"></i></a>
     <!-- if the cluster name is passed in (which means if we are at a project page) -->
     @if(isset($cluster))
-    <a href="/reporting/project/{{ $cluster}}" target="_blank"><i class="fas fa-file-alt map-icon-black report-icon card-icons" style="font-size: 1.6rem; color: #191B2E; padding-left: 1.2rem;" data-toggle="tooltip" data-placement="top" title="View Report"></i></a>
+    <a href="/reporting/project/{{ $cluster}}" target="_blank" class="mr-3"><i class="fas fa-file-alt map-icon-black report-icon card-icons" style="font-size: 1.6rem; color: #191B2E; " data-toggle="tooltip" data-placement="top" title="View Report"></i></a>
+    @endif
+    @if(isset($active_sites_exists) && $active_sites_exists)
+        <a href="/dashboard/monitoring/{{ $cluster }}" target="_blank"><i
+                class="ni ni-sound-wave map-icon-black report-icon card-icons" style="font-size: 1.8rem; color: #191B2E; "
+                data-toggle="tooltip" data-placement="top" title="Go to monitoring"></i></a>
     @endif
 
 
@@ -548,6 +553,7 @@ div#calculated-area {
         <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.css" type="text/css" />
         @endpush
         @push('js')
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
         <script src="{{ asset('argon') }}/vendor/datatables.net/js/jquery.dataTables.min.js"></script>
         <script src="{{ asset('argon') }}/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
         <script src="{{ asset('argon') }}/vendor/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
@@ -684,8 +690,7 @@ div#calculated-area {
               if(dataArray[key].existingsolar == 'Y'){
                 showactivesites++;
               }
-
-              if(dataArray[key].breakeven_years == 0){
+                if(dataArray[key].breakeven_years == 0){
                  feature = {
                     type: "Feature",
                     properties: {
@@ -716,7 +721,36 @@ div#calculated-area {
 
                   totalshowingval++;
               }
-              else{
+              else if(dataArray[key].geopoint_organization_vendor_count){
+                    feature = {
+                        type: "Feature",
+                        properties: {
+                            description: `
+                      <div class="card popup-card">
+                      <div id="cluster-header" class="card-header" style="display:table;padding-top:0.5rem;padding-bottom:0.5rem;padding-left:1rem;padding-right:0;">
+                      ${header}
+                      </div>
+                      <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
+                          <canvas class="line_chart" data-id=${dataArray[key].geopoint_organization_vendor[0].id}>
+                          </div>
+                      <a href="/monitoring/{{$cluster}}/geopoint/${dataArray[key].id}" class="btn btn-primary"
+                      target="_blank">Generate Report</a>
+                      </div>`,
+                            years: dataArray[key].breakeven_years,
+                            id: dataArray[key].id,
+                            area: dataArray[key].area_sqm,
+                            panels: dataArray[key].numpanels,
+                            roi: dataArray[key].lifetime_return_on_investment_percent,
+                            existingSolar: dataArray[key].existingsolar,
+                            solarData : 'N'
+                        },
+                        geometry: {
+                            type: dataArray[key].latLon.type,
+                            coordinates: dataArray[key].latLon.coordinates
+                        }
+                    };
+              }
+              else {
 
                  feature = {
                     type: "Feature",
@@ -1017,6 +1051,36 @@ div#calculated-area {
                   .setMaxWidth("500px")
                   .on('open', function(e) {
                     clicked_popup = e.target
+                      $('.line_chart').each(function (index) {
+                          let elem =  $(this)
+                          let start_date = moment().subtract('1', 'days').format('YYYY-MM-DD');
+                          let end_date = moment().format('YYYY-MM-DD');
+                          $.get(`/monitoringData/${elem.data('id')}?date_start=${start_date}&date_end=${end_date}`).then((data) => {
+                              let ctx_line = elem.get(0).getContext('2d');
+                              new Chart(ctx_line, {
+                                  type: 'line',
+                                  data: {
+                                      labels: Object.keys(data),
+                                      datasets: [{
+                                          label: '',
+                                          data: Object.values(data),
+                                          borderColor: 'rgba(0,0,0,0.2)',
+                                      }],
+                                  },
+                                  options: {
+                                      scales: {
+                                          xAxes: [{
+                                              display: false,
+                                          }],
+                                          yAxes: [{
+                                              display: false,
+                                          }],
+                                      }
+                                  }
+                              });
+                          })
+                      });
+                      console.log();
                   })
                   .addTo(map);
                   $('[data-toggle="tooltip"]').tooltip();

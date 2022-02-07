@@ -31,7 +31,6 @@ class DatatableSourceResult
             'order.*.dir' => ['string'],
             'start' => ['required', 'integer'],
             'length' => ['required', 'integer'],
-            ''
         ]);
         $this->requestData = $request->all();
 

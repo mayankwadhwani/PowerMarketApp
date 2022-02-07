@@ -84,11 +84,9 @@ class MonitoringController extends Controller
     {
         $user = auth()->user();
         /** @var \App\Organization $org */
-        $org = $user->organization;
-        // Random Vendor
-        $vendor = $org->vendors()->whereHas('geopoint_organization_vendors')
-            ->with('geopoint_organization_vendors')
-            ->get()->pluck('geopoint_organization_vendors')
+        $vendor = $cluster->geopoints()->whereHas('geopoint_organization_vendor')
+            ->with('geopoint_organization_vendor')
+            ->get()->pluck('geopoint_organization_vendor')
             ->collapse()->random();
         return $this->getData($request, $vendor);
     }

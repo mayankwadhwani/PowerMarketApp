@@ -29,7 +29,7 @@ class Cluster extends Model
           'commercial_tariff',
           'system_cost',
           'system_size'
-        ]);;
+        ]);
     }
 
     public function setLatLon()

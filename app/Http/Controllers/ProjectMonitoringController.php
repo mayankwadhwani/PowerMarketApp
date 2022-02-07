@@ -33,18 +33,22 @@ class ProjectMonitoringController extends Controller
             'cluster_id' => $cluster->id,
             'orgdata' => $user->organization->toArray(),
             'geopoint_organization_vendors' => $user->organization->vendors()
-                ->with('geopoint_organization_vendors')->get()->pluck('geopoint_organization_vendors')->collapse()->toArray(),
+                ->with('geopoint_organization_vendors')->get()
+                ->pluck('geopoint_organization_vendors')
+                ->collapse()
+                ->toArray(),
 
             'sites_count' => $cluster->geopoints()->count(),
             'total_co2' => 1,
             'total_generation' => 1,
-            'total_capacity' => 1,
+            'total_capacity' => $cluster->geopoints()->sum('system_capacity_kWp'),
         ]);
     }
 
     public function monitoring_geopoint($cluster_name, Geopoint $geopoint)
     {
         $user = auth()->user();
+        /** @var Cluster $cluster */
         $cluster = Cluster::where('user_id', $user->id)->where('name', $cluster_name)->first();
         abort_if(empty($cluster), 404);
         $geopoint->load(['geopoint_organization_vendor']);
@@ -79,14 +83,20 @@ class ProjectMonitoringController extends Controller
             'sites_count' => $cluster->geopoints()->count(),
             'total_co2' => 1,
             'total_generation' => 1,
-            'total_capacity' => 1,
+            'total_capacity' => $cluster->geopoints()->sum('system_capacity_kWp'),
 //            'currentDBParams' => $currentDBParams
         ]);
     }
 
     public function project_sites(Request $request, Cluster $cluster)
     {
-        return (new DatatableSourceResult($request, $cluster->geopoints()->with('geopoint_organization_vendor')))->response();
+        return (new DatatableSourceResult(
+            $request,
+            $cluster
+                ->geopoints()
+                ->with('geopoint_organization_vendor')
+                ->withCount('geopoint_organization_vendor')
+        ))->response();
     }
 
     public function geopoint(Cluster $cluster, Geopoint $geopoint)

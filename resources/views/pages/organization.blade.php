@@ -232,17 +232,17 @@
                 <div class="card-header">
                   <!-- Title -->
                   <h5 class="h3 mb-0 account-header">{{ $cluster->name }}</h5>
-                  <a class="delete" data-target="#delete-form" data-toggle="modal" data-id="{{$cluster->id}}"><i class="fa fa-trash-alt map-icon-black card-icons" style="font-size:20px;color:#191B2F;"data-toggle="tooltip" data-placement="top" title="Delete Project"></i></a>
-                  <a href="/projects/{{ $cluster->name }}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black report-icon card-icons"  style="width:20px; margin-right: 1.5rem;"/ data-toggle="tooltip" data-placement="top" title="Explore Map"></a>
+                  <a class="delete" data-target="#delete-form" data-toggle="modal" data-id="{{$cluster->id}}"><i class="fa fa-trash-alt map-icon-black card-icons" style="font-size:20px;color:#191B2F;" data-toggle="tooltip" data-placement="top" title="Delete Project"></i></a>
+                  <a href="/projects/{{ $cluster->name }}" target="_blank"><img src="{{ asset('svg') }}/map.svg" class="map-icon-black report-icon card-icons"  style="width:20px; margin-right: 1.5rem;" data-toggle="tooltip" data-placement="top" title="Explore Map"></a>
                   <a href="/reporting/project/{{ $cluster->name }}" target="_blank"><i class="fas fa-file-alt map-icon-black report-icon card-icons" style="font-size:20px" data-toggle="tooltip" data-placement="top" title="View Report"></i></a>
                   <!-- <a href="/pricing" target="_blank"><i class="ni ni-curved-next map-icon-black report-icon" style="font-size:20px" data-toggle="tooltip" data-placement="top" title="Share Project"></i></a> -->
 
                   <a class="share-button" data-toggle="modal" data-target="#share-form" target="_blank" ><i class="ni ni-curved-next map-icon-black report-icon" style="font-size:20px" data-toggle="tooltip" data-placement="top" title="Share Project"></i></a>
                   @if($cluster->active_sites > 0)
                         <a href="/dashboard/monitoring/{{ $cluster->name }}" target="_blank"><i
-                                    class="fa fa-eye map-icon-black report-icon" style="font-size:20px"
-                                    data-toggle="tooltip" data-placement="top" title="View Project"></i></a>
-                    @endif
+                                    class="ni ni-sound-wave map-icon-black report-icon" style="font-size:20px"
+                                    data-toggle="tooltip" data-placement="top" title="Go to monitoring"></i></a>
+                  @endif
                   <div class="modal fade " id="share-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                       <div class="modal-content">
