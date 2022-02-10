@@ -47,7 +47,7 @@
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-muted mb-0">Total Capacity (AC)</h5>
-                                    <span class="h2 font-weight-bold mb-0" id="potential-card">{{ number_format($total_capacity) }} kWp</span>
+                                    <span class="h2 font-weight-bold mb-0" id="potential-card">{{ number_format($total_capacity, 2) }} kWp</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="row">
