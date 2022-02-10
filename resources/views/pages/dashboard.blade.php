@@ -733,8 +733,8 @@ div#calculated-area {
                       <div class="card-body" style="padding-top:0.5rem;padding-bottom:0.5rem; padding-left:1rem; padding-right:1rem;">
                           <canvas class="line_chart" data-id=${dataArray[key].geopoint_organization_vendor[0].id}>
                           </div>
-                      <a href="/monitoring/{{$cluster}}/geopoint/${dataArray[key].id}" class="btn btn-primary"
-                      target="_blank">Generate Report</a>
+                      <a href="/dashboard/monitoring/{{!empty($cluster) ? $cluster : ''}}/geopoint/${dataArray[key].id}" class="btn btn-primary"
+                      target="_blank">Go to Monitoring</a>
                       </div>`,
                             years: dataArray[key].breakeven_years,
                             id: dataArray[key].id,

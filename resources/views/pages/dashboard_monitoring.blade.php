@@ -211,7 +211,7 @@
             vertical-align: middle;
         }
         .mapboxgl-popup-close-button:focus {
-            outline: none;
+            outline: none!important;
         }
     </style>
 @endpush

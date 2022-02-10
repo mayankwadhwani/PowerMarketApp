@@ -320,8 +320,8 @@ class HomeController extends Controller
             "captive_use" => $firstPoint->pivot->captive_use,
             "export_tariff" => $firstPoint->pivot->export_tariff,
             "domestic_tariff" => $firstPoint->pivot->domestic_tariff,
-            "commercial_tariff" => $firstPoint -> pivot -> commercial_tariff,
-            "cost_of_small_system" => $firstPoint->pivot -> system_cost,
+            "commercial_tariff" => $firstPoint->pivot->commercial_tariff,
+            "cost_of_small_system" => $firstPoint->pivot->system_cost,
             "system_size_kwp" => $firstPoint->pivot->system_size
         ];
 
@@ -338,9 +338,21 @@ class HomeController extends Controller
             }
         }
 
-        $currentDBParams = $this->getClusterParams($cluster);
-        $geopoints = pro_params($currentDBParams['captive_use'], $currentDBParams['export_tariff'], $currentDBParams['domestic_tariff'], $currentDBParams['commercial_tariff'], $currentDBParams['cost_of_small_system'], $currentDBParams['system_size_kwp'], $cluster->geopoints()
-            ->withCount('geopoint_organization_vendor')->with('geopoint_organization_vendor')->get());
+        if ($cluster->geopoints()->exists()) {
+            $currentDBParams = $this->getClusterParams($cluster);
+            $geopoints = pro_params($currentDBParams['captive_use'], $currentDBParams['export_tariff'], $currentDBParams['domestic_tariff'], $currentDBParams['commercial_tariff'], $currentDBParams['cost_of_small_system'], $currentDBParams['system_size_kwp'], $cluster->geopoints()
+                ->withCount('geopoint_organization_vendor')->with('geopoint_organization_vendor')->get());
+        } else {
+            $geopoints = [];
+            $currentDBParams = [
+                "captive_use" => 0,
+                "export_tariff" => 0,
+                "domestic_tariff" => 0,
+                "commercial_tariff" => 0,
+                "cost_of_small_system" => 0,
+                "system_size_kwp" => 0
+            ];
+        }
         /** @var Cluster $cluster */
         return view('pages.dashboard', [
             'geodata' => $geopoints,
