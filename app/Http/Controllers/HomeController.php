@@ -343,7 +343,7 @@ class HomeController extends Controller
             $geopoints = pro_params($currentDBParams['captive_use'], $currentDBParams['export_tariff'], $currentDBParams['domestic_tariff'], $currentDBParams['commercial_tariff'], $currentDBParams['cost_of_small_system'], $currentDBParams['system_size_kwp'], $cluster->geopoints()
                 ->withCount('geopoint_organization_vendor')->with('geopoint_organization_vendor')->get());
         } else {
-            $geopoints = [];
+            $geopoints = collect([]);
             $currentDBParams = [
                 "captive_use" => 0,
                 "export_tariff" => 0,
