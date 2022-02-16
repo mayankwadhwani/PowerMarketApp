@@ -47,7 +47,8 @@
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-muted mb-0">Total Capacity (AC)</h5>
-                                    <span class="h2 font-weight-bold mb-0" id="potential-card">{{ number_format($total_capacity) }}</span>
+                                    <span class="h2 font-weight-bold mb-0"
+                                          id="potential-card">{{ number_format($total_capacity) }}</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="row">
@@ -77,7 +78,8 @@
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-muted mb-0">Total Generation</h5>
-                                    <span class="h2 font-weight-bold mb-0" id="savings-card">{{ number_format($total_generation) }}</span>
+                                    <span class="h2 font-weight-bold mb-0"
+                                          id="savings-card">{{ number_format($total_generation) }}</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="row">
@@ -108,7 +110,8 @@
                                 <div class="col">
                                     <h5 class="card-title text-muted mb-0">Total CO<sub>2</sub>
                                         Impact</h5>
-                                    <span class="h2 font-weight-bold mb-0" id="co2-card">{{ number_format($total_co2) }}</span>
+                                    <span class="h2 font-weight-bold mb-0"
+                                          id="co2-card">{{ number_format($total_co2) }}</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="row">
@@ -143,7 +146,7 @@
                         <div class=" d-flex align-items-center justify-content-end">
                             <i class="fa fa-spinner fa-spin mr-4 " style="color:white" id="loading_data"></i>
                             <div class="btn btn-primary action_period" data-period="day">D</div>
-                            <div class="btn btn-primary action_period" data-period="week">W</div>
+                            <div class="btn btn-primary action_period active" data-period="week">W</div>
                             <div class="btn btn-primary action_period" data-period="month">M</div>
                             <div class="btn btn-primary action_period" data-period="year">Y</div>
                             <div class="form-group mb-0">
@@ -170,7 +173,8 @@
                     <div class="card-body" style="height:500px;">
                         <div class="row h-25 align-items-center">
                             <div class="col-md-2 col-sm-2 col-4">
-                                <img style="width: 2rem;" class="mx-auto" src="{{ asset('argon') }}/img/icons/common/factory.svg" />
+                                <img style="width: 2rem;" class="mx-auto"
+                                     src="{{ asset('argon') }}/img/icons/common/factory.svg"/>
                             </div>
                             <div class="col-md-8 col-sm-7 col-8 pl-0">
                                 <b class="h5">Tonnes of carbon eliminated per year</b>
@@ -181,7 +185,8 @@
                         </div>
                         <div class="row h-25 align-items-center">
                             <div class="col-md-2 col-sm-2 col-4">
-                                <img style="width: 2rem;" class="mx-auto" src="{{ asset('argon') }}/img/icons/common/road.svg" />
+                                <img style="width: 2rem;" class="mx-auto"
+                                     src="{{ asset('argon') }}/img/icons/common/road.svg"/>
                             </div>
                             <div class="col-md-8 col-sm-7 col-8 pl-0">
                                 <b class="h5">Cars taken off the road per year</b>
@@ -192,7 +197,8 @@
                         </div>
                         <div class="row h-25 align-items-center">
                             <div class="col-md-2 col-sm-2 col-4">
-                                <img style="width: 2rem;" class="mx-auto" src="{{ asset('argon') }}/img/icons/common/tree.svg" />
+                                <img style="width: 2rem;" class="mx-auto"
+                                     src="{{ asset('argon') }}/img/icons/common/tree.svg"/>
                             </div>
                             <div class="col-md-8 col-sm-7 col-8 pl-0">
                                 <b class="h5">Equivalent of new trees planted</b>
@@ -203,7 +209,8 @@
                         </div>
                         <div class="row h-25 align-items-center">
                             <div class="col-md-2 col-sm-2 col-4">
-                                <img style="width: 2rem;" class="mx-auto" src="{{ asset('argon') }}/img/icons/common/gas.svg" />
+                                <img style="width: 2rem;" class="mx-auto"
+                                     src="{{ asset('argon') }}/img/icons/common/gas.svg"/>
                             </div>
                             <div class="col-md-8 col-sm-7 col-8 pl-0">
                                 <b class="h5">Litres of petrol/gas saved</b>
@@ -274,137 +281,182 @@
     <script src="{{ asset('argon') }}/vendor/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
     <script src="{{ asset('js') }}/mapbox-gl.js"></script>
     <script>
-        let colors = [
-            {
-                border: 'rgba(55,155,155,1)',
-                bg: 'rgba(55,155,155,0.3)'
-            },
-            {
-                border: 'rgba(255,155,155,1)',
-                bg: 'rgba(255,155,155,0.3)'
-            },
-        ]
-        let dataSets = [];
-        let geo_vendor_id = {{count($geopoint['geopoint_organization_vendor']) > 0 ? $geopoint['geopoint_organization_vendor'][0]['id'] : 'null'}};
-        let start_date = moment().startOf('year').format('YYYY-MM-DD');
-        let end_date = moment().format('YYYY-MM-DD');
+      let colors = [
+        {
+          border: 'rgba(55,155,155,1)',
+          bg: 'rgba(55,155,155,0.3)'
+        },
+        {
+          border: 'rgba(255,155,155,1)',
+          bg: 'rgba(255,155,155,0.3)'
+        },
+      ]
+      let dataSets = [];
+      let geo_vendor_id = {{count($geopoint['geopoint_organization_vendor']) > 0 ? $geopoint['geopoint_organization_vendor'][0]['id'] : 'null'}};
+      let start_date = moment().subtract(1, 'week').format('YYYY-MM-DD')
+      let end_date = moment().format('YYYY-MM-DD');
 
-        let lat = '{!! $lat ?? '' !!}';
-        let lon = '{!! $lon ?? '' !!}';
+      let lat = '{!! $lat ?? '' !!}';
+      let lon = '{!! $lon ?? '' !!}';
 
-        const getData = (data_id, start = null, end = null) => {
-            return new Promise(((resolve, reject) => {
-                $.get(`/monitoringData/${data_id}?date_start=${start ? start : start_date}&date_end=${end ? end : end_date}`).then((data) => {
-                    resolve(data)
-                }).catch((err) => {
-                    reject(err);
-                })
-            }))
-        }
+      const getData = (data_id, start = null, end = null) => {
+        return new Promise(((resolve, reject) => {
+          $.get(`/monitoringData/${data_id}?date_start=${start ? start : start_date}&date_end=${end ? end : end_date}`).then((data) => {
+            resolve(data)
+          }).catch((err) => {
+            reject(err);
+          })
+        }))
+      }
 
-        function renderMap() {
-            mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
-            map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/satellite-streets-v11',
-                bearing: -17.6,
-                antialias: true,
-                zoom: 16.5,
-                center: [lon, lat]
-            });
-            let marker = new mapboxgl.Marker({
-                color: '#F6A22B'
-            })
-                .setLngLat([lon, lat])
-                .addTo(map);
-        }
-
-
-        let ctx = null;
-        let chart = null;
-        let datePick = null;
-        let construct_chart = () => {
-            ctx = document.getElementById('geo_chart').getContext('2d');
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [],
-                },
-                options: {
-                    legend: {
-                        position: 'top',
-                        display: false
-                    }
-                }
-            });
-            datePick = $('input[name="chart_picker"]').daterangepicker({
-                startDate: moment().startOf('year').toDate(),
-                endDate: moment().toDate(),
-                opens: 'left'
-            }, function (start, end, label) {
-                start_date = start.format('YYYY-MM-DD')
-                end_date = end.format('YYYY-MM-DD')
-                changeGraph();
-                $('.action_period').removeClass('active');
-            });
-            changeGraph();
-        }
-        let changeGraph = () => {
-            $('#loading_data').show();
-            getData(geo_vendor_id).then((data) => {
-                let labels = Object.keys(data);
-                let values = Object.values(data);
-                chart.data.labels = labels;
-                chart.data.datasets = [{
-                    label: 'Summary',
-                    data: values,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                }]
-                chart.update();
-                $('#loading_data').hide();
-            })
-        }
-
-        $(document).ready(function () {
-            renderMap();
-            let body = $('body');
-            if (geo_vendor_id) {
-                construct_chart();
-            }
-            $('[data-toggle="tooltip"]').tooltip();
-            window.dispatchEvent(new Event('resize'));
-
-            body.on('click', '.action_period', function () {
-                $('.action_period').removeClass('active');
-                let period = $(this).data('period');
-                end_date = moment().format('YYYY-MM-DD')
-                $(this).addClass('active');
-                let chart_picker = $('input[name="chart_picker"]').data('daterangepicker')
-                switch (period) {
-                    case 'day':
-                        start_date = moment().subtract(1, 'day').format('YYYY-MM-DD')
-                        chart_picker.setStartDate(moment().toDate());
-                        break
-                    case 'week':
-                        start_date = moment().subtract(1, 'week').format('YYYY-MM-DD')
-                        chart_picker.setStartDate(moment().subtract(1, 'week').toDate());
-                        break
-                    case 'month':
-                        start_date = moment().subtract(1, 'month').format('YYYY-MM-DD')
-                        chart_picker.setStartDate(moment().subtract(1, 'month').toDate());
-                        break
-                    case 'year':
-                        start_date = moment().subtract(1, 'year').format('YYYY-MM-DD')
-                        chart_picker.setStartDate(moment().subtract(1, 'year').toDate());
-                        break
-                }
-                chart_picker.setEndDate(moment().toDate());
-                changeGraph()
-            })
-
-
+      function renderMap() {
+        mapboxgl.accessToken = 'pk.eyJ1IjoicG93ZXJtYXJrZXQiLCJhIjoiY2s3b3ZncDJ0MDkwZTNlbWtoYWY2MTZ6ZCJ9.Ywq8CoJ8OHXlQ4voDr4zow';
+        map = new mapboxgl.Map({
+          container: 'map',
+          style: 'mapbox://styles/mapbox/satellite-streets-v11',
+          // bearing: -17.6,
+          antialias: true,
+          zoom: 16.5,
+          center: [lon, lat]
         });
+        let marker = new mapboxgl.Marker({
+          color: '#F6A22B'
+        })
+            .setLngLat([lon, lat])
+            .addTo(map);
+      }
+
+
+      let ctx = null;
+      let chart = null;
+      let datePick = null;
+      let construct_chart = () => {
+        ctx = document.getElementById('geo_chart').getContext('2d');
+        chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: [],
+            datasets: [],
+          },
+          options: {
+            legend: {
+              position: 'top',
+              display: false
+            },
+
+            tooltips: {
+              callbacks: {
+                title: (item, data) => {
+                  return moment(data.labels[item[0].index], 'YYYY-MM-DD-HH-mm').format('YYYY-MM-DD HH:mm')
+                }
+              }
+            },
+            scales: {
+              xAxes: [{
+                ticks: {
+                  maxRotation: 20,
+                  callback: function (value, index, values) {
+                    let vals = value.split('-');
+                    let res = '';
+                    switch (vals.length) {
+                      case 5:
+                        if (moment(end_date).diff(start_date, 'days') <= 2) {
+                          res = moment(value, 'YYYY-MM-DD-HH-mm').format('HH:mm')
+                        } else if (moment(end_date).diff(start_date, 'days') <= 7) {
+                          res = moment(value, 'YYYY-MM-DD-HH-mm').format('ddd HH:mm')
+                        } else if (moment(end_date).diff(start_date, 'days') <= 31) {
+                          res = moment(value, 'YYYY-MM-DD-HH-mm').format('YYYY-MM-DD HH:mm')
+                        }
+                        break;
+                      case 3:
+                        res = moment(value, 'YYYY-MM-DD').format('YYYY-MM-DD')
+                        break;
+                      case 2:
+                        res = moment(value, 'YYYY-MM').format('MMM YYYY')
+                        break;
+                    }
+                    return res ? res : value //moment().parse(value).format('YYYY MMM DD,  HH:mm');
+                  }
+                }
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  callback: function (value) {
+                    return value + ' kWh'
+                  }
+                }
+              }]
+            }
+          },
+        });
+        datePick = $('input[name="chart_picker"]').daterangepicker({
+          startDate: moment().startOf('year').toDate(),
+          endDate: moment().toDate(),
+          opens: 'left'
+        }, function (start, end, label) {
+          start_date = start.format('YYYY-MM-DD')
+          end_date = end.format('YYYY-MM-DD')
+          changeGraph();
+          $('.action_period').removeClass('active');
+        });
+        changeGraph();
+      }
+      let changeGraph = () => {
+        $('#loading_data').show();
+        getData(geo_vendor_id).then((data) => {
+          let labels = Object.keys(data);
+          let values = Object.values(data);
+          chart.data.labels = labels;
+          chart.data.datasets = [{
+            label: 'Summary',
+            data: values,
+            backgroundColor: 'transparent',//'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+          }]
+          chart.update();
+          $('#loading_data').hide();
+        })
+      }
+
+      $(document).ready(function () {
+        renderMap();
+        let body = $('body');
+        if (geo_vendor_id) {
+          construct_chart();
+        }
+        $('[data-toggle="tooltip"]').tooltip();
+        window.dispatchEvent(new Event('resize'));
+
+        body.on('click', '.action_period', function () {
+          $('.action_period').removeClass('active');
+          let period = $(this).data('period');
+          end_date = moment().format('YYYY-MM-DD')
+          $(this).addClass('active');
+          let chart_picker = $('input[name="chart_picker"]').data('daterangepicker')
+          switch (period) {
+            case 'day':
+              start_date = moment().subtract(1, 'day').format('YYYY-MM-DD')
+              chart_picker.setStartDate(moment().toDate());
+              break
+            case 'week':
+              start_date = moment().subtract(1, 'week').format('YYYY-MM-DD')
+              chart_picker.setStartDate(moment().subtract(1, 'week').toDate());
+              break
+            case 'month':
+              start_date = moment().subtract(1, 'month').format('YYYY-MM-DD')
+              chart_picker.setStartDate(moment().subtract(1, 'month').toDate());
+              break
+            case 'year':
+              start_date = moment().subtract(1, 'year').format('YYYY-MM-DD')
+              chart_picker.setStartDate(moment().subtract(1, 'year').toDate());
+              break
+          }
+          chart_picker.setEndDate(moment().toDate());
+          changeGraph()
+        })
+
+
+      });
     </script>
 @endpush

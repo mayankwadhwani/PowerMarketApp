@@ -69,7 +69,7 @@ class DatatableSourceResult
             $this->query->where(function (Builder $builder) use ($s) {
                 $method = 'where';
                 foreach ($this->requestData['columns'] as $data) {
-                    if (!empty($data['data'])) {
+                    if (!empty($data['data']) && $data['searchable'] == 'true') {
                         $builder->{$method}($data['data'], 'like', $s);
                     }
                     $method = 'orWhere';
