@@ -11,7 +11,7 @@ class SolarEdge {
     private $url = "https://monitoringapi.solaredge.com";
     private $geopointOrganizationVendor;
 
-    public function __construct(GeopointOrganizationVendor $geoPointOrganisationVendor, array $authData)
+    public function __construct(GeopointOrganizationVendor $geoPointOrganisationVendor, array $authData, array $geopointAdditionalMappingData=[])
     {
         $this->authData = $authData;
         $this->geopointOrganizationVendor = $geoPointOrganisationVendor;
@@ -37,7 +37,7 @@ class SolarEdge {
         $response = $request ? $request->getBody()->getContents() : null;
         $status = $request ? $request->getStatusCode() : 500;
 
-        if ($response && $status === 200 && !empty($response)) {
+        if ($status === 200 && !empty($response)) {
             return (object) json_decode($response);
         }
 
