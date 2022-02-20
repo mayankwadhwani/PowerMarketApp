@@ -45,12 +45,14 @@ class ShineMonitor {
         $client = new Client();
         $request = $client->get($this->url, [
             'query' => $query,
-            'headers'         => [],
-            'timeout'         => 30,
+            'headers'         => [
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36',
+                'Referer' => $this->url,
+            ],
             'connect_timeout' => true,
             'http_errors'     => true,
-            'timeout'         => 5,
-            'connect_timeout' => 5,
+            'timeout'         => 35,
+            'connect_timeout' => 35,
         ]);
 
         $response = $request ? $request->getBody()->getContents() : null;
@@ -88,12 +90,14 @@ class ShineMonitor {
         $client = new Client();
         $request = $client->get($full_path, [
             'query' => $requestUri,
-            'headers'         => [],
-            'timeout'         => 30,
+            'headers'         => [
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36',
+                'Referer' => $this->url,
+            ],
             'connect_timeout' => true,
             'http_errors'     => true,
-            'timeout'         => 5,
-            'connect_timeout' => 5,
+            'timeout'         => 35,
+            'connect_timeout' => 35,
             'on_stats' => function (\GuzzleHttp\TransferStats $stats) use (&$url) {
                 $url = $stats->getEffectiveUri();
             }
