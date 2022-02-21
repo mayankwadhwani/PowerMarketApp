@@ -36,7 +36,9 @@ class PullMonitoringData implements ShouldQueue
     {
         ini_set('memory_limit',-1);
         if (empty($this->geopoint_organization_vendors)) {
-            $this->geopoint_organization_vendors = GeopointOrganizationVendor::all();
+            $this->geopoint_organization_vendors = GeopointOrganizationVendor::whereHas('organization_vendor', function($query) {
+                $query->where('active', '=', 1);
+            })->get();
         } else {
             if (!$this->geopoint_organization_vendors instanceof Collection) {
                 $this->geopoint_organization_vendors = collect([$this->geopoint_organization_vendors]);
