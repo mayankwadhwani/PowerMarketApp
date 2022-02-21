@@ -49,7 +49,6 @@ class ShineMonitor {
                 'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36',
                 'Referer' => $this->url,
             ],
-            'connect_timeout' => true,
             'http_errors'     => true,
             'timeout'         => 35,
             'connect_timeout' => 35,
@@ -94,7 +93,6 @@ class ShineMonitor {
                 'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36',
                 'Referer' => $this->url,
             ],
-            'connect_timeout' => true,
             'http_errors'     => true,
             'timeout'         => 35,
             'connect_timeout' => 35,
@@ -165,7 +163,6 @@ class ShineMonitor {
                 sleep(1); // prevent overload
 
                 if (!empty($pulledData) && isset($pulledData->outputPower)) {
-                    ++$cnt;
                     $data = array_merge($data, $pulledData->outputPower);
                 }
             }
