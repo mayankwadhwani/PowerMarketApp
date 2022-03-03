@@ -339,6 +339,11 @@
             datasets: [],
           },
           options: {
+            elements: {
+              line: {
+                tension: 0 // disables bezier curves
+              }
+            },
             legend: {
               position: 'top',
               display: false
