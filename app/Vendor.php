@@ -12,6 +12,7 @@ class Vendor extends Model
     ];
 
     protected $casts = [
-        'auth_data' => 'array'
+        'auth_data' => 'array',
+        'geopoint_additional_mapping_data' => 'array'
     ];
 }

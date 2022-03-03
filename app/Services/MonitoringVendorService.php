@@ -25,7 +25,11 @@ class MonitoringVendorService
 
             $vendorClass = '\App\Services\MonitoringVendorConnectors\\'.$vendor->name;
             if (class_exists($vendorClass)) {
-                $vendorClass = new $vendorClass($geoPointOrganisationVendor, $organisationVendor->auth_data);
+                $vendorClass = new $vendorClass(
+                    $geoPointOrganisationVendor,
+                    $organisationVendor->auth_data,
+                    ($geoPointOrganisationVendor->additional_mapping_data ? json_decode($geoPointOrganisationVendor->additional_mapping_data, true) : [])
+                );
 
                 $startDate = null;
                 $endDate = null;
